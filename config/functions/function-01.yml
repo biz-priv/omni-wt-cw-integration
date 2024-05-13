@@ -1,0 +1,16 @@
+---
+function:
+  name: function-01-${self:provider.stage}
+  handler: src/function-01/index.handler
+  memorySize: 2048
+  timeout: 900
+  layers:
+    - !Ref NodeModulesLambdaLayer
+  package:
+    patterns:
+      - '!**/*'
+      - src/function-01/index.js
+
+  events:
+
+  environment:

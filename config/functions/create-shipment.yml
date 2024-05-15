@@ -1,0 +1,25 @@
+---
+function:
+  name: lenovo-create-shipment-${self:provider.stage}
+  handler: src/create-shipment/index.handler
+  memorySize: 2048
+  timeout: 900
+  layers:
+    - !Ref NodeModulesLambdaLayer
+  package:
+    patterns:
+      - '!**/*'
+      - src/create-shipment/index.js
+      - src/shared/*
+
+  events:
+    - s3:
+        bucket: ${ssm:/omni-dw/${self:provider.stage}/wms/bucket/name}
+        existing: true
+        events:
+          - s3:ObjectCreated:*
+        rules:
+          - prefix: ${ssm:/${self:service}/${self:provider.stage}/s3-prefix}
+          - suffix: ${ssm:/${self:service}/${self:provider.stage}/s3-suffix}
+
+  environment:

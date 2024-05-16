@@ -23,3 +23,9 @@ function:
           - suffix: ${ssm:/${self:service}/${self:provider.stage}/s3-suffix}
 
   environment:
+    WT_URL: ${ssm:/omni-dw/${self:provider.stage}/createShipment/wt/url}
+    CW_URL: 'https://trxts3services.wisegrid.net/eAdaptor'
+    CW_ENDPOINT_AUTHORIZATION: 'Basic dHJ4dHMzOjY0ODg1Nw=='
+    LOGS_TABLE: 'omni-lenovo-status-dev'
+    wt_soap_username: ${ssm:/omni-dw/${self:provider.stage}/wt/soap/username~true}
+    wt_soap_password: ${ssm:/omni-dw/${self:provider.stage}/wt/soap/password~true}

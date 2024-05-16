@@ -1,0 +1,4252 @@
+{
+  "UniversalShipment": {
+    "$": {
+      "xmlns": "http://www.cargowise.com/Schemas/Universal/2011/11",
+      "version": "1.1"
+    },
+    "Shipment": {
+      "DataContext": {
+        "DataSourceCollection": {
+          "DataSource": [
+            {
+              "Type": "ForwardingConsol",
+              "Key": "C00392893"
+            },
+            {
+              "Type": "ForwardingShipment",
+              "Key": "SHK200906629"
+            }
+          ]
+        },
+        "ActionPurpose": {
+          "Code": "WT",
+          "Description": "Send Shipments to WorldTrak"
+        },
+        "Company": {
+          "Code": "TRL",
+          "Country": {
+            "Code": "US",
+            "Name": "United States"
+          },
+          "Name": "Trinity Logistics USA, Inc. (HQ)"
+        },
+        "DataProvider": "TRXTS3TRL",
+        "EnterpriseID": "TRX",
+        "EventBranch": {
+          "Code": "CM3",
+          "Name": "Columbus, OH"
+        },
+        "EventDepartment": {
+          "Code": "FIA",
+          "Name": "Forwarding Import Air"
+        },
+        "EventType": {
+          "Code": "PCF",
+          "Description": "Pickup Cartage Complete/Finalized"
+        },
+        "EventUser": {
+          "Code": "AWH",
+          "Name": "Alaina White"
+        },
+        "ServerID": "TS3",
+        "TriggerCount": "1",
+        "TriggerDate": "2024-05-10T02:31:00",
+        "TriggerDescription": "Send Shipment to WT",
+        "TriggerType": "Trigger",
+        "RecipientRoleCollection": {
+          "RecipientRole": {
+            "Code": "BTP",
+            "Description": "Bill to Party(s)"
+          }
+        }
+      },
+      "AgentsReference": "",
+      "AWBServiceLevel": {
+        "Code": "STD",
+        "Description": "Standard"
+      },
+      "BookingConfirmationReference": "",
+      "CarrierContractNumber": "",
+      "ChargeableRate": "0.0000",
+      "ConsolCommodity": {
+        "Code": ""
+      },
+      "ContainerCount": "10",
+      "ContainerMode": {
+        "Code": "LSE",
+        "Description": "Loose"
+      },
+      "DocumentedChargeable": "186995",
+      "DocumentedVolume": "650.652",
+      "DocumentedWeight": "186995",
+      "ElectronicBillOfLadingReference": "",
+      "FreightRate": "0.0000",
+      "FreightRateCurrency": {
+        "Code": "USD",
+        "Description": "United States Dollar"
+      },
+      "IsCFSRegistered": "false",
+      "IsDirectBooking": "false",
+      "IsForwardRegistered": "true",
+      "IsHazardous": "false",
+      "IsNeutralMaster": "false",
+      "LloydsIMO": "",
+      "ManifestedChargeable": "186995",
+      "ManifestedVolume": "650.652",
+      "ManifestedWeight": "186995",
+      "MaximumAllowablePackageHeight": "0.000",
+      "MaximumAllowablePackageLength": "0.000",
+      "MaximumAllowablePackageLengthUnit": {
+        "Code": ""
+      },
+      "MaximumAllowablePackageWidth": "0.000",
+      "NoCopyBills": "1",
+      "NoOriginalBills": "3",
+      "OuterPacks": "0",
+      "PaymentMethod": {
+        "Code": ""
+      },
+      "PlaceOfDelivery": {
+        "Code": "USILM",
+        "Name": "Wilmington"
+      },
+      "PlaceOfIssue": {
+        "Code": ""
+      },
+      "PlaceOfReceipt": {
+        "Code": "HKHKG",
+        "Name": "Hong Kong"
+      },
+      "PortFirstForeign": {
+        "Code": ""
+      },
+      "PortLastForeign": {
+        "Code": ""
+      },
+      "PortOfDischarge": {
+        "Code": "USILM",
+        "Name": "Wilmington"
+      },
+      "PortOfFirstArrival": {
+        "Code": ""
+      },
+      "PortOfLoading": {
+        "Code": "HKHKG",
+        "Name": "Hong Kong"
+      },
+      "ReceivingForwarderHandlingType": {
+        "Code": ""
+      },
+      "ReleaseType": {
+        "Code": ""
+      },
+      "RequiresTemperatureControl": "false",
+      "ScreeningStatus": {
+        "Code": "NOT",
+        "Description": "Not Screened"
+      },
+      "SendingForwarderHandlingType": {
+        "Code": ""
+      },
+      "ShipmentType": {
+        "Code": "AGT",
+        "Description": "Agent"
+      },
+      "TotalNoOfPacks": "172",
+      "TotalNoOfPacksPackageType": {
+        "Code": "PKG",
+        "Description": "Package"
+      },
+      "TotalPreallocatedChargeable": "0.000",
+      "TotalPreallocatedVolume": "0.000",
+      "TotalPreallocatedVolumeUnit": {
+        "Code": ""
+      },
+      "TotalPreallocatedWeight": "0.000",
+      "TotalPreallocatedWeightUnit": {
+        "Code": ""
+      },
+      "TotalVolume": "650.652",
+      "TotalVolumeUnit": {
+        "Code": "M3",
+        "Description": "Cubic Meters"
+      },
+      "TotalWeight": "186995",
+      "TotalWeightUnit": {
+        "Code": "KG",
+        "Description": "Kilograms"
+      },
+      "TransportMode": {
+        "Code": "AIR",
+        "Description": "Air Freight"
+      },
+      "VesselName": "",
+      "VoyageFlightNo": "KD123",
+      "WayBillNumber": "904",
+      "WayBillType": {
+        "Code": "MWB",
+        "Description": "Master Waybill"
+      },
+      "CarrierDocumentsOverride": {
+        "AWBHeader": {
+          "AgentAccountNo": "01104980026",
+          "AgentIATACode": "01-1 0498/0026",
+          "AgentName": "Trinity Logistics USA Inc",
+          "AgentPlace": "Columbus, Ohio",
+          "AirportOfDepartureAndRequestRouteText": "Hong Kong",
+          "AirportOfDestinationCode": "LCK",
+          "AirportOfDestinationText": "Rickenbacker International Apt",
+          "AlsoNotify": {
+            "AddressLine1": "",
+            "AddressLine2": "",
+            "City": "",
+            "ContactDetail": "",
+            "ContactType": {
+              "Code": ""
+            },
+            "Country": {
+              "Code": ""
+            },
+            "IsAddressOverriddenForPaperWaybill": "false",
+            "Name": "",
+            "PaperOverrideLine1": "",
+            "PaperOverrideLine2": "",
+            "PaperOverrideLine3": "",
+            "PaperOverrideLine4": "",
+            "PaperOverrideLine5": "",
+            "PostCode": "",
+            "State": ""
+          },
+          "AmountOfInsurance": "0",
+          "AsAgreedOn1stAWBSet": "false",
+          "AsAgreedOn2ndAWBSet": "false",
+          "AsAgreedTypeOn1stAWBSet": "NON",
+          "AsAgreedTypeOn2ndAWBSet": "NON",
+          "AWBIssueDate": "2024-05-10T02:45:08.117",
+          "AWBIssuePlace": "COLUMBUS",
+          "AWBIssuerApprovedExporterNumber": "",
+          "AWBIssuerExtraInfo": "",
+          "AWBIssuerSignature": "Trinity Logistics USA Inc",
+          "AWBNumber": "",
+          "AWBType": {
+            "Code": ""
+          },
+          "CargoSecurityDeclaration": {
+            "AdditionalScreeningMethods": "",
+            "AgentApprovalCategory": {
+              "Code": "RA",
+              "Description": "Regulated Agent"
+            },
+            "AgentApprovalCountry": {
+              "Code": "US",
+              "Name": "United States"
+            },
+            "AgentApprovalExpiryDate": "",
+            "AgentApprovalNumber": "",
+            "SecurityStatus": {
+              "Code": "NSC",
+              "Description": "Cargo has not been secured yet for Passenger or All-Cargo Aircraft"
+            },
+            "SecurityStatusIssueDate": "2024-05-10T02:45:08.037",
+            "SecurityStatusIssuedBy": "Alaina White",
+            "TSASecurityStatement": "Trinity Logistics USA, Inc. (HQ) has reviewed all available documentation and has determined that none of the cargo being offered in this consignment or consolidation has/either originated in, transferred from, or transited through any point in Egypt, Somalia, Syrian Arab Republic, Yemen.",
+            "ScreeningMethodCollection": {
+              "ScreeningMethod": {
+                "Code": "UNK",
+                "Description": ""
+              }
+            }
+          },
+          "ChargesPayment": {
+            "Code": ""
+          },
+          "Consignee": {
+            "AccountCode": "",
+            "AddressLine1": "2566 JERRIE MOCK AVE",
+            "AddressLine2": "",
+            "City": "COLUMBUS",
+            "ContactDetail": "+16144918091",
+            "ContactType": {
+              "Code": "TE",
+              "Description": "Telephone"
+            },
+            "Country": {
+              "Code": "US",
+              "Name": "United States"
+            },
+            "IsAddressOverriddenForPaperWaybill": "false",
+            "Name": "OMNI LOGISTICS - LCK",
+            "PaperOverrideLine1": "OMNI LOGISTICS - LCK",
+            "PaperOverrideLine2": "2566 JERRIE MOCK AVE",
+            "PaperOverrideLine3": "",
+            "PaperOverrideLine4": "COLUMBUS OH 43217-1350 US",
+            "PaperOverrideLine5": "TE +16144918091",
+            "PostCode": "43217-135",
+            "State": "OH"
+          },
+          "Currency": {
+            "Code": "USD",
+            "Description": "United States Dollar"
+          },
+          "ForwardingAgentReference": "904-",
+          "HandlingInformation": "KD123/15",
+          "IssuedByAddress1": "9260 ESTERO PARK COMMONS BLVD",
+          "IssuedByAddress2": "SUITE 200, ESTERO, FLORIDA, 33928, UNITED STATES O",
+          "IssuedByName": "WESTERN GLOBAL AIRLINES, INC.",
+          "NetRateCode": "",
+          "OptionalShippingInformation1": "",
+          "OptionalShippingInformation2": "",
+          "OriginCode": "HKG",
+          "OtherChargesPayment": {
+            "Code": ""
+          },
+          "Requested1stCarrier": "KD",
+          "Requested1stFlight": "123",
+          "Requested1stFlightDate": "13",
+          "Requested2ndCarrier": "KD",
+          "Requested2ndFlight": "123",
+          "Requested2ndFlightDate": "14",
+          "Routing1stBy": "KD",
+          "Routing1stTo": "ICN",
+          "Routing2ndBy": "KD",
+          "Routing2ndTo": "ANC",
+          "Routing3rdBy": "KD",
+          "Routing3rdTo": "LCK",
+          "Shipper": {
+            "AccountCode": "",
+            "AddressLine1": "Unit 4602, 46/F Tower 2, Metroplaza",
+            "AddressLine2": "223 Hing Fong Road, Kwai Chung, NT",
+            "City": "Hong Kong",
+            "ContactDetail": "+85224076666",
+            "ContactType": {
+              "Code": "TE",
+              "Description": "Telephone"
+            },
+            "Country": {
+              "Code": "HK",
+              "Name": "Hong Kong"
+            },
+            "IsAddressOverriddenForPaperWaybill": "false",
+            "Name": "Air & Ground Logistics (HK) Ltd",
+            "PaperOverrideLine1": "Air & Ground Logistics (HK) Ltd",
+            "PaperOverrideLine2": "Unit 4602, 46/F Tower 2, Metroplaza",
+            "PaperOverrideLine3": "223 Hing Fong Road, Kwai Chung, NT",
+            "PaperOverrideLine4": "Hong Kong   HK",
+            "PaperOverrideLine5": "TE +85224076666",
+            "PostCode": "",
+            "State": ""
+          },
+          "ShipperExtraInfoLine1": "",
+          "ShipperExtraInfoLine2": "",
+          "ShippersLoadAndCount": "0",
+          "ShippersSignature": "Alaina White",
+          "SpecialHandlingCode": "",
+          "TotalTaxesCollect": "0",
+          "TotalTaxesPrepaid": "0",
+          "TotalValuationCollect": "0",
+          "TotalValuationPrepaid": "0",
+          "ValueForCarriage": "0",
+          "ValueForCustoms": "0",
+          "WeightChargesPayment": {
+            "Code": ""
+          },
+          "RateLineCollection": {
+            "RateLine": [
+              {
+                "ChargeableWeight": "186995",
+                "CommodityItem": "",
+                "Consolidation": "Consolidation as per attached list",
+                "GrossWeight": "186995",
+                "LineNumber": "1",
+                "NatureAndQtyOfGoodsType": {
+                  "Code": "C",
+                  "Description": "Consolidation"
+                },
+                "NoOfPiecesOrRCP": "10",
+                "RateChargeOrDiscount": "0",
+                "RateClass": {
+                  "Code": "U",
+                  "Description": "Unit Load Device Basic Charge"
+                },
+                "TotalCharge": "0",
+                "WeightUnit": {
+                  "Code": "K",
+                  "Description": "Kilograms"
+                }
+              },
+              {
+                "ChargeableWeight": "0",
+                "CommodityItem": "5",
+                "GrossWeight": "850",
+                "LineNumber": "2",
+                "NatureAndQtyOfGoodsType": {
+                  "Code": "U",
+                  "Description": "ULD Number"
+                },
+                "NoOfPiecesOrRCP": "",
+                "RateChargeOrDiscount": "0",
+                "RateClass": {
+                  "Code": "X",
+                  "Description": "Unit Load Device Additional Information"
+                },
+                "TotalCharge": "0",
+                "ULDNumber": "ULD1",
+                "WeightUnit": {
+                  "Code": "K",
+                  "Description": "Kilograms"
+                }
+              },
+              {
+                "ChargeableWeight": "0",
+                "CommodityItem": "",
+                "GrossWeight": "0",
+                "LineNumber": "3",
+                "NatureAndQtyOfGoodsType": {
+                  "Code": "U",
+                  "Description": "ULD Number"
+                },
+                "NoOfPiecesOrRCP": "",
+                "RateChargeOrDiscount": "0",
+                "RateClass": {
+                  "Code": "X",
+                  "Description": "Unit Load Device Additional Information"
+                },
+                "TotalCharge": "0",
+                "ULDNumber": "ULD10",
+                "WeightUnit": {
+                  "Code": "K",
+                  "Description": "Kilograms"
+                }
+              },
+              {
+                "ChargeableWeight": "0",
+                "CommodityItem": "",
+                "GrossWeight": "0",
+                "LineNumber": "4",
+                "NatureAndQtyOfGoodsType": {
+                  "Code": "U",
+                  "Description": "ULD Number"
+                },
+                "NoOfPiecesOrRCP": "",
+                "RateChargeOrDiscount": "0",
+                "RateClass": {
+                  "Code": "X",
+                  "Description": "Unit Load Device Additional Information"
+                },
+                "TotalCharge": "0",
+                "ULDNumber": "ULD2",
+                "WeightUnit": {
+                  "Code": "K",
+                  "Description": "Kilograms"
+                }
+              },
+              {
+                "ChargeableWeight": "0",
+                "CommodityItem": "",
+                "GrossWeight": "0",
+                "LineNumber": "5",
+                "NatureAndQtyOfGoodsType": {
+                  "Code": "U",
+                  "Description": "ULD Number"
+                },
+                "NoOfPiecesOrRCP": "",
+                "RateChargeOrDiscount": "0",
+                "RateClass": {
+                  "Code": "X",
+                  "Description": "Unit Load Device Additional Information"
+                },
+                "TotalCharge": "0",
+                "ULDNumber": "ULD3",
+                "WeightUnit": {
+                  "Code": "K",
+                  "Description": "Kilograms"
+                }
+              },
+              {
+                "ChargeableWeight": "0",
+                "CommodityItem": "",
+                "GrossWeight": "0",
+                "LineNumber": "6",
+                "NatureAndQtyOfGoodsType": {
+                  "Code": "U",
+                  "Description": "ULD Number"
+                },
+                "NoOfPiecesOrRCP": "",
+                "RateChargeOrDiscount": "0",
+                "RateClass": {
+                  "Code": "X",
+                  "Description": "Unit Load Device Additional Information"
+                },
+                "TotalCharge": "0",
+                "ULDNumber": "ULD4",
+                "WeightUnit": {
+                  "Code": "K",
+                  "Description": "Kilograms"
+                }
+              },
+              {
+                "ChargeableWeight": "0",
+                "CommodityItem": "",
+                "GrossWeight": "0",
+                "LineNumber": "7",
+                "NatureAndQtyOfGoodsType": {
+                  "Code": "U",
+                  "Description": "ULD Number"
+                },
+                "NoOfPiecesOrRCP": "",
+                "RateChargeOrDiscount": "0",
+                "RateClass": {
+                  "Code": "X",
+                  "Description": "Unit Load Device Additional Information"
+                },
+                "TotalCharge": "0",
+                "ULDNumber": "ULD5",
+                "WeightUnit": {
+                  "Code": "K",
+                  "Description": "Kilograms"
+                }
+              },
+              {
+                "ChargeableWeight": "0",
+                "CommodityItem": "",
+                "GrossWeight": "0",
+                "LineNumber": "8",
+                "NatureAndQtyOfGoodsType": {
+                  "Code": "U",
+                  "Description": "ULD Number"
+                },
+                "NoOfPiecesOrRCP": "",
+                "RateChargeOrDiscount": "0",
+                "RateClass": {
+                  "Code": "X",
+                  "Description": "Unit Load Device Additional Information"
+                },
+                "TotalCharge": "0",
+                "ULDNumber": "ULD6",
+                "WeightUnit": {
+                  "Code": "K",
+                  "Description": "Kilograms"
+                }
+              },
+              {
+                "ChargeableWeight": "0",
+                "CommodityItem": "",
+                "GrossWeight": "0",
+                "LineNumber": "9",
+                "NatureAndQtyOfGoodsType": {
+                  "Code": "U",
+                  "Description": "ULD Number"
+                },
+                "NoOfPiecesOrRCP": "",
+                "RateChargeOrDiscount": "0",
+                "RateClass": {
+                  "Code": "X",
+                  "Description": "Unit Load Device Additional Information"
+                },
+                "TotalCharge": "0",
+                "ULDNumber": "ULD7",
+                "WeightUnit": {
+                  "Code": "K",
+                  "Description": "Kilograms"
+                }
+              },
+              {
+                "ChargeableWeight": "0",
+                "CommodityItem": "",
+                "GrossWeight": "0",
+                "LineNumber": "10",
+                "NatureAndQtyOfGoodsType": {
+                  "Code": "U",
+                  "Description": "ULD Number"
+                },
+                "NoOfPiecesOrRCP": "",
+                "RateChargeOrDiscount": "0",
+                "RateClass": {
+                  "Code": "X",
+                  "Description": "Unit Load Device Additional Information"
+                },
+                "TotalCharge": "0",
+                "ULDNumber": "ULD8",
+                "WeightUnit": {
+                  "Code": "K",
+                  "Description": "Kilograms"
+                }
+              },
+              {
+                "ChargeableWeight": "0",
+                "CommodityItem": "",
+                "GrossWeight": "0",
+                "LineNumber": "11",
+                "NatureAndQtyOfGoodsType": {
+                  "Code": "U",
+                  "Description": "ULD Number"
+                },
+                "NoOfPiecesOrRCP": "",
+                "RateChargeOrDiscount": "0",
+                "RateClass": {
+                  "Code": "X",
+                  "Description": "Unit Load Device Additional Information"
+                },
+                "TotalCharge": "0",
+                "ULDNumber": "ULD9",
+                "WeightUnit": {
+                  "Code": "K",
+                  "Description": "Kilograms"
+                }
+              },
+              {
+                "ChargeableWeight": "0",
+                "CommodityItem": "",
+                "GrossWeight": "0",
+                "LineNumber": "12",
+                "NatureAndQtyOfGoodsType": {
+                  "Code": "V",
+                  "Description": "Volume"
+                },
+                "NoOfPiecesOrRCP": "0",
+                "RateChargeOrDiscount": "0",
+                "RateClass": {
+                  "Code": ""
+                },
+                "TotalCharge": "0",
+                "Volume": {
+                  "Unit": {
+                    "Code": "M3",
+                    "Description": "Cubic Meters"
+                  },
+                  "Volume": "650.66"
+                },
+                "WeightUnit": {
+                  "Code": ""
+                }
+              }
+            ]
+          }
+        }
+      },
+      "ContainerCollection": {
+        "$": {
+          "Content": "Complete"
+        },
+        "Container": [
+          {
+            "AirVentFlow": "0.0",
+            "AirVentFlowRateUnit": {
+              "Code": ""
+            },
+            "ArrivalCartageAdvised": "",
+            "ArrivalCartageComplete": "",
+            "ArrivalCartageDemurrageTime": "",
+            "ArrivalCartageRef": "",
+            "ArrivalCTOStorageStartDate": "",
+            "ArrivalDeliveryRequiredBy": "",
+            "ArrivalEstimatedDelivery": "",
+            "ArrivalPickupByRail": "false",
+            "ArrivalSlotDateTime": "",
+            "ArrivalSlotReference": "",
+            "ArrivalTruckWaitTime": "",
+            "Commodity": {
+              "Code": ""
+            },
+            "ContainerCount": "1",
+            "ContainerImportDORelease": "",
+            "ContainerJobID": "D00035536",
+            "ContainerNumber": "ULD1",
+            "ContainerParkEmptyPickupGateOut": "",
+            "ContainerParkEmptyReturnGateIn": "",
+            "ContainerQuality": {
+              "Code": ""
+            },
+            "ContainerStatus": {
+              "Code": ""
+            },
+            "ContainerType": {
+              "Code": "LD-1",
+              "Category": {
+                "Code": "DRY",
+                "Description": "Dry Storage"
+              },
+              "Description": "LD1 AKC AVE",
+              "ISOCode": ""
+            },
+            "DeliveryMode": "",
+            "DeliverySequence": "0",
+            "DepartureCartageAdvised": "",
+            "DepartureCartageComplete": "2024-05-10T02:30:00",
+            "DepartureCartageDemurrageTime": "",
+            "DepartureCartageRef": "",
+            "DepartureDeliveryByRail": "false",
+            "DepartureDockReceipt": "",
+            "DepartureEstimatedPickup": "",
+            "DepartureSlotDateTime": "",
+            "DepartureSlotReference": "",
+            "DepartureTruckWaitTime": "",
+            "DunnageWeight": "0.000",
+            "EmptyReadyForReturn": "",
+            "EmptyRequired": "",
+            "EmptyReturnedBy": "",
+            "EmptyReturnRef": "",
+            "ExportDepotCustomsReference": "",
+            "FCL_LCL_AIR": {
+              "Code": "ULD",
+              "Description": "Unit Load Device"
+            },
+            "FCLAvailable": "",
+            "FCLHeldInTransitStaging": "false",
+            "FCLOnBoardVessel": "",
+            "FCLStorageArrivedUnderbond": "false",
+            "FCLStorageCommences": "",
+            "FCLStorageModuleOnlyMaster": "",
+            "FCLStorageUnderbondCleared": "",
+            "FCLUnloadFromVessel": "",
+            "FCLWharfGateIn": "",
+            "FCLWharfGateOut": "",
+            "GoodsValue": "0.0000",
+            "GoodsValueCurrency": {
+              "Code": ""
+            },
+            "GoodsWeight": "20430",
+            "GrossWeight": "20515.000",
+            "GrossWeightVerificationType": {
+              "Code": "NON",
+              "Description": "Not Verified"
+            },
+            "HumidityPercent": "0",
+            "ImportDepotCustomsReference": "",
+            "IsCFSRegistered": "false",
+            "IsControlledAtmosphere": "false",
+            "IsDamaged": "false",
+            "IsEmptyContainer": "false",
+            "IsSealOk": "true",
+            "IsShipperOwned": "false",
+            "LCLAvailable": "",
+            "LCLStorageCommences": "",
+            "LCLUnpack": "",
+            "LengthUnit": {
+              "Code": "FT",
+              "Description": "Feet"
+            },
+            "Link": "2",
+            "NonOperatingReefer": "false",
+            "OverhangBack": "0.000",
+            "OverhangFront": "0",
+            "OverhangHeight": "0",
+            "OverhangLeft": "0",
+            "OverhangRight": "0.000",
+            "OverrideFCLAvailableStorage": "false",
+            "OverrideLCLAvailableStorage": "false",
+            "PackDate": "",
+            "RatingCommodity": {
+              "Code": ""
+            },
+            "RefrigGeneratorID": "",
+            "ReleaseNum": "",
+            "Seal": "",
+            "SealPartyType": {
+              "Code": ""
+            },
+            "SecondSeal": "",
+            "SecondSealPartyType": {
+              "Code": ""
+            },
+            "SetPointTemp": "0.000",
+            "SetPointTempUnit": "",
+            "StowagePosition": "",
+            "TareWeight": "85.000",
+            "TempRecorderSerialNo": "",
+            "ThirdSeal": "",
+            "ThirdSealPartyType": {
+              "Code": ""
+            },
+            "TotalHeight": "5.333",
+            "TotalLength": "7.667",
+            "TotalWidth": "5.033",
+            "TrainWagonNumber": "",
+            "UnpackGang": "",
+            "UnpackShed": "",
+            "VolumeCapacity": "0.000",
+            "VolumeUnit": {
+              "Code": "M3",
+              "Description": "Cubic Meters"
+            },
+            "WeightCapacity": "0.000",
+            "WeightUnit": {
+              "Code": "KG",
+              "Description": "Kilograms"
+            }
+          },
+          {
+            "AirVentFlow": "0.0",
+            "AirVentFlowRateUnit": {
+              "Code": ""
+            },
+            "ArrivalCartageAdvised": "",
+            "ArrivalCartageComplete": "",
+            "ArrivalCartageDemurrageTime": "",
+            "ArrivalCartageRef": "",
+            "ArrivalCTOStorageStartDate": "",
+            "ArrivalDeliveryRequiredBy": "",
+            "ArrivalEstimatedDelivery": "",
+            "ArrivalPickupByRail": "false",
+            "ArrivalSlotDateTime": "",
+            "ArrivalSlotReference": "",
+            "ArrivalTruckWaitTime": "",
+            "Commodity": {
+              "Code": ""
+            },
+            "ContainerCount": "1",
+            "ContainerImportDORelease": "",
+            "ContainerJobID": "D00035545",
+            "ContainerNumber": "ULD10",
+            "ContainerParkEmptyPickupGateOut": "",
+            "ContainerParkEmptyReturnGateIn": "",
+            "ContainerQuality": {
+              "Code": ""
+            },
+            "ContainerStatus": {
+              "Code": ""
+            },
+            "ContainerType": {
+              "Code": "LD-1",
+              "Category": {
+                "Code": "DRY",
+                "Description": "Dry Storage"
+              },
+              "Description": "LD1 AKC AVE",
+              "ISOCode": ""
+            },
+            "DeliveryMode": "",
+            "DeliverySequence": "0",
+            "DepartureCartageAdvised": "",
+            "DepartureCartageComplete": "2024-05-10T02:31:00",
+            "DepartureCartageDemurrageTime": "",
+            "DepartureCartageRef": "",
+            "DepartureDeliveryByRail": "false",
+            "DepartureDockReceipt": "",
+            "DepartureEstimatedPickup": "",
+            "DepartureSlotDateTime": "",
+            "DepartureSlotReference": "",
+            "DepartureTruckWaitTime": "",
+            "DunnageWeight": "0.000",
+            "EmptyReadyForReturn": "",
+            "EmptyRequired": "",
+            "EmptyReturnedBy": "",
+            "EmptyReturnRef": "",
+            "ExportDepotCustomsReference": "",
+            "FCL_LCL_AIR": {
+              "Code": "ULD",
+              "Description": "Unit Load Device"
+            },
+            "FCLAvailable": "",
+            "FCLHeldInTransitStaging": "false",
+            "FCLOnBoardVessel": "",
+            "FCLStorageArrivedUnderbond": "false",
+            "FCLStorageCommences": "",
+            "FCLStorageModuleOnlyMaster": "",
+            "FCLStorageUnderbondCleared": "",
+            "FCLUnloadFromVessel": "",
+            "FCLWharfGateIn": "",
+            "FCLWharfGateOut": "",
+            "GoodsValue": "0.0000",
+            "GoodsValueCurrency": {
+              "Code": ""
+            },
+            "GoodsWeight": "17600",
+            "GrossWeight": "17685.000",
+            "GrossWeightVerificationType": {
+              "Code": "NON",
+              "Description": "Not Verified"
+            },
+            "HumidityPercent": "0",
+            "ImportDepotCustomsReference": "",
+            "IsCFSRegistered": "false",
+            "IsControlledAtmosphere": "false",
+            "IsDamaged": "false",
+            "IsEmptyContainer": "false",
+            "IsSealOk": "true",
+            "IsShipperOwned": "false",
+            "LCLAvailable": "",
+            "LCLStorageCommences": "",
+            "LCLUnpack": "",
+            "LengthUnit": {
+              "Code": "FT",
+              "Description": "Feet"
+            },
+            "Link": "3",
+            "NonOperatingReefer": "false",
+            "OverhangBack": "0.000",
+            "OverhangFront": "0",
+            "OverhangHeight": "0",
+            "OverhangLeft": "0",
+            "OverhangRight": "0.000",
+            "OverrideFCLAvailableStorage": "false",
+            "OverrideLCLAvailableStorage": "false",
+            "PackDate": "",
+            "RatingCommodity": {
+              "Code": ""
+            },
+            "RefrigGeneratorID": "",
+            "ReleaseNum": "",
+            "Seal": "",
+            "SealPartyType": {
+              "Code": ""
+            },
+            "SecondSeal": "",
+            "SecondSealPartyType": {
+              "Code": ""
+            },
+            "SetPointTemp": "0.000",
+            "SetPointTempUnit": "",
+            "StowagePosition": "",
+            "TareWeight": "85.000",
+            "TempRecorderSerialNo": "",
+            "ThirdSeal": "",
+            "ThirdSealPartyType": {
+              "Code": ""
+            },
+            "TotalHeight": "5.333",
+            "TotalLength": "7.667",
+            "TotalWidth": "5.033",
+            "TrainWagonNumber": "",
+            "UnpackGang": "",
+            "UnpackShed": "",
+            "VolumeCapacity": "0.000",
+            "VolumeUnit": {
+              "Code": "M3",
+              "Description": "Cubic Meters"
+            },
+            "WeightCapacity": "0.000",
+            "WeightUnit": {
+              "Code": "KG",
+              "Description": "Kilograms"
+            }
+          },
+          {
+            "AirVentFlow": "0.0",
+            "AirVentFlowRateUnit": {
+              "Code": ""
+            },
+            "ArrivalCartageAdvised": "",
+            "ArrivalCartageComplete": "",
+            "ArrivalCartageDemurrageTime": "",
+            "ArrivalCartageRef": "",
+            "ArrivalCTOStorageStartDate": "",
+            "ArrivalDeliveryRequiredBy": "",
+            "ArrivalEstimatedDelivery": "",
+            "ArrivalPickupByRail": "false",
+            "ArrivalSlotDateTime": "",
+            "ArrivalSlotReference": "",
+            "ArrivalTruckWaitTime": "",
+            "Commodity": {
+              "Code": ""
+            },
+            "ContainerCount": "1",
+            "ContainerImportDORelease": "",
+            "ContainerJobID": "D00035537",
+            "ContainerNumber": "ULD2",
+            "ContainerParkEmptyPickupGateOut": "",
+            "ContainerParkEmptyReturnGateIn": "",
+            "ContainerQuality": {
+              "Code": ""
+            },
+            "ContainerStatus": {
+              "Code": ""
+            },
+            "ContainerType": {
+              "Code": "LD-1",
+              "Category": {
+                "Code": "DRY",
+                "Description": "Dry Storage"
+              },
+              "Description": "LD1 AKC AVE",
+              "ISOCode": ""
+            },
+            "DeliveryMode": "",
+            "DeliverySequence": "0",
+            "DepartureCartageAdvised": "",
+            "DepartureCartageComplete": "2024-05-10T02:31:00",
+            "DepartureCartageDemurrageTime": "",
+            "DepartureCartageRef": "",
+            "DepartureDeliveryByRail": "false",
+            "DepartureDockReceipt": "",
+            "DepartureEstimatedPickup": "",
+            "DepartureSlotDateTime": "",
+            "DepartureSlotReference": "",
+            "DepartureTruckWaitTime": "",
+            "DunnageWeight": "0.000",
+            "EmptyReadyForReturn": "",
+            "EmptyRequired": "",
+            "EmptyReturnedBy": "",
+            "EmptyReturnRef": "",
+            "ExportDepotCustomsReference": "",
+            "FCL_LCL_AIR": {
+              "Code": "ULD",
+              "Description": "Unit Load Device"
+            },
+            "FCLAvailable": "",
+            "FCLHeldInTransitStaging": "false",
+            "FCLOnBoardVessel": "",
+            "FCLStorageArrivedUnderbond": "false",
+            "FCLStorageCommences": "",
+            "FCLStorageModuleOnlyMaster": "",
+            "FCLStorageUnderbondCleared": "",
+            "FCLUnloadFromVessel": "",
+            "FCLWharfGateIn": "",
+            "FCLWharfGateOut": "",
+            "GoodsValue": "0.0000",
+            "GoodsValueCurrency": {
+              "Code": ""
+            },
+            "GoodsWeight": "18202",
+            "GrossWeight": "18287.000",
+            "GrossWeightVerificationType": {
+              "Code": "NON",
+              "Description": "Not Verified"
+            },
+            "HumidityPercent": "0",
+            "ImportDepotCustomsReference": "",
+            "IsCFSRegistered": "false",
+            "IsControlledAtmosphere": "false",
+            "IsDamaged": "false",
+            "IsEmptyContainer": "false",
+            "IsSealOk": "true",
+            "IsShipperOwned": "false",
+            "LCLAvailable": "",
+            "LCLStorageCommences": "",
+            "LCLUnpack": "",
+            "LengthUnit": {
+              "Code": "FT",
+              "Description": "Feet"
+            },
+            "Link": "4",
+            "NonOperatingReefer": "false",
+            "OverhangBack": "0.000",
+            "OverhangFront": "0",
+            "OverhangHeight": "0",
+            "OverhangLeft": "0",
+            "OverhangRight": "0.000",
+            "OverrideFCLAvailableStorage": "false",
+            "OverrideLCLAvailableStorage": "false",
+            "PackDate": "",
+            "RatingCommodity": {
+              "Code": ""
+            },
+            "RefrigGeneratorID": "",
+            "ReleaseNum": "",
+            "Seal": "",
+            "SealPartyType": {
+              "Code": ""
+            },
+            "SecondSeal": "",
+            "SecondSealPartyType": {
+              "Code": ""
+            },
+            "SetPointTemp": "0.000",
+            "SetPointTempUnit": "",
+            "StowagePosition": "",
+            "TareWeight": "85.000",
+            "TempRecorderSerialNo": "",
+            "ThirdSeal": "",
+            "ThirdSealPartyType": {
+              "Code": ""
+            },
+            "TotalHeight": "5.333",
+            "TotalLength": "7.667",
+            "TotalWidth": "5.033",
+            "TrainWagonNumber": "",
+            "UnpackGang": "",
+            "UnpackShed": "",
+            "VolumeCapacity": "0.000",
+            "VolumeUnit": {
+              "Code": "M3",
+              "Description": "Cubic Meters"
+            },
+            "WeightCapacity": "0.000",
+            "WeightUnit": {
+              "Code": "KG",
+              "Description": "Kilograms"
+            }
+          },
+          {
+            "AirVentFlow": "0.0",
+            "AirVentFlowRateUnit": {
+              "Code": ""
+            },
+            "ArrivalCartageAdvised": "",
+            "ArrivalCartageComplete": "",
+            "ArrivalCartageDemurrageTime": "",
+            "ArrivalCartageRef": "",
+            "ArrivalCTOStorageStartDate": "",
+            "ArrivalDeliveryRequiredBy": "",
+            "ArrivalEstimatedDelivery": "",
+            "ArrivalPickupByRail": "false",
+            "ArrivalSlotDateTime": "",
+            "ArrivalSlotReference": "",
+            "ArrivalTruckWaitTime": "",
+            "Commodity": {
+              "Code": ""
+            },
+            "ContainerCount": "1",
+            "ContainerImportDORelease": "",
+            "ContainerJobID": "D00035538",
+            "ContainerNumber": "ULD3",
+            "ContainerParkEmptyPickupGateOut": "",
+            "ContainerParkEmptyReturnGateIn": "",
+            "ContainerQuality": {
+              "Code": ""
+            },
+            "ContainerStatus": {
+              "Code": ""
+            },
+            "ContainerType": {
+              "Code": "LD-1",
+              "Category": {
+                "Code": "DRY",
+                "Description": "Dry Storage"
+              },
+              "Description": "LD1 AKC AVE",
+              "ISOCode": ""
+            },
+            "DeliveryMode": "",
+            "DeliverySequence": "0",
+            "DepartureCartageAdvised": "",
+            "DepartureCartageComplete": "2024-05-10T02:31:00",
+            "DepartureCartageDemurrageTime": "",
+            "DepartureCartageRef": "",
+            "DepartureDeliveryByRail": "false",
+            "DepartureDockReceipt": "",
+            "DepartureEstimatedPickup": "",
+            "DepartureSlotDateTime": "",
+            "DepartureSlotReference": "",
+            "DepartureTruckWaitTime": "",
+            "DunnageWeight": "0.000",
+            "EmptyReadyForReturn": "",
+            "EmptyRequired": "",
+            "EmptyReturnedBy": "",
+            "EmptyReturnRef": "",
+            "ExportDepotCustomsReference": "",
+            "FCL_LCL_AIR": {
+              "Code": "ULD",
+              "Description": "Unit Load Device"
+            },
+            "FCLAvailable": "",
+            "FCLHeldInTransitStaging": "false",
+            "FCLOnBoardVessel": "",
+            "FCLStorageArrivedUnderbond": "false",
+            "FCLStorageCommences": "",
+            "FCLStorageModuleOnlyMaster": "",
+            "FCLStorageUnderbondCleared": "",
+            "FCLUnloadFromVessel": "",
+            "FCLWharfGateIn": "",
+            "FCLWharfGateOut": "",
+            "GoodsValue": "0.0000",
+            "GoodsValueCurrency": {
+              "Code": ""
+            },
+            "GoodsWeight": "18694",
+            "GrossWeight": "18779.000",
+            "GrossWeightVerificationType": {
+              "Code": "NON",
+              "Description": "Not Verified"
+            },
+            "HumidityPercent": "0",
+            "ImportDepotCustomsReference": "",
+            "IsCFSRegistered": "false",
+            "IsControlledAtmosphere": "false",
+            "IsDamaged": "false",
+            "IsEmptyContainer": "false",
+            "IsSealOk": "true",
+            "IsShipperOwned": "false",
+            "LCLAvailable": "",
+            "LCLStorageCommences": "",
+            "LCLUnpack": "",
+            "LengthUnit": {
+              "Code": "FT",
+              "Description": "Feet"
+            },
+            "Link": "5",
+            "NonOperatingReefer": "false",
+            "OverhangBack": "0.000",
+            "OverhangFront": "0",
+            "OverhangHeight": "0",
+            "OverhangLeft": "0",
+            "OverhangRight": "0.000",
+            "OverrideFCLAvailableStorage": "false",
+            "OverrideLCLAvailableStorage": "false",
+            "PackDate": "",
+            "RatingCommodity": {
+              "Code": ""
+            },
+            "RefrigGeneratorID": "",
+            "ReleaseNum": "",
+            "Seal": "",
+            "SealPartyType": {
+              "Code": ""
+            },
+            "SecondSeal": "",
+            "SecondSealPartyType": {
+              "Code": ""
+            },
+            "SetPointTemp": "0.000",
+            "SetPointTempUnit": "",
+            "StowagePosition": "",
+            "TareWeight": "85.000",
+            "TempRecorderSerialNo": "",
+            "ThirdSeal": "",
+            "ThirdSealPartyType": {
+              "Code": ""
+            },
+            "TotalHeight": "5.333",
+            "TotalLength": "7.667",
+            "TotalWidth": "5.033",
+            "TrainWagonNumber": "",
+            "UnpackGang": "",
+            "UnpackShed": "",
+            "VolumeCapacity": "0.000",
+            "VolumeUnit": {
+              "Code": "M3",
+              "Description": "Cubic Meters"
+            },
+            "WeightCapacity": "0.000",
+            "WeightUnit": {
+              "Code": "KG",
+              "Description": "Kilograms"
+            }
+          },
+          {
+            "AirVentFlow": "0.0",
+            "AirVentFlowRateUnit": {
+              "Code": ""
+            },
+            "ArrivalCartageAdvised": "",
+            "ArrivalCartageComplete": "",
+            "ArrivalCartageDemurrageTime": "",
+            "ArrivalCartageRef": "",
+            "ArrivalCTOStorageStartDate": "",
+            "ArrivalDeliveryRequiredBy": "",
+            "ArrivalEstimatedDelivery": "",
+            "ArrivalPickupByRail": "false",
+            "ArrivalSlotDateTime": "",
+            "ArrivalSlotReference": "",
+            "ArrivalTruckWaitTime": "",
+            "Commodity": {
+              "Code": ""
+            },
+            "ContainerCount": "1",
+            "ContainerImportDORelease": "",
+            "ContainerJobID": "D00035539",
+            "ContainerNumber": "ULD4",
+            "ContainerParkEmptyPickupGateOut": "",
+            "ContainerParkEmptyReturnGateIn": "",
+            "ContainerQuality": {
+              "Code": ""
+            },
+            "ContainerStatus": {
+              "Code": ""
+            },
+            "ContainerType": {
+              "Code": "LD-1",
+              "Category": {
+                "Code": "DRY",
+                "Description": "Dry Storage"
+              },
+              "Description": "LD1 AKC AVE",
+              "ISOCode": ""
+            },
+            "DeliveryMode": "",
+            "DeliverySequence": "0",
+            "DepartureCartageAdvised": "",
+            "DepartureCartageComplete": "2024-05-10T02:31:00",
+            "DepartureCartageDemurrageTime": "",
+            "DepartureCartageRef": "",
+            "DepartureDeliveryByRail": "false",
+            "DepartureDockReceipt": "",
+            "DepartureEstimatedPickup": "",
+            "DepartureSlotDateTime": "",
+            "DepartureSlotReference": "",
+            "DepartureTruckWaitTime": "",
+            "DunnageWeight": "0.000",
+            "EmptyReadyForReturn": "",
+            "EmptyRequired": "",
+            "EmptyReturnedBy": "",
+            "EmptyReturnRef": "",
+            "ExportDepotCustomsReference": "",
+            "FCL_LCL_AIR": {
+              "Code": "ULD",
+              "Description": "Unit Load Device"
+            },
+            "FCLAvailable": "",
+            "FCLHeldInTransitStaging": "false",
+            "FCLOnBoardVessel": "",
+            "FCLStorageArrivedUnderbond": "false",
+            "FCLStorageCommences": "",
+            "FCLStorageModuleOnlyMaster": "",
+            "FCLStorageUnderbondCleared": "",
+            "FCLUnloadFromVessel": "",
+            "FCLWharfGateIn": "",
+            "FCLWharfGateOut": "",
+            "GoodsValue": "0.0000",
+            "GoodsValueCurrency": {
+              "Code": ""
+            },
+            "GoodsWeight": "17600",
+            "GrossWeight": "17685.000",
+            "GrossWeightVerificationType": {
+              "Code": "NON",
+              "Description": "Not Verified"
+            },
+            "HumidityPercent": "0",
+            "ImportDepotCustomsReference": "",
+            "IsCFSRegistered": "false",
+            "IsControlledAtmosphere": "false",
+            "IsDamaged": "false",
+            "IsEmptyContainer": "false",
+            "IsSealOk": "true",
+            "IsShipperOwned": "false",
+            "LCLAvailable": "",
+            "LCLStorageCommences": "",
+            "LCLUnpack": "",
+            "LengthUnit": {
+              "Code": "FT",
+              "Description": "Feet"
+            },
+            "Link": "1",
+            "NonOperatingReefer": "false",
+            "OverhangBack": "0.000",
+            "OverhangFront": "0",
+            "OverhangHeight": "0",
+            "OverhangLeft": "0",
+            "OverhangRight": "0.000",
+            "OverrideFCLAvailableStorage": "false",
+            "OverrideLCLAvailableStorage": "false",
+            "PackDate": "",
+            "RatingCommodity": {
+              "Code": ""
+            },
+            "RefrigGeneratorID": "",
+            "ReleaseNum": "",
+            "Seal": "",
+            "SealPartyType": {
+              "Code": ""
+            },
+            "SecondSeal": "",
+            "SecondSealPartyType": {
+              "Code": ""
+            },
+            "SetPointTemp": "0.000",
+            "SetPointTempUnit": "",
+            "StowagePosition": "",
+            "TareWeight": "85.000",
+            "TempRecorderSerialNo": "",
+            "ThirdSeal": "",
+            "ThirdSealPartyType": {
+              "Code": ""
+            },
+            "TotalHeight": "5.333",
+            "TotalLength": "7.667",
+            "TotalWidth": "5.033",
+            "TrainWagonNumber": "",
+            "UnpackGang": "",
+            "UnpackShed": "",
+            "VolumeCapacity": "0.000",
+            "VolumeUnit": {
+              "Code": "M3",
+              "Description": "Cubic Meters"
+            },
+            "WeightCapacity": "0.000",
+            "WeightUnit": {
+              "Code": "KG",
+              "Description": "Kilograms"
+            }
+          },
+          {
+            "AirVentFlow": "0.0",
+            "AirVentFlowRateUnit": {
+              "Code": ""
+            },
+            "ArrivalCartageAdvised": "",
+            "ArrivalCartageComplete": "",
+            "ArrivalCartageDemurrageTime": "",
+            "ArrivalCartageRef": "",
+            "ArrivalCTOStorageStartDate": "",
+            "ArrivalDeliveryRequiredBy": "",
+            "ArrivalEstimatedDelivery": "",
+            "ArrivalPickupByRail": "false",
+            "ArrivalSlotDateTime": "",
+            "ArrivalSlotReference": "",
+            "ArrivalTruckWaitTime": "",
+            "Commodity": {
+              "Code": ""
+            },
+            "ContainerCount": "1",
+            "ContainerImportDORelease": "",
+            "ContainerJobID": "D00035540",
+            "ContainerNumber": "ULD5",
+            "ContainerParkEmptyPickupGateOut": "",
+            "ContainerParkEmptyReturnGateIn": "",
+            "ContainerQuality": {
+              "Code": ""
+            },
+            "ContainerStatus": {
+              "Code": ""
+            },
+            "ContainerType": {
+              "Code": "LD-1",
+              "Category": {
+                "Code": "DRY",
+                "Description": "Dry Storage"
+              },
+              "Description": "LD1 AKC AVE",
+              "ISOCode": ""
+            },
+            "DeliveryMode": "",
+            "DeliverySequence": "0",
+            "DepartureCartageAdvised": "",
+            "DepartureCartageComplete": "2024-05-10T02:31:00",
+            "DepartureCartageDemurrageTime": "",
+            "DepartureCartageRef": "",
+            "DepartureDeliveryByRail": "false",
+            "DepartureDockReceipt": "",
+            "DepartureEstimatedPickup": "",
+            "DepartureSlotDateTime": "",
+            "DepartureSlotReference": "",
+            "DepartureTruckWaitTime": "",
+            "DunnageWeight": "0.000",
+            "EmptyReadyForReturn": "",
+            "EmptyRequired": "",
+            "EmptyReturnedBy": "",
+            "EmptyReturnRef": "",
+            "ExportDepotCustomsReference": "",
+            "FCL_LCL_AIR": {
+              "Code": "ULD",
+              "Description": "Unit Load Device"
+            },
+            "FCLAvailable": "",
+            "FCLHeldInTransitStaging": "false",
+            "FCLOnBoardVessel": "",
+            "FCLStorageArrivedUnderbond": "false",
+            "FCLStorageCommences": "",
+            "FCLStorageModuleOnlyMaster": "",
+            "FCLStorageUnderbondCleared": "",
+            "FCLUnloadFromVessel": "",
+            "FCLWharfGateIn": "",
+            "FCLWharfGateOut": "",
+            "GoodsValue": "0.0000",
+            "GoodsValueCurrency": {
+              "Code": ""
+            },
+            "GoodsWeight": "21022",
+            "GrossWeight": "21107.000",
+            "GrossWeightVerificationType": {
+              "Code": "NON",
+              "Description": "Not Verified"
+            },
+            "HumidityPercent": "0",
+            "ImportDepotCustomsReference": "",
+            "IsCFSRegistered": "false",
+            "IsControlledAtmosphere": "false",
+            "IsDamaged": "false",
+            "IsEmptyContainer": "false",
+            "IsSealOk": "true",
+            "IsShipperOwned": "false",
+            "LCLAvailable": "",
+            "LCLStorageCommences": "",
+            "LCLUnpack": "",
+            "LengthUnit": {
+              "Code": "FT",
+              "Description": "Feet"
+            },
+            "Link": "6",
+            "NonOperatingReefer": "false",
+            "OverhangBack": "0.000",
+            "OverhangFront": "0",
+            "OverhangHeight": "0",
+            "OverhangLeft": "0",
+            "OverhangRight": "0.000",
+            "OverrideFCLAvailableStorage": "false",
+            "OverrideLCLAvailableStorage": "false",
+            "PackDate": "",
+            "RatingCommodity": {
+              "Code": ""
+            },
+            "RefrigGeneratorID": "",
+            "ReleaseNum": "",
+            "Seal": "",
+            "SealPartyType": {
+              "Code": ""
+            },
+            "SecondSeal": "",
+            "SecondSealPartyType": {
+              "Code": ""
+            },
+            "SetPointTemp": "0.000",
+            "SetPointTempUnit": "",
+            "StowagePosition": "",
+            "TareWeight": "85.000",
+            "TempRecorderSerialNo": "",
+            "ThirdSeal": "",
+            "ThirdSealPartyType": {
+              "Code": ""
+            },
+            "TotalHeight": "5.333",
+            "TotalLength": "7.667",
+            "TotalWidth": "5.033",
+            "TrainWagonNumber": "",
+            "UnpackGang": "",
+            "UnpackShed": "",
+            "VolumeCapacity": "0.000",
+            "VolumeUnit": {
+              "Code": "M3",
+              "Description": "Cubic Meters"
+            },
+            "WeightCapacity": "0.000",
+            "WeightUnit": {
+              "Code": "KG",
+              "Description": "Kilograms"
+            }
+          },
+          {
+            "AirVentFlow": "0.0",
+            "AirVentFlowRateUnit": {
+              "Code": ""
+            },
+            "ArrivalCartageAdvised": "",
+            "ArrivalCartageComplete": "",
+            "ArrivalCartageDemurrageTime": "",
+            "ArrivalCartageRef": "",
+            "ArrivalCTOStorageStartDate": "",
+            "ArrivalDeliveryRequiredBy": "",
+            "ArrivalEstimatedDelivery": "",
+            "ArrivalPickupByRail": "false",
+            "ArrivalSlotDateTime": "",
+            "ArrivalSlotReference": "",
+            "ArrivalTruckWaitTime": "",
+            "Commodity": {
+              "Code": ""
+            },
+            "ContainerCount": "1",
+            "ContainerImportDORelease": "",
+            "ContainerJobID": "D00035541",
+            "ContainerNumber": "ULD6",
+            "ContainerParkEmptyPickupGateOut": "",
+            "ContainerParkEmptyReturnGateIn": "",
+            "ContainerQuality": {
+              "Code": ""
+            },
+            "ContainerStatus": {
+              "Code": ""
+            },
+            "ContainerType": {
+              "Code": "LD-1",
+              "Category": {
+                "Code": "DRY",
+                "Description": "Dry Storage"
+              },
+              "Description": "LD1 AKC AVE",
+              "ISOCode": ""
+            },
+            "DeliveryMode": "",
+            "DeliverySequence": "0",
+            "DepartureCartageAdvised": "",
+            "DepartureCartageComplete": "2024-05-10T02:31:00",
+            "DepartureCartageDemurrageTime": "",
+            "DepartureCartageRef": "",
+            "DepartureDeliveryByRail": "false",
+            "DepartureDockReceipt": "",
+            "DepartureEstimatedPickup": "",
+            "DepartureSlotDateTime": "",
+            "DepartureSlotReference": "",
+            "DepartureTruckWaitTime": "",
+            "DunnageWeight": "0.000",
+            "EmptyReadyForReturn": "",
+            "EmptyRequired": "",
+            "EmptyReturnedBy": "",
+            "EmptyReturnRef": "",
+            "ExportDepotCustomsReference": "",
+            "FCL_LCL_AIR": {
+              "Code": "ULD",
+              "Description": "Unit Load Device"
+            },
+            "FCLAvailable": "",
+            "FCLHeldInTransitStaging": "false",
+            "FCLOnBoardVessel": "",
+            "FCLStorageArrivedUnderbond": "false",
+            "FCLStorageCommences": "",
+            "FCLStorageModuleOnlyMaster": "",
+            "FCLStorageUnderbondCleared": "",
+            "FCLUnloadFromVessel": "",
+            "FCLWharfGateIn": "",
+            "FCLWharfGateOut": "",
+            "GoodsValue": "0.0000",
+            "GoodsValueCurrency": {
+              "Code": ""
+            },
+            "GoodsWeight": "16691",
+            "GrossWeight": "16776.000",
+            "GrossWeightVerificationType": {
+              "Code": "NON",
+              "Description": "Not Verified"
+            },
+            "HumidityPercent": "0",
+            "ImportDepotCustomsReference": "",
+            "IsCFSRegistered": "false",
+            "IsControlledAtmosphere": "false",
+            "IsDamaged": "false",
+            "IsEmptyContainer": "false",
+            "IsSealOk": "true",
+            "IsShipperOwned": "false",
+            "LCLAvailable": "",
+            "LCLStorageCommences": "",
+            "LCLUnpack": "",
+            "LengthUnit": {
+              "Code": "FT",
+              "Description": "Feet"
+            },
+            "Link": "7",
+            "NonOperatingReefer": "false",
+            "OverhangBack": "0.000",
+            "OverhangFront": "0",
+            "OverhangHeight": "0",
+            "OverhangLeft": "0",
+            "OverhangRight": "0.000",
+            "OverrideFCLAvailableStorage": "false",
+            "OverrideLCLAvailableStorage": "false",
+            "PackDate": "",
+            "RatingCommodity": {
+              "Code": ""
+            },
+            "RefrigGeneratorID": "",
+            "ReleaseNum": "",
+            "Seal": "",
+            "SealPartyType": {
+              "Code": ""
+            },
+            "SecondSeal": "",
+            "SecondSealPartyType": {
+              "Code": ""
+            },
+            "SetPointTemp": "0.000",
+            "SetPointTempUnit": "",
+            "StowagePosition": "",
+            "TareWeight": "85.000",
+            "TempRecorderSerialNo": "",
+            "ThirdSeal": "",
+            "ThirdSealPartyType": {
+              "Code": ""
+            },
+            "TotalHeight": "5.333",
+            "TotalLength": "7.667",
+            "TotalWidth": "5.033",
+            "TrainWagonNumber": "",
+            "UnpackGang": "",
+            "UnpackShed": "",
+            "VolumeCapacity": "0.000",
+            "VolumeUnit": {
+              "Code": "M3",
+              "Description": "Cubic Meters"
+            },
+            "WeightCapacity": "0.000",
+            "WeightUnit": {
+              "Code": "KG",
+              "Description": "Kilograms"
+            }
+          },
+          {
+            "AirVentFlow": "0.0",
+            "AirVentFlowRateUnit": {
+              "Code": ""
+            },
+            "ArrivalCartageAdvised": "",
+            "ArrivalCartageComplete": "",
+            "ArrivalCartageDemurrageTime": "",
+            "ArrivalCartageRef": "",
+            "ArrivalCTOStorageStartDate": "",
+            "ArrivalDeliveryRequiredBy": "",
+            "ArrivalEstimatedDelivery": "",
+            "ArrivalPickupByRail": "false",
+            "ArrivalSlotDateTime": "",
+            "ArrivalSlotReference": "",
+            "ArrivalTruckWaitTime": "",
+            "Commodity": {
+              "Code": ""
+            },
+            "ContainerCount": "1",
+            "ContainerImportDORelease": "",
+            "ContainerJobID": "D00035542",
+            "ContainerNumber": "ULD7",
+            "ContainerParkEmptyPickupGateOut": "",
+            "ContainerParkEmptyReturnGateIn": "",
+            "ContainerQuality": {
+              "Code": ""
+            },
+            "ContainerStatus": {
+              "Code": ""
+            },
+            "ContainerType": {
+              "Code": "LD-1",
+              "Category": {
+                "Code": "DRY",
+                "Description": "Dry Storage"
+              },
+              "Description": "LD1 AKC AVE",
+              "ISOCode": ""
+            },
+            "DeliveryMode": "",
+            "DeliverySequence": "0",
+            "DepartureCartageAdvised": "",
+            "DepartureCartageComplete": "2024-05-10T02:31:00",
+            "DepartureCartageDemurrageTime": "",
+            "DepartureCartageRef": "",
+            "DepartureDeliveryByRail": "false",
+            "DepartureDockReceipt": "",
+            "DepartureEstimatedPickup": "",
+            "DepartureSlotDateTime": "",
+            "DepartureSlotReference": "",
+            "DepartureTruckWaitTime": "",
+            "DunnageWeight": "0.000",
+            "EmptyReadyForReturn": "",
+            "EmptyRequired": "",
+            "EmptyReturnedBy": "",
+            "EmptyReturnRef": "",
+            "ExportDepotCustomsReference": "",
+            "FCL_LCL_AIR": {
+              "Code": "ULD",
+              "Description": "Unit Load Device"
+            },
+            "FCLAvailable": "",
+            "FCLHeldInTransitStaging": "false",
+            "FCLOnBoardVessel": "",
+            "FCLStorageArrivedUnderbond": "false",
+            "FCLStorageCommences": "",
+            "FCLStorageModuleOnlyMaster": "",
+            "FCLStorageUnderbondCleared": "",
+            "FCLUnloadFromVessel": "",
+            "FCLWharfGateIn": "",
+            "FCLWharfGateOut": "",
+            "GoodsValue": "0.0000",
+            "GoodsValueCurrency": {
+              "Code": ""
+            },
+            "GoodsWeight": "20056",
+            "GrossWeight": "20141.000",
+            "GrossWeightVerificationType": {
+              "Code": "NON",
+              "Description": "Not Verified"
+            },
+            "HumidityPercent": "0",
+            "ImportDepotCustomsReference": "",
+            "IsCFSRegistered": "false",
+            "IsControlledAtmosphere": "false",
+            "IsDamaged": "false",
+            "IsEmptyContainer": "false",
+            "IsSealOk": "true",
+            "IsShipperOwned": "false",
+            "LCLAvailable": "",
+            "LCLStorageCommences": "",
+            "LCLUnpack": "",
+            "LengthUnit": {
+              "Code": "FT",
+              "Description": "Feet"
+            },
+            "Link": "8",
+            "NonOperatingReefer": "false",
+            "OverhangBack": "0.000",
+            "OverhangFront": "0",
+            "OverhangHeight": "0",
+            "OverhangLeft": "0",
+            "OverhangRight": "0.000",
+            "OverrideFCLAvailableStorage": "false",
+            "OverrideLCLAvailableStorage": "false",
+            "PackDate": "",
+            "RatingCommodity": {
+              "Code": ""
+            },
+            "RefrigGeneratorID": "",
+            "ReleaseNum": "",
+            "Seal": "",
+            "SealPartyType": {
+              "Code": ""
+            },
+            "SecondSeal": "",
+            "SecondSealPartyType": {
+              "Code": ""
+            },
+            "SetPointTemp": "0.000",
+            "SetPointTempUnit": "",
+            "StowagePosition": "",
+            "TareWeight": "85.000",
+            "TempRecorderSerialNo": "",
+            "ThirdSeal": "",
+            "ThirdSealPartyType": {
+              "Code": ""
+            },
+            "TotalHeight": "5.333",
+            "TotalLength": "7.667",
+            "TotalWidth": "5.033",
+            "TrainWagonNumber": "",
+            "UnpackGang": "",
+            "UnpackShed": "",
+            "VolumeCapacity": "0.000",
+            "VolumeUnit": {
+              "Code": "M3",
+              "Description": "Cubic Meters"
+            },
+            "WeightCapacity": "0.000",
+            "WeightUnit": {
+              "Code": "KG",
+              "Description": "Kilograms"
+            }
+          },
+          {
+            "AirVentFlow": "0.0",
+            "AirVentFlowRateUnit": {
+              "Code": ""
+            },
+            "ArrivalCartageAdvised": "",
+            "ArrivalCartageComplete": "",
+            "ArrivalCartageDemurrageTime": "",
+            "ArrivalCartageRef": "",
+            "ArrivalCTOStorageStartDate": "",
+            "ArrivalDeliveryRequiredBy": "",
+            "ArrivalEstimatedDelivery": "",
+            "ArrivalPickupByRail": "false",
+            "ArrivalSlotDateTime": "",
+            "ArrivalSlotReference": "",
+            "ArrivalTruckWaitTime": "",
+            "Commodity": {
+              "Code": ""
+            },
+            "ContainerCount": "1",
+            "ContainerImportDORelease": "",
+            "ContainerJobID": "D00035543",
+            "ContainerNumber": "ULD8",
+            "ContainerParkEmptyPickupGateOut": "",
+            "ContainerParkEmptyReturnGateIn": "",
+            "ContainerQuality": {
+              "Code": ""
+            },
+            "ContainerStatus": {
+              "Code": ""
+            },
+            "ContainerType": {
+              "Code": "LD-1",
+              "Category": {
+                "Code": "DRY",
+                "Description": "Dry Storage"
+              },
+              "Description": "LD1 AKC AVE",
+              "ISOCode": ""
+            },
+            "DeliveryMode": "",
+            "DeliverySequence": "0",
+            "DepartureCartageAdvised": "",
+            "DepartureCartageComplete": "2024-05-10T02:31:00",
+            "DepartureCartageDemurrageTime": "",
+            "DepartureCartageRef": "",
+            "DepartureDeliveryByRail": "false",
+            "DepartureDockReceipt": "",
+            "DepartureEstimatedPickup": "",
+            "DepartureSlotDateTime": "",
+            "DepartureSlotReference": "",
+            "DepartureTruckWaitTime": "",
+            "DunnageWeight": "0.000",
+            "EmptyReadyForReturn": "",
+            "EmptyRequired": "",
+            "EmptyReturnedBy": "",
+            "EmptyReturnRef": "",
+            "ExportDepotCustomsReference": "",
+            "FCL_LCL_AIR": {
+              "Code": "ULD",
+              "Description": "Unit Load Device"
+            },
+            "FCLAvailable": "",
+            "FCLHeldInTransitStaging": "false",
+            "FCLOnBoardVessel": "",
+            "FCLStorageArrivedUnderbond": "false",
+            "FCLStorageCommences": "",
+            "FCLStorageModuleOnlyMaster": "",
+            "FCLStorageUnderbondCleared": "",
+            "FCLUnloadFromVessel": "",
+            "FCLWharfGateIn": "",
+            "FCLWharfGateOut": "",
+            "GoodsValue": "0.0000",
+            "GoodsValueCurrency": {
+              "Code": ""
+            },
+            "GoodsWeight": "17600",
+            "GrossWeight": "17685.000",
+            "GrossWeightVerificationType": {
+              "Code": "NON",
+              "Description": "Not Verified"
+            },
+            "HumidityPercent": "0",
+            "ImportDepotCustomsReference": "",
+            "IsCFSRegistered": "false",
+            "IsControlledAtmosphere": "false",
+            "IsDamaged": "false",
+            "IsEmptyContainer": "false",
+            "IsSealOk": "true",
+            "IsShipperOwned": "false",
+            "LCLAvailable": "",
+            "LCLStorageCommences": "",
+            "LCLUnpack": "",
+            "LengthUnit": {
+              "Code": "FT",
+              "Description": "Feet"
+            },
+            "Link": "9",
+            "NonOperatingReefer": "false",
+            "OverhangBack": "0.000",
+            "OverhangFront": "0",
+            "OverhangHeight": "0",
+            "OverhangLeft": "0",
+            "OverhangRight": "0.000",
+            "OverrideFCLAvailableStorage": "false",
+            "OverrideLCLAvailableStorage": "false",
+            "PackDate": "",
+            "RatingCommodity": {
+              "Code": ""
+            },
+            "RefrigGeneratorID": "",
+            "ReleaseNum": "",
+            "Seal": "",
+            "SealPartyType": {
+              "Code": ""
+            },
+            "SecondSeal": "",
+            "SecondSealPartyType": {
+              "Code": ""
+            },
+            "SetPointTemp": "0.000",
+            "SetPointTempUnit": "",
+            "StowagePosition": "",
+            "TareWeight": "85.000",
+            "TempRecorderSerialNo": "",
+            "ThirdSeal": "",
+            "ThirdSealPartyType": {
+              "Code": ""
+            },
+            "TotalHeight": "5.333",
+            "TotalLength": "7.667",
+            "TotalWidth": "5.033",
+            "TrainWagonNumber": "",
+            "UnpackGang": "",
+            "UnpackShed": "",
+            "VolumeCapacity": "0.000",
+            "VolumeUnit": {
+              "Code": "M3",
+              "Description": "Cubic Meters"
+            },
+            "WeightCapacity": "0.000",
+            "WeightUnit": {
+              "Code": "KG",
+              "Description": "Kilograms"
+            }
+          },
+          {
+            "AirVentFlow": "0.0",
+            "AirVentFlowRateUnit": {
+              "Code": ""
+            },
+            "ArrivalCartageAdvised": "",
+            "ArrivalCartageComplete": "",
+            "ArrivalCartageDemurrageTime": "",
+            "ArrivalCartageRef": "",
+            "ArrivalCTOStorageStartDate": "",
+            "ArrivalDeliveryRequiredBy": "",
+            "ArrivalEstimatedDelivery": "",
+            "ArrivalPickupByRail": "false",
+            "ArrivalSlotDateTime": "",
+            "ArrivalSlotReference": "",
+            "ArrivalTruckWaitTime": "",
+            "Commodity": {
+              "Code": ""
+            },
+            "ContainerCount": "1",
+            "ContainerImportDORelease": "",
+            "ContainerJobID": "D00035544",
+            "ContainerNumber": "ULD9",
+            "ContainerParkEmptyPickupGateOut": "",
+            "ContainerParkEmptyReturnGateIn": "",
+            "ContainerQuality": {
+              "Code": ""
+            },
+            "ContainerStatus": {
+              "Code": ""
+            },
+            "ContainerType": {
+              "Code": "LD-1",
+              "Category": {
+                "Code": "DRY",
+                "Description": "Dry Storage"
+              },
+              "Description": "LD1 AKC AVE",
+              "ISOCode": ""
+            },
+            "DeliveryMode": "",
+            "DeliverySequence": "0",
+            "DepartureCartageAdvised": "",
+            "DepartureCartageComplete": "2024-05-10T02:31:00",
+            "DepartureCartageDemurrageTime": "",
+            "DepartureCartageRef": "",
+            "DepartureDeliveryByRail": "false",
+            "DepartureDockReceipt": "",
+            "DepartureEstimatedPickup": "",
+            "DepartureSlotDateTime": "",
+            "DepartureSlotReference": "",
+            "DepartureTruckWaitTime": "",
+            "DunnageWeight": "0.000",
+            "EmptyReadyForReturn": "",
+            "EmptyRequired": "",
+            "EmptyReturnedBy": "",
+            "EmptyReturnRef": "",
+            "ExportDepotCustomsReference": "",
+            "FCL_LCL_AIR": {
+              "Code": "ULD",
+              "Description": "Unit Load Device"
+            },
+            "FCLAvailable": "",
+            "FCLHeldInTransitStaging": "false",
+            "FCLOnBoardVessel": "",
+            "FCLStorageArrivedUnderbond": "false",
+            "FCLStorageCommences": "",
+            "FCLStorageModuleOnlyMaster": "",
+            "FCLStorageUnderbondCleared": "",
+            "FCLUnloadFromVessel": "",
+            "FCLWharfGateIn": "",
+            "FCLWharfGateOut": "",
+            "GoodsValue": "0.0000",
+            "GoodsValueCurrency": {
+              "Code": ""
+            },
+            "GoodsWeight": "19100",
+            "GrossWeight": "19185.000",
+            "GrossWeightVerificationType": {
+              "Code": "NON",
+              "Description": "Not Verified"
+            },
+            "HumidityPercent": "0",
+            "ImportDepotCustomsReference": "",
+            "IsCFSRegistered": "false",
+            "IsControlledAtmosphere": "false",
+            "IsDamaged": "false",
+            "IsEmptyContainer": "false",
+            "IsSealOk": "true",
+            "IsShipperOwned": "false",
+            "LCLAvailable": "",
+            "LCLStorageCommences": "",
+            "LCLUnpack": "",
+            "LengthUnit": {
+              "Code": "FT",
+              "Description": "Feet"
+            },
+            "Link": "10",
+            "NonOperatingReefer": "false",
+            "OverhangBack": "0.000",
+            "OverhangFront": "0",
+            "OverhangHeight": "0",
+            "OverhangLeft": "0",
+            "OverhangRight": "0.000",
+            "OverrideFCLAvailableStorage": "false",
+            "OverrideLCLAvailableStorage": "false",
+            "PackDate": "",
+            "RatingCommodity": {
+              "Code": ""
+            },
+            "RefrigGeneratorID": "",
+            "ReleaseNum": "",
+            "Seal": "",
+            "SealPartyType": {
+              "Code": ""
+            },
+            "SecondSeal": "",
+            "SecondSealPartyType": {
+              "Code": ""
+            },
+            "SetPointTemp": "0.000",
+            "SetPointTempUnit": "",
+            "StowagePosition": "",
+            "TareWeight": "85.000",
+            "TempRecorderSerialNo": "",
+            "ThirdSeal": "",
+            "ThirdSealPartyType": {
+              "Code": ""
+            },
+            "TotalHeight": "5.333",
+            "TotalLength": "7.667",
+            "TotalWidth": "5.033",
+            "TrainWagonNumber": "",
+            "UnpackGang": "",
+            "UnpackShed": "",
+            "VolumeCapacity": "0.000",
+            "VolumeUnit": {
+              "Code": "M3",
+              "Description": "Cubic Meters"
+            },
+            "WeightCapacity": "0.000",
+            "WeightUnit": {
+              "Code": "KG",
+              "Description": "Kilograms"
+            }
+          }
+        ]
+      },
+      "DateCollection": {
+        "Date": [
+          {
+            "Type": "ShippedOnBoard",
+            "IsEstimate": "false",
+            "Value": ""
+          },
+          {
+            "Type": "BillIssued",
+            "IsEstimate": "false",
+            "Value": ""
+          },
+          {
+            "Type": "FirstArrivalInCountry",
+            "IsEstimate": "false",
+            "Value": ""
+          },
+          {
+            "Type": "FirstForeignArrival",
+            "IsEstimate": "false",
+            "Value": ""
+          },
+          {
+            "Type": "LastForeignDeparture",
+            "IsEstimate": "false",
+            "Value": ""
+          },
+          {
+            "Type": "CutOffDate",
+            "IsEstimate": "false",
+            "Value": ""
+          },
+          {
+            "Type": "DepartureReceiptRequested",
+            "IsEstimate": "false",
+            "Value": ""
+          },
+          {
+            "Type": "ArrivalReceiptRequested",
+            "IsEstimate": "false",
+            "Value": ""
+          },
+          {
+            "Type": "DepartureDispatchRequested",
+            "IsEstimate": "false",
+            "Value": ""
+          },
+          {
+            "Type": "ArrivalDispatchRequested",
+            "IsEstimate": "false",
+            "Value": ""
+          }
+        ]
+      },
+      "MessageNumberCollection": {
+        "MessageNumber": [
+          {
+            "_": "fe929ac1-29e9-4e35-be8e-2eef4b8c1f7b",
+            "$": {
+              "Type": "TrackingID"
+            }
+          },
+          {
+            "_": "00000000000008793584",
+            "$": {
+              "Type": "InterchangeNumber"
+            }
+          },
+          {
+            "_": "00000000000008559310",
+            "$": {
+              "Type": "MessageNumber"
+            }
+          }
+        ]
+      },
+      "MilestoneCollection": {
+        "Milestone": [
+          {
+            "Description": "TENDERED TO CARRIER",
+            "EventCode": "HNV",
+            "Sequence": "10",
+            "ActualDate": "",
+            "ConditionReference": "",
+            "ConditionType": "",
+            "EstimatedDate": "2024-05-12T02:31:00"
+          },
+          {
+            "Description": "DEPARTED ORIGIN",
+            "EventCode": "DEP",
+            "Sequence": "11",
+            "ActualDate": "",
+            "ConditionReference": "LOC=<FirstLeg.Origin>,FAC=CTO",
+            "ConditionType": "RFP",
+            "EstimatedDate": "2024-05-13T12:58:00"
+          },
+          {
+            "Description": "FREIGHT IN TRANSIT",
+            "EventCode": "FLO",
+            "Sequence": "12",
+            "ActualDate": "",
+            "ConditionReference": "",
+            "ConditionType": "",
+            "EstimatedDate": "2024-05-13T12:58:00"
+          },
+          {
+            "Description": "1ST TRANSPORT LEG ARRIVAL",
+            "EventCode": "ARV",
+            "Sequence": "13",
+            "ActualDate": "",
+            "ConditionReference": "LOC=<FirstLeg.Destination>,FAC=CTO",
+            "ConditionType": "RFP",
+            "EstimatedDate": "2024-05-13T17:58:00"
+          },
+          {
+            "Description": "2ND TRANSPORT LEG DEPARTURE",
+            "EventCode": "DEP",
+            "Sequence": "14",
+            "ActualDate": "",
+            "ConditionReference": "LOC=<SecondLeg.Origin>,FAC=CTO",
+            "ConditionType": "RFP",
+            "EstimatedDate": "2024-05-14T09:58:00"
+          },
+          {
+            "Description": "2ND TRANSPORT LEG ARRIVAL",
+            "EventCode": "ARV",
+            "Sequence": "15",
+            "ActualDate": "",
+            "ConditionReference": "LOC=<SecondLeg.Destination>,FAC=CTO",
+            "ConditionType": "RFP",
+            "EstimatedDate": "2024-05-15T07:58:00"
+          },
+          {
+            "Description": "3RD TRANSPORT LEG DEPARTURE",
+            "EventCode": "DEP",
+            "Sequence": "16",
+            "ActualDate": "",
+            "ConditionReference": "LOC=<ThirdLeg.Origin>,FAC=CTO",
+            "ConditionType": "RFP",
+            "EstimatedDate": "2024-05-15T14:58:00"
+          },
+          {
+            "Description": "AT FINAL DESTINATION",
+            "EventCode": "ARV",
+            "Sequence": "19",
+            "ActualDate": "",
+            "ConditionReference": "LOC=<LastLeg.Destination>,FAC=CTO",
+            "ConditionType": "RFP",
+            "EstimatedDate": "2024-05-15T19:58:00"
+          }
+        ]
+      },
+      "OrganizationAddressCollection": {
+        "OrganizationAddress": [
+          {
+            "AddressType": "ReceivingForwarderAddress",
+            "Address1": "2566 JERRIE MOCK AVE",
+            "Address2": "",
+            "AddressOverride": "false",
+            "AddressShortCode": "OMNI LCK",
+            "City": "COLUMBUS",
+            "CompanyName": "OMNI LOGISTICS - LCK",
+            "Country": {
+              "Code": "US",
+              "Name": "United States"
+            },
+            "Email": "",
+            "Fax": "",
+            "GovRegNum": "26-1200599",
+            "GovRegNumType": {
+              "Code": "EIN",
+              "Description": "Employer Identification Number"
+            },
+            "OrganizationCode": "ICCM3",
+            "Phone": "",
+            "Port": {
+              "Code": "USRIB",
+              "Name": "Rickenbacker International Apt"
+            },
+            "Postcode": "43217-1350",
+            "ScreeningStatus": {
+              "Code": "NOT",
+              "Description": "Not Screened"
+            },
+            "State": {
+              "_": "OH",
+              "$": {
+                "Description": "Ohio"
+              }
+            }
+          },
+          {
+            "AddressType": "ShippingLineAddress",
+            "Address1": "9260 ESTERO PARK COMMONS BLVD STE 200",
+            "Address2": "",
+            "AddressOverride": "false",
+            "AddressShortCode": "9260 ESTERO PARK COMMONS",
+            "City": "ESTERO",
+            "CompanyName": "WESTERN GLOBAL AIRLINES LLC",
+            "Country": {
+              "Code": "US",
+              "Name": "United States"
+            },
+            "Email": "",
+            "Fax": "",
+            "OrganizationCode": "WESGLOESG",
+            "Phone": "",
+            "Port": {
+              "Code": "USESG",
+              "Name": "Estero"
+            },
+            "Postcode": "33928-6468",
+            "ScreeningStatus": {
+              "Code": "CLR",
+              "Description": "Clear"
+            },
+            "State": {
+              "_": "FL",
+              "$": {
+                "Description": "Florida"
+              }
+            },
+            "RegistrationNumberCollection": {
+              "RegistrationNumber": {
+                "Type": {
+                  "Code": "CCC",
+                  "Description": "Standard Carrier Alpha Code (Sea)"
+                },
+                "CountryOfIssue": {
+                  "Code": "US",
+                  "Name": "United States"
+                },
+                "Value": "KD"
+              }
+            }
+          },
+          {
+            "AddressType": "SendingForwarderAddress",
+            "Address1": "Unit 4602, 46/F Tower 2, Metroplaza",
+            "Address2": "223 Hing Fong Road, Kwai Chung, NT",
+            "AddressOverride": "false",
+            "AddressShortCode": "Unit 4602, 46/F Tower 2,",
+            "City": "Hong Kong",
+            "CompanyName": "Air & Ground Logistics (HK) Ltd",
+            "Country": {
+              "Code": "HK",
+              "Name": "Hong Kong"
+            },
+            "Email": "cs@ag-world.com",
+            "Fax": "+85224076999",
+            "OrganizationCode": "ICHK2",
+            "Phone": "+85224076666",
+            "Port": {
+              "Code": "HKHKG",
+              "Name": "Hong Kong"
+            },
+            "Postcode": "",
+            "ScreeningStatus": {
+              "Code": "NOT",
+              "Description": "Not Screened"
+            },
+            "State": ""
+          }
+        ]
+      },
+      "SubShipmentCollection": {
+        "SubShipment": {
+          "DataContext": {
+            "DataSourceCollection": {
+              "DataSource": {
+                "Type": "ForwardingShipment",
+                "Key": "SHK200906629"
+              }
+            }
+          },
+          "ActualChargeable": "17600.000",
+          "AdditionalTerms": "C5UU32",
+          "BookingConfirmationReference": "",
+          "CartageWaybillNumber": "",
+          "CFSReference": "",
+          "CommunityTransitStatus": {
+            "Code": ""
+          },
+          "CompanyTariffLevelOverride": "0",
+          "ContainerCount": "1",
+          "ContainerMode": {
+            "Code": "LSE",
+            "Description": "Loose"
+          },
+          "DocumentedChargeable": "17600.000",
+          "DocumentedVolume": "20.275",
+          "DocumentedWeight": "17600.000",
+          "FMCTariffID": "",
+          "FreightRate": "0.0000",
+          "FreightRateCurrency": {
+            "Code": ""
+          },
+          "GoodsDescription": "USB cable",
+          "GoodsValue": "0.0000",
+          "GoodsValueCurrency": {
+            "Code": "HKD",
+            "Description": "Hong Kong Dollar"
+          },
+          "HBLAWBChargesDisplay": {
+            "Code": "ALL",
+            "Description": "Show Prepaid & Collect Charges"
+          },
+          "HBLContainerPackModeOverride": "",
+          "HouseBillOfLadingType": {
+            "Code": ""
+          },
+          "InsuranceValue": "0.0000",
+          "InsuranceValueCurrency": {
+            "Code": ""
+          },
+          "InterimReceiptNumber": "",
+          "IsBooking": "false",
+          "IsCancelled": "false",
+          "IsCFSRegistered": "false",
+          "IsDirectBooking": "false",
+          "IsForwardRegistered": "true",
+          "IsHighRisk": "false",
+          "IsNeutralMaster": "false",
+          "IsShipping": "false",
+          "IsSplitShipment": "false",
+          "LloydsIMO": "",
+          "ManifestedChargeable": "17600.000",
+          "ManifestedVolume": "20.275",
+          "ManifestedWeight": "17600.000",
+          "NoCopyBills": "3",
+          "NoOriginalBills": "3",
+          "OuterPacks": "16",
+          "OuterPacksPackageType": {
+            "Code": "PLT",
+            "Description": "Pallet"
+          },
+          "PackingOrder": "0",
+          "PortOfDestination": {
+            "Code": "USILM",
+            "Name": "Wilmington"
+          },
+          "PortOfDischarge": {
+            "Code": "USILM",
+            "Name": "Wilmington"
+          },
+          "PortOfFirstArrival": {
+            "Code": ""
+          },
+          "PortOfLoading": {
+            "Code": "HKHKG",
+            "Name": "Hong Kong"
+          },
+          "PortOfOrigin": {
+            "Code": "HKHKG",
+            "Name": "Hong Kong"
+          },
+          "RateCommodity": {
+            "Code": ""
+          },
+          "ReleaseType": {
+            "Code": ""
+          },
+          "ScreeningStatus": {
+            "Code": "NOT",
+            "Description": "Not Screened"
+          },
+          "ServiceLevel": {
+            "Code": "STD",
+            "Description": "STANDARD"
+          },
+          "ShipmentIncoTerm": {
+            "Code": "FOB",
+            "Description": "Free On Board"
+          },
+          "ShipmentType": {
+            "Code": "STD",
+            "Description": "Standard House"
+          },
+          "ShippedOnBoard": {
+            "Code": "SHP",
+            "Description": "Shipped"
+          },
+          "ShipperCODAmount": "0.0000",
+          "ShipperCODPayMethod": {
+            "Code": ""
+          },
+          "TotalNoOfPacks": "0",
+          "TotalNoOfPacksPackageType": {
+            "Code": "CTN",
+            "Description": "Carton"
+          },
+          "TotalVolume": "20.275",
+          "TotalVolumeUnit": {
+            "Code": "M3",
+            "Description": "Cubic Meters"
+          },
+          "TotalWeight": "17600.000",
+          "TotalWeightUnit": {
+            "Code": "KG",
+            "Description": "Kilograms"
+          },
+          "TranshipToOtherCFS": "false",
+          "TransportMode": {
+            "Code": "AIR",
+            "Description": "Air Freight"
+          },
+          "VesselName": "",
+          "VoyageFlightNo": "KD123",
+          "WarehouseLocation": "",
+          "WayBillNumber": "SHKG00906629",
+          "WayBillType": {
+            "Code": "HWB",
+            "Description": "House Waybill"
+          },
+          "CarrierDocumentsOverride": {
+            "AWBHeader": {
+              "AgentAccountNo": "01104980026",
+              "AgentIATACode": "01-1 0498/0026",
+              "AgentName": "Trinity Logistics USA Inc",
+              "AgentPlace": "Columbus, Ohio",
+              "AirportOfDepartureAndRequestRouteText": "Hong Kong",
+              "AirportOfDestinationCode": "ILM",
+              "AirportOfDestinationText": "Wilmington",
+              "AlsoNotify": {
+                "AddressLine1": "",
+                "AddressLine2": "",
+                "City": "",
+                "ContactDetail": "",
+                "ContactType": {
+                  "Code": ""
+                },
+                "Country": {
+                  "Code": ""
+                },
+                "IsAddressOverriddenForPaperWaybill": "false",
+                "Name": "",
+                "PaperOverrideLine1": "",
+                "PaperOverrideLine2": "",
+                "PaperOverrideLine3": "",
+                "PaperOverrideLine4": "",
+                "PaperOverrideLine5": "",
+                "PostCode": "",
+                "State": ""
+              },
+              "AmountOfInsurance": "0",
+              "AsAgreedOn1stAWBSet": "true",
+              "AsAgreedOn2ndAWBSet": "true",
+              "AsAgreedTypeOn1stAWBSet": "ALL",
+              "AsAgreedTypeOn2ndAWBSet": "ALL",
+              "AWBIssueDate": "2024-05-10T02:45:07.753",
+              "AWBIssuePlace": "COLUMBUS",
+              "AWBIssuerApprovedExporterNumber": "",
+              "AWBIssuerExtraInfo": "",
+              "AWBIssuerSignature": "Trinity Logistics USA Inc",
+              "AWBNumber": "",
+              "AWBType": {
+                "Code": ""
+              },
+              "CargoSecurityDeclaration": {
+                "AdditionalScreeningMethods": "",
+                "AgentApprovalCategory": {
+                  "Code": "",
+                  "Description": ""
+                },
+                "AgentApprovalCountry": {
+                  "Code": ""
+                },
+                "AgentApprovalExpiryDate": "",
+                "AgentApprovalNumber": "",
+                "SecurityStatusIssueDate": "",
+                "SecurityStatusIssuedBy": "",
+                "TSASecurityStatement": "Trinity Logistics USA, Inc. (HQ) has reviewed all available documentation and has determined that none of the cargo being offered in this consignment or consolidation has/either originated in, transferred from, or transited through any point in Egypt, Somalia, Syrian Arab Republic, Yemen."
+              },
+              "ChargesPayment": {
+                "Code": "CP",
+                "Description": "Destination Collect Cash"
+              },
+              "Consignee": {
+                "AccountCode": "LENUNIILM",
+                "AddressLine1": "222 MERCHANDISE MART PLAZA",
+                "AddressLine2": "SUITE 1800",
+                "City": "CHICAGO",
+                "ContactDetail": "",
+                "ContactType": {
+                  "Code": ""
+                },
+                "Country": {
+                  "Code": "US",
+                  "Name": "United States"
+                },
+                "IsAddressOverriddenForPaperWaybill": "false",
+                "Name": "MOTOROLA MOBILITY, INC.",
+                "PaperOverrideLine1": "MOTOROLA MOBILITY, INC.",
+                "PaperOverrideLine2": "222 MERCHANDISE MART PLAZA",
+                "PaperOverrideLine3": "SUITE 1800",
+                "PaperOverrideLine4": "CHICAGO IL 60654 US",
+                "PaperOverrideLine5": "",
+                "PostCode": "60654",
+                "State": "IL"
+              },
+              "Currency": {
+                "Code": "USD",
+                "Description": "United States Dollar"
+              },
+              "ForwardingAgentReference": "HAWB No: SHKG0090662",
+              "HandlingInformation": "KD123/15",
+              "IssuedByAddress1": "***ADDRESS NOT ON FILE***",
+              "IssuedByAddress2": "",
+              "IssuedByName": "TRINITY LOGISTICS USA, INC. (HQ)",
+              "NetRateCode": "",
+              "OptionalShippingInformation1": "TERMS: FOB",
+              "OptionalShippingInformation2": "",
+              "OriginCode": "HKG",
+              "OtherChargesPayment": {
+                "Code": "P",
+                "Description": "Prepaid"
+              },
+              "Requested1stCarrier": "KD",
+              "Requested1stFlight": "123",
+              "Requested1stFlightDate": "13",
+              "Requested2ndCarrier": "KD",
+              "Requested2ndFlight": "123",
+              "Requested2ndFlightDate": "14",
+              "Routing1stBy": "KD",
+              "Routing1stTo": "ICN",
+              "Routing2ndBy": "KD",
+              "Routing2ndTo": "ANC",
+              "Routing3rdBy": "KD",
+              "Routing3rdTo": "LCK",
+              "Shipper": {
+                "AccountCode": "ASTCONHKG",
+                "AddressLine1": "HE DONGQIAO HO DONG GARDEN 7",
+                "AddressLine2": "SHEUNG SHUI CASTLE PEAK ROAD GUDONG SECTION",
+                "City": "HONG KONG",
+                "ContactDetail": "",
+                "ContactType": {
+                  "Code": ""
+                },
+                "Country": {
+                  "Code": "HK",
+                  "Name": "Hong Kong"
+                },
+                "IsAddressOverriddenForPaperWaybill": "false",
+                "Name": "ASTRON CONNECTIVITY CO., LTD. C/O CHI CHEUNG EXPRE",
+                "PaperOverrideLine1": "ASTRON CONNECTIVITY CO., LTD. C/O CHI CHEUNG EXPRE",
+                "PaperOverrideLine2": "HE DONGQIAO HO DONG GARDEN 7",
+                "PaperOverrideLine3": "SHEUNG SHUI CASTLE PEAK ROAD GUDONG SECTION",
+                "PaperOverrideLine4": "HONG KONG HONG KONG  HK",
+                "PaperOverrideLine5": "",
+                "PostCode": "",
+                "State": "HONG KONG"
+              },
+              "ShipperExtraInfoLine1": "",
+              "ShipperExtraInfoLine2": "",
+              "ShippersLoadAndCount": "0",
+              "ShippersSignature": "Alaina White",
+              "SpecialHandlingCode": "",
+              "TotalTaxesCollect": "0",
+              "TotalTaxesPrepaid": "0",
+              "TotalValuationCollect": "0",
+              "TotalValuationPrepaid": "0",
+              "ValueForCarriage": "0",
+              "ValueForCustoms": "0",
+              "WeightChargesPayment": {
+                "Code": "C",
+                "Description": "Collect"
+              },
+              "AccountingInfoCollection": {
+                "AccountingInfo": [
+                  {
+                    "Information": "PO33333333TEST",
+                    "Type": {
+                      "Code": ""
+                    }
+                  },
+                  {
+                    "Information": "STANDARD",
+                    "Type": {
+                      "Code": "STD"
+                    }
+                  }
+                ]
+              },
+              "RateLineCollection": {
+                "RateLine": [
+                  {
+                    "ChargeableWeight": "17600.000",
+                    "CommodityItem": "",
+                    "GoodsDescription": "USB cable",
+                    "GrossWeight": "17600",
+                    "LineNumber": "1",
+                    "NatureAndQtyOfGoodsType": {
+                      "Code": "G",
+                      "Description": "Goods Description"
+                    },
+                    "NoOfPiecesOrRCP": "16",
+                    "RateChargeOrDiscount": "0",
+                    "RateClass": {
+                      "Code": "Q",
+                      "Description": "Quantity Rate"
+                    },
+                    "TotalCharge": "0",
+                    "WeightUnit": {
+                      "Code": "K",
+                      "Description": "Kilograms"
+                    }
+                  },
+                  {
+                    "ChargeableWeight": "0",
+                    "CommodityItem": "",
+                    "GoodsDescription": "DIMS 96x120x120 CM x 8",
+                    "GrossWeight": "0",
+                    "LineNumber": "2",
+                    "NatureAndQtyOfGoodsType": {
+                      "Code": "G",
+                      "Description": "Goods Description"
+                    },
+                    "NoOfPiecesOrRCP": "0",
+                    "RateChargeOrDiscount": "0",
+                    "RateClass": {
+                      "Code": ""
+                    },
+                    "TotalCharge": "0",
+                    "WeightUnit": {
+                      "Code": ""
+                    }
+                  },
+                  {
+                    "ChargeableWeight": "0",
+                    "CommodityItem": "",
+                    "GoodsDescription": "DIMS 96x120x100 CM x 8",
+                    "GrossWeight": "0",
+                    "LineNumber": "3",
+                    "NatureAndQtyOfGoodsType": {
+                      "Code": "G",
+                      "Description": "Goods Description"
+                    },
+                    "NoOfPiecesOrRCP": "0",
+                    "RateChargeOrDiscount": "0",
+                    "RateClass": {
+                      "Code": ""
+                    },
+                    "TotalCharge": "0",
+                    "WeightUnit": {
+                      "Code": ""
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "LocalProcessing": {
+            "ArrivalCartageRef": "",
+            "DeliveryCartageAdvised": "",
+            "DeliveryCartageCompleted": "",
+            "DeliveryLabourCharge": "0.0000",
+            "DeliveryLabourTime": "",
+            "DeliveryRequiredBy": "",
+            "DeliveryRequiredFrom": "",
+            "DeliveryTruckWaitCharge": "0.0000",
+            "DeliveryTruckWaitTime": "",
+            "DemurrageOnDeliveryCharge": "0.0000",
+            "DemurrageOnDeliveryTime": "",
+            "DemurrageOnPickupCharge": "0.0000",
+            "DemurrageOnPickupTime": "",
+            "EstimatedDelivery": "",
+            "EstimatedPickup": "",
+            "ExportStatement": {
+              "Code": ""
+            },
+            "FCLAvailable": "",
+            "FCLDeliveryDetentionCharge": "0.0000",
+            "FCLDeliveryDetentionDays": "0",
+            "FCLDeliveryDetentionFreeDays": "0",
+            "FCLDeliveryEquipmentNeeded": {
+              "Code": "PSL",
+              "Description": "Premise Supplies Lift"
+            },
+            "FCLPickupDetentionCharge": "0.0000",
+            "FCLPickupDetentionDays": "0",
+            "FCLPickupDetentionFreeDays": "0",
+            "FCLPickupEquipmentNeeded": {
+              "Code": "PSL",
+              "Description": "Premise Supplies Lift"
+            },
+            "FCLStorageCommences": "",
+            "HasProhibitedPackaging": "false",
+            "InsuranceRequired": "false",
+            "IsContingencyRelease": "false",
+            "LCLAirStorageCharge": "0.0000",
+            "LCLAirStorageDaysOrHours": "0",
+            "LCLAvailable": "",
+            "LCLDatesOverrideConsol": "true",
+            "LCLStorageCommences": "",
+            "PickupCartageAdvised": "",
+            "PickupCartageCompleted": "2024-05-10T02:31:00",
+            "PickupLabourCharge": "0.0000",
+            "PickupLabourTime": "",
+            "PickupRequiredBy": "",
+            "PickupRequiredFrom": "",
+            "PickupTruckWaitCharge": "0.0000",
+            "PickupTruckWaitTime": "",
+            "PrintOptionForPackagesOnAWB": {
+              "Code": "DEF",
+              "Description": "Default (Dims, fallback to Vol)"
+            },
+            "OrderNumberCollection": {
+              "OrderNumber": {
+                "OrderReference": "PO33333333TEST",
+                "Sequence": "1"
+              }
+            }
+          },
+          "ContainerCollection": {
+            "$": {
+              "Content": "Complete"
+            },
+            "Container": {
+              "AirVentFlow": "0.0",
+              "AirVentFlowRateUnit": {
+                "Code": ""
+              },
+              "ArrivalCartageAdvised": "",
+              "ArrivalCartageComplete": "",
+              "ArrivalCartageDemurrageTime": "",
+              "ArrivalCartageRef": "",
+              "ArrivalCTOStorageStartDate": "",
+              "ArrivalDeliveryRequiredBy": "",
+              "ArrivalEstimatedDelivery": "",
+              "ArrivalPickupByRail": "false",
+              "ArrivalSlotDateTime": "",
+              "ArrivalSlotReference": "",
+              "ArrivalTruckWaitTime": "",
+              "Commodity": {
+                "Code": ""
+              },
+              "ContainerCount": "1",
+              "ContainerImportDORelease": "",
+              "ContainerJobID": "D00035539",
+              "ContainerNumber": "ULD4",
+              "ContainerParkEmptyPickupGateOut": "",
+              "ContainerParkEmptyReturnGateIn": "",
+              "ContainerQuality": {
+                "Code": ""
+              },
+              "ContainerStatus": {
+                "Code": ""
+              },
+              "ContainerType": {
+                "Code": "LD-1",
+                "Category": {
+                  "Code": "DRY",
+                  "Description": "Dry Storage"
+                },
+                "Description": "LD1 AKC AVE",
+                "ISOCode": ""
+              },
+              "DeliveryMode": "",
+              "DeliverySequence": "0",
+              "DepartureCartageAdvised": "",
+              "DepartureCartageComplete": "2024-05-10T02:31:00",
+              "DepartureCartageDemurrageTime": "",
+              "DepartureCartageRef": "",
+              "DepartureDeliveryByRail": "false",
+              "DepartureDockReceipt": "",
+              "DepartureEstimatedPickup": "",
+              "DepartureSlotDateTime": "",
+              "DepartureSlotReference": "",
+              "DepartureTruckWaitTime": "",
+              "DunnageWeight": "0.000",
+              "EmptyReadyForReturn": "",
+              "EmptyRequired": "",
+              "EmptyReturnedBy": "",
+              "EmptyReturnRef": "",
+              "ExportDepotCustomsReference": "",
+              "FCL_LCL_AIR": {
+                "Code": "ULD",
+                "Description": "Unit Load Device"
+              },
+              "FCLAvailable": "",
+              "FCLHeldInTransitStaging": "false",
+              "FCLOnBoardVessel": "",
+              "FCLStorageArrivedUnderbond": "false",
+              "FCLStorageCommences": "",
+              "FCLStorageModuleOnlyMaster": "",
+              "FCLStorageUnderbondCleared": "",
+              "FCLUnloadFromVessel": "",
+              "FCLWharfGateIn": "",
+              "FCLWharfGateOut": "",
+              "GoodsValue": "0.0000",
+              "GoodsValueCurrency": {
+                "Code": ""
+              },
+              "GoodsWeight": "17600",
+              "GrossWeight": "17685.000",
+              "GrossWeightVerificationType": {
+                "Code": "NON",
+                "Description": "Not Verified"
+              },
+              "HumidityPercent": "0",
+              "ImportDepotCustomsReference": "",
+              "IsCFSRegistered": "false",
+              "IsControlledAtmosphere": "false",
+              "IsDamaged": "false",
+              "IsEmptyContainer": "false",
+              "IsSealOk": "true",
+              "IsShipperOwned": "false",
+              "LCLAvailable": "",
+              "LCLStorageCommences": "",
+              "LCLUnpack": "",
+              "LengthUnit": {
+                "Code": "FT",
+                "Description": "Feet"
+              },
+              "Link": "1",
+              "NonOperatingReefer": "false",
+              "OverhangBack": "0.000",
+              "OverhangFront": "0",
+              "OverhangHeight": "0",
+              "OverhangLeft": "0",
+              "OverhangRight": "0.000",
+              "OverrideFCLAvailableStorage": "false",
+              "OverrideLCLAvailableStorage": "false",
+              "PackDate": "",
+              "RatingCommodity": {
+                "Code": ""
+              },
+              "RefrigGeneratorID": "",
+              "ReleaseNum": "",
+              "Seal": "",
+              "SealPartyType": {
+                "Code": ""
+              },
+              "SecondSeal": "",
+              "SecondSealPartyType": {
+                "Code": ""
+              },
+              "SetPointTemp": "0.000",
+              "SetPointTempUnit": "",
+              "StowagePosition": "",
+              "TareWeight": "85.000",
+              "TempRecorderSerialNo": "",
+              "ThirdSeal": "",
+              "ThirdSealPartyType": {
+                "Code": ""
+              },
+              "TotalHeight": "5.333",
+              "TotalLength": "7.667",
+              "TotalWidth": "5.033",
+              "TrainWagonNumber": "",
+              "UnpackGang": "",
+              "UnpackShed": "",
+              "VolumeCapacity": "0.000",
+              "VolumeUnit": {
+                "Code": "M3",
+                "Description": "Cubic Meters"
+              },
+              "WeightCapacity": "0.000",
+              "WeightUnit": {
+                "Code": "KG",
+                "Description": "Kilograms"
+              }
+            }
+          },
+          "CustomizedFieldCollection": {
+            "CustomizedField": [
+              {
+                "DataType": "String",
+                "Key": "Exceptions/Comments",
+                "Value": ""
+              },
+              {
+                "DataType": "String",
+                "Key": "Customs Cargo Status",
+                "Value": ""
+              },
+              {
+                "DataType": "DateTime",
+                "Key": "Booked Date",
+                "Value": ""
+              },
+              {
+                "DataType": "DateTime",
+                "Key": "Customs Cleared at Destination",
+                "Value": ""
+              },
+              {
+                "DataType": "Decimal",
+                "Key": "Custom Decimal 1",
+                "Value": "0.000"
+              },
+              {
+                "DataType": "Boolean",
+                "Key": "Transferred to CFS",
+                "Value": "false"
+              },
+              {
+                "DataType": "Boolean",
+                "Key": "Broken down and available",
+                "Value": "false"
+              }
+            ]
+          },
+          "DateCollection": {
+            "Date": [
+              {
+                "Type": "BookingConfirmed",
+                "IsEstimate": "false",
+                "Value": "2024-05-10T00:00:00"
+              },
+              {
+                "Type": "Received",
+                "IsEstimate": "false",
+                "Value": ""
+              },
+              {
+                "Type": "Departure",
+                "IsEstimate": "true",
+                "Value": "2024-05-13T12:58:00"
+              },
+              {
+                "Type": "Arrival",
+                "IsEstimate": "true",
+                "Value": "2024-05-15T19:58:00"
+              },
+              {
+                "Type": "DeliveryDueDate",
+                "IsEstimate": "false",
+                "Value": ""
+              },
+              {
+                "Type": "RevisedDeliveryDueDate",
+                "IsEstimate": "false",
+                "Value": ""
+              },
+              {
+                "Type": "ShippedOnBoard",
+                "IsEstimate": "false",
+                "Value": ""
+              },
+              {
+                "Type": "BillIssued",
+                "IsEstimate": "false",
+                "Value": ""
+              },
+              {
+                "Type": "PickupReceiptRequested",
+                "IsEstimate": "false",
+                "Value": ""
+              },
+              {
+                "Type": "DeliveryReceiptRequested",
+                "IsEstimate": "false",
+                "Value": ""
+              },
+              {
+                "Type": "PickupDispatchRequested",
+                "IsEstimate": "false",
+                "Value": ""
+              },
+              {
+                "Type": "DeliveryDispatchRequested",
+                "IsEstimate": "false",
+                "Value": ""
+              }
+            ]
+          },
+          "MilestoneCollection": {
+            "Milestone": [
+              {
+                "Description": "Booking Confirmed",
+                "EventCode": "BKC",
+                "Sequence": "1",
+                "ActualDate": "",
+                "ConditionReference": "",
+                "ConditionType": "",
+                "EstimatedDate": ""
+              },
+              {
+                "Description": "Pick Up",
+                "EventCode": "PCF",
+                "Sequence": "5",
+                "ActualDate": "2024-05-10T02:31:00",
+                "ConditionReference": "",
+                "ConditionType": "",
+                "EstimatedDate": ""
+              },
+              {
+                "Description": "Customs Cleared",
+                "EventCode": "CLR",
+                "Sequence": "30",
+                "ActualDate": "",
+                "ConditionReference": "",
+                "ConditionType": "",
+                "EstimatedDate": ""
+              },
+              {
+                "Description": "Completed Unloading at Delivery Location",
+                "EventCode": "Z88",
+                "Sequence": "35",
+                "ActualDate": "",
+                "ConditionReference": "",
+                "ConditionType": "",
+                "EstimatedDate": ""
+              },
+              {
+                "Description": "On Hand",
+                "EventCode": "Z89",
+                "Sequence": "40",
+                "ActualDate": "",
+                "ConditionReference": "",
+                "ConditionType": "",
+                "EstimatedDate": ""
+              },
+              {
+                "Description": "Departed Terminal Location",
+                "EventCode": "Z91",
+                "Sequence": "45",
+                "ActualDate": "",
+                "ConditionReference": "",
+                "ConditionType": "",
+                "EstimatedDate": ""
+              },
+              {
+                "Description": "Delivered",
+                "EventCode": "DCF",
+                "Sequence": "50",
+                "ActualDate": "",
+                "ConditionReference": "",
+                "ConditionType": "",
+                "EstimatedDate": ""
+              }
+            ]
+          },
+          "OrganizationAddressCollection": {
+            "OrganizationAddress": [
+              {
+                "AddressType": "ConsignorDocumentaryAddress",
+                "Address1": "HE DONGQIAO HO DONG GARDEN 7",
+                "Address2": "SHEUNG SHUI CASTLE PEAK ROAD GUDONG SECTION",
+                "AddressOverride": "false",
+                "AddressShortCode": "HE DONGQIAO HO DONG GARDE",
+                "City": "HONG KONG",
+                "CompanyName": "ASTRON CONNECTIVITY CO., LTD. C/O CHI CHEUNG EXPRESS LIMITED",
+                "Country": {
+                  "Code": "HK",
+                  "Name": "Hong Kong"
+                },
+                "Email": "",
+                "Fax": "",
+                "OrganizationCode": "ASTCONHKG",
+                "Phone": "",
+                "Port": {
+                  "Code": "HKHKG",
+                  "Name": "Hong Kong"
+                },
+                "Postcode": "",
+                "ScreeningStatus": {
+                  "Code": "CLR",
+                  "Description": "Clear"
+                },
+                "State": {
+                  "_": "HONG KONG",
+                  "$": {
+                    "Description": "HONG KONG"
+                  }
+                }
+              },
+              {
+                "AddressType": "ConsignorPickupDeliveryAddress",
+                "Address1": "HE DONGQIAO HO DONG GARDEN 7",
+                "Address2": "SHEUNG SHUI CASTLE PEAK ROAD GUDONG SECTION",
+                "AddressOverride": "false",
+                "AddressShortCode": "HE DONGQIAO HO DONG GARDE",
+                "City": "HONG KONG",
+                "CompanyName": "ASTRON CONNECTIVITY CO., LTD. C/O CHI CHEUNG EXPRESS LIMITED",
+                "Country": {
+                  "Code": "HK",
+                  "Name": "Hong Kong"
+                },
+                "Email": "",
+                "Fax": "",
+                "OrganizationCode": "ASTCONHKG",
+                "Phone": "",
+                "Port": {
+                  "Code": "HKHKG",
+                  "Name": "Hong Kong"
+                },
+                "Postcode": "",
+                "ScreeningStatus": {
+                  "Code": "CLR",
+                  "Description": "Clear"
+                },
+                "State": {
+                  "_": "HONG KONG",
+                  "$": {
+                    "Description": "HONG KONG"
+                  }
+                }
+              },
+              {
+                "AddressType": "ConsigneeDocumentaryAddress",
+                "Address1": "222 MERCHANDISE MART PLAZA",
+                "Address2": "SUITE 1800",
+                "AddressOverride": "false",
+                "AddressShortCode": "222 MERCHANDISE MART PLZ",
+                "City": "CHICAGO",
+                "CompanyName": "MOTOROLA MOBILITY, INC.",
+                "Country": {
+                  "Code": "US",
+                  "Name": "United States"
+                },
+                "Email": "",
+                "Fax": "",
+                "GovRegNum": "27-036823300",
+                "GovRegNumType": {
+                  "Code": "EIN",
+                  "Description": "Employer Identification Number"
+                },
+                "OrganizationCode": "LENUNIILM",
+                "Phone": "",
+                "Port": {
+                  "Code": "USILM",
+                  "Name": "Wilmington"
+                },
+                "Postcode": "60654",
+                "ScreeningStatus": {
+                  "Code": "NOT",
+                  "Description": "Not Screened"
+                },
+                "State": {
+                  "_": "IL",
+                  "$": {
+                    "Description": "Illinois"
+                  }
+                }
+              },
+              {
+                "AddressType": "ConsigneePickupDeliveryAddress",
+                "AdditionalAddressInformation": "27-0368233FL",
+                "Address1": "4550 QUALITY DR STE 101",
+                "Address2": "",
+                "AddressOverride": "false",
+                "AddressShortCode": "4550 QUALITY DR STE 101",
+                "City": "MEMPHIS",
+                "CompanyName": "MMLLC MEMPHIS SERVICE HUB | UNIS",
+                "Country": {
+                  "Code": "US",
+                  "Name": "United States"
+                },
+                "Email": "",
+                "Fax": "",
+                "GovRegNum": "27-036823300",
+                "GovRegNumType": {
+                  "Code": "EIN",
+                  "Description": "Employer Identification Number"
+                },
+                "OrganizationCode": "LENUNIILM",
+                "Phone": "",
+                "Port": {
+                  "Code": "USMEM",
+                  "Name": "Memphis"
+                },
+                "Postcode": "38118-7517",
+                "ScreeningStatus": {
+                  "Code": "NOT",
+                  "Description": "Not Screened"
+                },
+                "State": {
+                  "_": "TN",
+                  "$": {
+                    "Description": "Tennessee"
+                  }
+                }
+              },
+              {
+                "AddressType": "SendersLocalClient",
+                "Address1": "3175 LENOX PARK BLVD STE 400",
+                "Address2": "C/O TRAX",
+                "AddressOverride": "false",
+                "AddressShortCode": "TRAX",
+                "City": "MEMPHIS",
+                "CompanyName": "MOTOROLA",
+                "Country": {
+                  "Code": "US",
+                  "Name": "United States"
+                },
+                "Email": "",
+                "Fax": "",
+                "GovRegNum": "27-036823300",
+                "GovRegNumType": {
+                  "Code": "EIN",
+                  "Description": "Employer Identification Number"
+                },
+                "OrganizationCode": "LENUNIILM",
+                "Phone": "",
+                "Port": {
+                  "Code": "USMEM",
+                  "Name": "Memphis"
+                },
+                "Postcode": "38115-4438",
+                "ScreeningStatus": {
+                  "Code": "NOT",
+                  "Description": "Not Screened"
+                },
+                "State": {
+                  "_": "TN",
+                  "$": {
+                    "Description": "Tennessee"
+                  }
+                }
+              },
+              {
+                "AddressType": "SendersOverseasAgent",
+                "Address1": "Unit 4602, 46/F Tower 2, Metroplaza",
+                "Address2": "223 Hing Fong Road, Kwai Chung, NT",
+                "AddressOverride": "false",
+                "AddressShortCode": "Unit 4602, 46/F Tower 2,",
+                "City": "Hong Kong",
+                "CompanyName": "Air & Ground Logistics (HK) Ltd",
+                "Country": {
+                  "Code": "HK",
+                  "Name": "Hong Kong"
+                },
+                "Email": "cs@ag-world.com",
+                "Fax": "+85224076999",
+                "OrganizationCode": "ICHK2",
+                "Phone": "+85224076666",
+                "Port": {
+                  "Code": "HKHKG",
+                  "Name": "Hong Kong"
+                },
+                "Postcode": "",
+                "ScreeningStatus": {
+                  "Code": "NOT",
+                  "Description": "Not Screened"
+                },
+                "State": ""
+              }
+            ]
+          },
+          "PackingLineCollection": {
+            "$": {
+              "Content": "Complete"
+            },
+            "PackingLine": [
+              {
+                "AviationSecurityAdditionalInspectionType": {
+                  "Code": ""
+                },
+                "AviationSecurityInspectionType": {
+                  "Code": ""
+                },
+                "Commodity": {
+                  "Code": "GEN",
+                  "Description": "General"
+                },
+                "ContainerLink": "1",
+                "ContainerNumber": "ULD4",
+                "ContainerPackingOrder": "1",
+                "CountryOfOrigin": {
+                  "Code": ""
+                },
+                "DetailedDescription": "",
+                "EndItemNo": "0",
+                "ExportReferenceNumber": "",
+                "GoodsDescription": "USB CABLE\n",
+                "HarmonisedCode": "",
+                "Height": "120.000",
+                "ImportReferenceNumber": "",
+                "IsHighRisk": "false",
+                "ItemNo": "0",
+                "LastKnownCFSStatus": {
+                  "Code": ""
+                },
+                "LastKnownCFSStatusDate": "",
+                "Length": "96.000",
+                "LengthUnit": {
+                  "Code": "CM",
+                  "Description": "Centimeters"
+                },
+                "LinePrice": "0.0000",
+                "Link": "1",
+                "LoadingMeters": "0.000",
+                "MarksAndNos": "",
+                "OutturnComment": "",
+                "OutturnDamagedQty": "0",
+                "OutturnedHeight": "0.000",
+                "OutturnedLength": "0.000",
+                "OutturnedVolume": "0.000",
+                "OutturnedWeight": "0.000",
+                "OutturnedWidth": "0.000",
+                "OutturnPillagedQty": "0",
+                "OutturnQty": "0",
+                "PackingLineID": "TRXTS300173573",
+                "PackQty": "8",
+                "PackType": {
+                  "Code": "PLT",
+                  "Description": "Pallet"
+                },
+                "ReferenceNumber": "",
+                "RequiresTemperatureControl": "false",
+                "Volume": "11.059",
+                "VolumeUnit": {
+                  "Code": "M3",
+                  "Description": "Cubic Meters"
+                },
+                "Weight": "8800.000",
+                "WeightUnit": {
+                  "Code": "KG",
+                  "Description": "Kilograms"
+                },
+                "Width": "120.000",
+                "ClassificationCollection": {
+                  "Classification": {
+                    "Code": "8544.42.0000",
+                    "Country": {
+                      "Code": "US",
+                      "Name": "United States"
+                    },
+                    "Type": {
+                      "Code": "HSC",
+                      "Description": "Harmonized Code"
+                    }
+                  }
+                },
+                "CustomizedFieldCollection": {
+                  "CustomizedField": [
+                    {
+                      "DataType": "String",
+                      "Key": "BUYERCOLOR",
+                      "Value": ""
+                    },
+                    {
+                      "DataType": "String",
+                      "Key": "BUYERSIZE",
+                      "Value": ""
+                    },
+                    {
+                      "DataType": "String",
+                      "Key": "UPCNUMBER",
+                      "Value": ""
+                    },
+                    {
+                      "DataType": "String",
+                      "Key": "PACKLISTITEMCODE",
+                      "Value": ""
+                    },
+                    {
+                      "DataType": "Decimal",
+                      "Key": "Units",
+                      "Value": "0.000"
+                    }
+                  ]
+                },
+                "PackedItemCollection": {
+                  "PackedItem": {
+                    "OrderLineLink": "0",
+                    "PackedQuantity": "0.00000",
+                    "Product": {
+                      "Code": "ES928D77977"
+                    },
+                    "UnitOfQuantity": {
+                      "Code": ""
+                    }
+                  }
+                }
+              },
+              {
+                "AviationSecurityAdditionalInspectionType": {
+                  "Code": ""
+                },
+                "AviationSecurityInspectionType": {
+                  "Code": ""
+                },
+                "Commodity": {
+                  "Code": "GEN",
+                  "Description": "General"
+                },
+                "ContainerLink": "1",
+                "ContainerNumber": "ULD4",
+                "ContainerPackingOrder": "2",
+                "CountryOfOrigin": {
+                  "Code": ""
+                },
+                "DetailedDescription": "",
+                "EndItemNo": "0",
+                "ExportReferenceNumber": "",
+                "GoodsDescription": "MOTO XT2453-1\n",
+                "HarmonisedCode": "",
+                "Height": "100.000",
+                "ImportReferenceNumber": "",
+                "IsHighRisk": "false",
+                "ItemNo": "0",
+                "LastKnownCFSStatus": {
+                  "Code": ""
+                },
+                "LastKnownCFSStatusDate": "",
+                "Length": "96.000",
+                "LengthUnit": {
+                  "Code": "CM",
+                  "Description": "Centimeters"
+                },
+                "LinePrice": "0.0000",
+                "Link": "2",
+                "LoadingMeters": "0.000",
+                "MarksAndNos": "",
+                "OutturnComment": "",
+                "OutturnDamagedQty": "0",
+                "OutturnedHeight": "0.000",
+                "OutturnedLength": "0.000",
+                "OutturnedVolume": "0.000",
+                "OutturnedWeight": "0.000",
+                "OutturnedWidth": "0.000",
+                "OutturnPillagedQty": "0",
+                "OutturnQty": "0",
+                "PackingLineID": "TRXTS300173583",
+                "PackQty": "8",
+                "PackType": {
+                  "Code": "PLT",
+                  "Description": "Pallet"
+                },
+                "ReferenceNumber": "",
+                "RequiresTemperatureControl": "false",
+                "Volume": "9.216",
+                "VolumeUnit": {
+                  "Code": "M3",
+                  "Description": "Cubic Meters"
+                },
+                "Weight": "8800.000",
+                "WeightUnit": {
+                  "Code": "KG",
+                  "Description": "Kilograms"
+                },
+                "Width": "120.000",
+                "ClassificationCollection": {
+                  "Classification": {
+                    "Code": "8517.13.0000",
+                    "Country": {
+                      "Code": "US",
+                      "Name": "United States"
+                    },
+                    "Type": {
+                      "Code": "HSC",
+                      "Description": "Harmonized Code"
+                    }
+                  }
+                },
+                "CustomizedFieldCollection": {
+                  "CustomizedField": [
+                    {
+                      "DataType": "String",
+                      "Key": "BUYERCOLOR",
+                      "Value": ""
+                    },
+                    {
+                      "DataType": "String",
+                      "Key": "BUYERSIZE",
+                      "Value": ""
+                    },
+                    {
+                      "DataType": "String",
+                      "Key": "UPCNUMBER",
+                      "Value": ""
+                    },
+                    {
+                      "DataType": "String",
+                      "Key": "PACKLISTITEMCODE",
+                      "Value": ""
+                    },
+                    {
+                      "DataType": "Decimal",
+                      "Key": "Units",
+                      "Value": "0.000"
+                    }
+                  ]
+                },
+                "PackedItemCollection": {
+                  "PackedItem": {
+                    "OrderLineLink": "0",
+                    "PackedQuantity": "0.00000",
+                    "Product": {
+                      "Code": "SA78E13-791"
+                    },
+                    "UnitOfQuantity": {
+                      "Code": ""
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "PreCarriageShipmentCollection": {
+            "PreCarriageShipment": {
+              "InstructionCollection": {
+                "Instruction": {
+                  "DropMode": {
+                    "Code": "PSL",
+                    "Description": "Premise Supplies Lift"
+                  },
+                  "Equipment": "",
+                  "ServiceInstruction": "",
+                  "Type": {
+                    "Code": "PIC",
+                    "Description": "Pickup"
+                  },
+                  "InstructionPackingLineLinkCollection": {
+                    "InstructionPackingLineLink": [
+                      {
+                        "PackingLineLink": "1",
+                        "Quantity": "8",
+                        "ConfirmationCollection": {
+                          "Confirmation": {
+                            "ActualDate": "2024-05-10T02:31:00",
+                            "DateDescription": "PIC",
+                            "Distance": "0.000",
+                            "DistanceUnit": {
+                              "Code": "KM",
+                              "Description": "Kilometers"
+                            },
+                            "EstimatedDate": "",
+                            "ReceivedBy": "",
+                            "RequiredToDate": ""
+                          }
+                        }
+                      },
+                      {
+                        "PackingLineLink": "2",
+                        "Quantity": "8",
+                        "ConfirmationCollection": {
+                          "Confirmation": {
+                            "ActualDate": "2024-05-10T02:31:00",
+                            "DateDescription": "PIC",
+                            "Distance": "0.000",
+                            "DistanceUnit": {
+                              "Code": "KM",
+                              "Description": "Kilometers"
+                            },
+                            "EstimatedDate": "",
+                            "ReceivedBy": "",
+                            "RequiredToDate": ""
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "TransportLegCollection": {
+            "$": {
+              "Content": "Complete"
+            },
+            "TransportLeg": [
+              {
+                "PortOfDischarge": {
+                  "Code": "KRICN",
+                  "Name": "Incheon Intl Apt/Seoul"
+                },
+                "PortOfLoading": {
+                  "Code": "HKHKG",
+                  "Name": "Hong Kong"
+                },
+                "LegOrder": "1",
+                "ActualArrival": "",
+                "ActualArrivalInPortOfLoading": "",
+                "ActualDeparture": "",
+                "AircraftType": {
+                  "Code": ""
+                },
+                "ArrivalBerth": "",
+                "ArrivalReference": "",
+                "BookingStatus": {
+                  "Code": "PLN",
+                  "Description": "Planned"
+                },
+                "Carrier": {
+                  "AddressType": "Carrier",
+                  "Address1": "9260 ESTERO PARK COMMONS BLVD STE 200",
+                  "Address2": "",
+                  "AddressOverride": "false",
+                  "AddressShortCode": "9260 ESTERO PARK COMMONS",
+                  "City": "ESTERO",
+                  "CompanyName": "WESTERN GLOBAL AIRLINES LLC",
+                  "Country": {
+                    "Code": "US",
+                    "Name": "United States"
+                  },
+                  "Email": "",
+                  "Fax": "",
+                  "OrganizationCode": "WESGLOESG",
+                  "Phone": "",
+                  "Port": {
+                    "Code": "USESG",
+                    "Name": "Estero"
+                  },
+                  "Postcode": "33928-6468",
+                  "ScreeningStatus": {
+                    "Code": "CLR",
+                    "Description": "Clear"
+                  },
+                  "State": {
+                    "_": "FL",
+                    "$": {
+                      "Description": "Florida"
+                    }
+                  },
+                  "RegistrationNumberCollection": {
+                    "RegistrationNumber": {
+                      "Type": {
+                        "Code": "CCC",
+                        "Description": "Standard Carrier Alpha Code (Sea)"
+                      },
+                      "CountryOfIssue": {
+                        "Code": "US",
+                        "Name": "United States"
+                      },
+                      "Value": "KD"
+                    }
+                  }
+                },
+                "CarrierBookingReference": "",
+                "CarrierServiceLevel": {
+                  "Code": ""
+                },
+                "DepartureBerth": "",
+                "DepartureReference": "",
+                "DocumentCutOff": "",
+                "EmptyCutOff": "",
+                "EmptyReceivalCommences": "",
+                "EstimatedArrival": "2024-05-13T17:58:00",
+                "EstimatedArrivalInPortOfLoading": "",
+                "EstimatedDeparture": "2024-05-13T12:58:00",
+                "FCLAvailability": "",
+                "FCLCutOff": "",
+                "FCLReceivalCommences": "",
+                "FCLStorage": "",
+                "HazzardCutOffDate": "",
+                "HazzardReceivalCommences": "",
+                "IsCargoOnly": "true",
+                "LCLAvailability": "",
+                "LCLCutOff": "",
+                "LCLReceivalCommences": "",
+                "LCLStorageDate": "",
+                "LegNotes": "",
+                "LegType": "Flight1",
+                "ReeferCutOff": "",
+                "ReeferReceivalCommences": "",
+                "ScheduledArrival": "2024-05-15T12:58:00",
+                "ScheduledArrivalInPortOfLoading": "",
+                "ScheduledDeparture": "2024-05-13T12:58:00",
+                "TransportMode": "Air",
+                "VesselLloydsIMO": "",
+                "VesselName": "",
+                "VGMCutOff": "",
+                "VoyageFlightNo": "KD123"
+              },
+              {
+                "PortOfDischarge": {
+                  "Code": "USANC",
+                  "Name": "Anchorage"
+                },
+                "PortOfLoading": {
+                  "Code": "KRICN",
+                  "Name": "Incheon Intl Apt/Seoul"
+                },
+                "LegOrder": "2",
+                "ActualArrival": "",
+                "ActualDeparture": "",
+                "AircraftType": {
+                  "Code": ""
+                },
+                "BookingStatus": {
+                  "Code": "PLN",
+                  "Description": "Planned"
+                },
+                "Carrier": {
+                  "AddressType": "Carrier",
+                  "Address1": "9260 ESTERO PARK COMMONS BLVD STE 200",
+                  "Address2": "",
+                  "AddressOverride": "false",
+                  "AddressShortCode": "9260 ESTERO PARK COMMONS",
+                  "City": "ESTERO",
+                  "CompanyName": "WESTERN GLOBAL AIRLINES LLC",
+                  "Country": {
+                    "Code": "US",
+                    "Name": "United States"
+                  },
+                  "Email": "",
+                  "Fax": "",
+                  "OrganizationCode": "WESGLOESG",
+                  "Phone": "",
+                  "Port": {
+                    "Code": "USESG",
+                    "Name": "Estero"
+                  },
+                  "Postcode": "33928-6468",
+                  "ScreeningStatus": {
+                    "Code": "CLR",
+                    "Description": "Clear"
+                  },
+                  "State": {
+                    "_": "FL",
+                    "$": {
+                      "Description": "Florida"
+                    }
+                  },
+                  "RegistrationNumberCollection": {
+                    "RegistrationNumber": {
+                      "Type": {
+                        "Code": "CCC",
+                        "Description": "Standard Carrier Alpha Code (Sea)"
+                      },
+                      "CountryOfIssue": {
+                        "Code": "US",
+                        "Name": "United States"
+                      },
+                      "Value": "KD"
+                    }
+                  }
+                },
+                "CarrierBookingReference": "",
+                "CarrierServiceLevel": {
+                  "Code": ""
+                },
+                "DocumentCutOff": "",
+                "EmptyCutOff": "",
+                "EmptyReceivalCommences": "",
+                "EstimatedArrival": "2024-05-15T07:58:00",
+                "EstimatedDeparture": "2024-05-14T09:58:00",
+                "FCLAvailability": "",
+                "FCLCutOff": "",
+                "FCLReceivalCommences": "",
+                "FCLStorage": "",
+                "HazzardCutOffDate": "",
+                "HazzardReceivalCommences": "",
+                "IsCargoOnly": "true",
+                "LCLAvailability": "",
+                "LCLCutOff": "",
+                "LCLReceivalCommences": "",
+                "LCLStorageDate": "",
+                "LegNotes": "",
+                "LegType": "Flight2",
+                "ReeferCutOff": "",
+                "ReeferReceivalCommences": "",
+                "ScheduledArrival": "2024-05-13T12:58:00",
+                "ScheduledDeparture": "2024-05-13T12:58:00",
+                "TransportMode": "Air",
+                "VesselLloydsIMO": "",
+                "VesselName": "",
+                "VGMCutOff": "",
+                "VoyageFlightNo": "KD123"
+              },
+              {
+                "PortOfDischarge": {
+                  "Code": "USRIB",
+                  "Name": "Rickenbacker International Apt"
+                },
+                "PortOfLoading": {
+                  "Code": "USANC",
+                  "Name": "Anchorage"
+                },
+                "LegOrder": "3",
+                "ActualArrival": "",
+                "ActualDeparture": "",
+                "AircraftType": {
+                  "Code": ""
+                },
+                "BookingStatus": {
+                  "Code": "PLN",
+                  "Description": "Planned"
+                },
+                "Carrier": {
+                  "AddressType": "Carrier",
+                  "Address1": "9260 ESTERO PARK COMMONS BLVD STE 200",
+                  "Address2": "",
+                  "AddressOverride": "false",
+                  "AddressShortCode": "9260 ESTERO PARK COMMONS",
+                  "City": "ESTERO",
+                  "CompanyName": "WESTERN GLOBAL AIRLINES LLC",
+                  "Country": {
+                    "Code": "US",
+                    "Name": "United States"
+                  },
+                  "Email": "",
+                  "Fax": "",
+                  "OrganizationCode": "WESGLOESG",
+                  "Phone": "",
+                  "Port": {
+                    "Code": "USESG",
+                    "Name": "Estero"
+                  },
+                  "Postcode": "33928-6468",
+                  "ScreeningStatus": {
+                    "Code": "CLR",
+                    "Description": "Clear"
+                  },
+                  "State": {
+                    "_": "FL",
+                    "$": {
+                      "Description": "Florida"
+                    }
+                  },
+                  "RegistrationNumberCollection": {
+                    "RegistrationNumber": {
+                      "Type": {
+                        "Code": "CCC",
+                        "Description": "Standard Carrier Alpha Code (Sea)"
+                      },
+                      "CountryOfIssue": {
+                        "Code": "US",
+                        "Name": "United States"
+                      },
+                      "Value": "KD"
+                    }
+                  }
+                },
+                "CarrierBookingReference": "",
+                "CarrierServiceLevel": {
+                  "Code": ""
+                },
+                "DocumentCutOff": "",
+                "EmptyCutOff": "",
+                "EmptyReceivalCommences": "",
+                "EstimatedArrival": "2024-05-15T19:58:00",
+                "EstimatedDeparture": "2024-05-15T14:58:00",
+                "FCLAvailability": "",
+                "FCLCutOff": "",
+                "FCLReceivalCommences": "",
+                "FCLStorage": "",
+                "HazzardCutOffDate": "",
+                "HazzardReceivalCommences": "",
+                "IsCargoOnly": "true",
+                "LCLAvailability": "",
+                "LCLCutOff": "",
+                "LCLReceivalCommences": "",
+                "LCLStorageDate": "",
+                "LegNotes": "",
+                "LegType": "Flight3",
+                "ReeferCutOff": "",
+                "ReeferReceivalCommences": "",
+                "ScheduledArrival": "2024-05-13T12:58:00",
+                "ScheduledDeparture": "2024-05-13T12:58:00",
+                "TransportMode": "Air",
+                "VesselLloydsIMO": "",
+                "VesselName": "",
+                "VGMCutOff": "",
+                "VoyageFlightNo": "KD123"
+              }
+            ]
+          }
+        }
+      },
+      "TransportLegCollection": {
+        "$": {
+          "Content": "Complete"
+        },
+        "TransportLeg": [
+          {
+            "PortOfDischarge": {
+              "Code": "KRICN",
+              "Name": "Incheon Intl Apt/Seoul"
+            },
+            "PortOfLoading": {
+              "Code": "HKHKG",
+              "Name": "Hong Kong"
+            },
+            "LegOrder": "1",
+            "ActualArrival": "",
+            "ActualArrivalInPortOfLoading": "",
+            "ActualDeparture": "",
+            "AircraftType": {
+              "Code": ""
+            },
+            "ArrivalBerth": "",
+            "ArrivalReference": "",
+            "BookingStatus": {
+              "Code": "PLN",
+              "Description": "Planned"
+            },
+            "Carrier": {
+              "AddressType": "Carrier",
+              "Address1": "9260 ESTERO PARK COMMONS BLVD STE 200",
+              "Address2": "",
+              "AddressOverride": "false",
+              "AddressShortCode": "9260 ESTERO PARK COMMONS",
+              "City": "ESTERO",
+              "CompanyName": "WESTERN GLOBAL AIRLINES LLC",
+              "Country": {
+                "Code": "US",
+                "Name": "United States"
+              },
+              "Email": "",
+              "Fax": "",
+              "OrganizationCode": "WESGLOESG",
+              "Phone": "",
+              "Port": {
+                "Code": "USESG",
+                "Name": "Estero"
+              },
+              "Postcode": "33928-6468",
+              "ScreeningStatus": {
+                "Code": "CLR",
+                "Description": "Clear"
+              },
+              "State": {
+                "_": "FL",
+                "$": {
+                  "Description": "Florida"
+                }
+              },
+              "RegistrationNumberCollection": {
+                "RegistrationNumber": {
+                  "Type": {
+                    "Code": "CCC",
+                    "Description": "Standard Carrier Alpha Code (Sea)"
+                  },
+                  "CountryOfIssue": {
+                    "Code": "US",
+                    "Name": "United States"
+                  },
+                  "Value": "KD"
+                }
+              }
+            },
+            "CarrierBookingReference": "",
+            "CarrierServiceLevel": {
+              "Code": ""
+            },
+            "DepartureBerth": "",
+            "DepartureReference": "",
+            "DocumentCutOff": "",
+            "EmptyCutOff": "",
+            "EmptyReceivalCommences": "",
+            "EstimatedArrival": "2024-05-13T17:58:00",
+            "EstimatedArrivalInPortOfLoading": "",
+            "EstimatedDeparture": "2024-05-13T12:58:00",
+            "FCLAvailability": "",
+            "FCLCutOff": "",
+            "FCLReceivalCommences": "",
+            "FCLStorage": "",
+            "HazzardCutOffDate": "",
+            "HazzardReceivalCommences": "",
+            "IsCargoOnly": "true",
+            "LCLAvailability": "",
+            "LCLCutOff": "",
+            "LCLReceivalCommences": "",
+            "LCLStorageDate": "",
+            "LegNotes": "",
+            "LegType": "Flight1",
+            "ReeferCutOff": "",
+            "ReeferReceivalCommences": "",
+            "ScheduledArrival": "2024-05-15T12:58:00",
+            "ScheduledArrivalInPortOfLoading": "",
+            "ScheduledDeparture": "2024-05-13T12:58:00",
+            "TransportMode": "Air",
+            "VesselLloydsIMO": "",
+            "VesselName": "",
+            "VGMCutOff": "",
+            "VoyageFlightNo": "KD123"
+          },
+          {
+            "PortOfDischarge": {
+              "Code": "USANC",
+              "Name": "Anchorage"
+            },
+            "PortOfLoading": {
+              "Code": "KRICN",
+              "Name": "Incheon Intl Apt/Seoul"
+            },
+            "LegOrder": "2",
+            "ActualArrival": "",
+            "ActualDeparture": "",
+            "AircraftType": {
+              "Code": ""
+            },
+            "BookingStatus": {
+              "Code": "PLN",
+              "Description": "Planned"
+            },
+            "Carrier": {
+              "AddressType": "Carrier",
+              "Address1": "9260 ESTERO PARK COMMONS BLVD STE 200",
+              "Address2": "",
+              "AddressOverride": "false",
+              "AddressShortCode": "9260 ESTERO PARK COMMONS",
+              "City": "ESTERO",
+              "CompanyName": "WESTERN GLOBAL AIRLINES LLC",
+              "Country": {
+                "Code": "US",
+                "Name": "United States"
+              },
+              "Email": "",
+              "Fax": "",
+              "OrganizationCode": "WESGLOESG",
+              "Phone": "",
+              "Port": {
+                "Code": "USESG",
+                "Name": "Estero"
+              },
+              "Postcode": "33928-6468",
+              "ScreeningStatus": {
+                "Code": "CLR",
+                "Description": "Clear"
+              },
+              "State": {
+                "_": "FL",
+                "$": {
+                  "Description": "Florida"
+                }
+              },
+              "RegistrationNumberCollection": {
+                "RegistrationNumber": {
+                  "Type": {
+                    "Code": "CCC",
+                    "Description": "Standard Carrier Alpha Code (Sea)"
+                  },
+                  "CountryOfIssue": {
+                    "Code": "US",
+                    "Name": "United States"
+                  },
+                  "Value": "KD"
+                }
+              }
+            },
+            "CarrierBookingReference": "",
+            "CarrierServiceLevel": {
+              "Code": ""
+            },
+            "DocumentCutOff": "",
+            "EmptyCutOff": "",
+            "EmptyReceivalCommences": "",
+            "EstimatedArrival": "2024-05-15T07:58:00",
+            "EstimatedDeparture": "2024-05-14T09:58:00",
+            "FCLAvailability": "",
+            "FCLCutOff": "",
+            "FCLReceivalCommences": "",
+            "FCLStorage": "",
+            "HazzardCutOffDate": "",
+            "HazzardReceivalCommences": "",
+            "IsCargoOnly": "true",
+            "LCLAvailability": "",
+            "LCLCutOff": "",
+            "LCLReceivalCommences": "",
+            "LCLStorageDate": "",
+            "LegNotes": "",
+            "LegType": "Flight2",
+            "ReeferCutOff": "",
+            "ReeferReceivalCommences": "",
+            "ScheduledArrival": "2024-05-13T12:58:00",
+            "ScheduledDeparture": "2024-05-13T12:58:00",
+            "TransportMode": "Air",
+            "VesselLloydsIMO": "",
+            "VesselName": "",
+            "VGMCutOff": "",
+            "VoyageFlightNo": "KD123"
+          },
+          {
+            "PortOfDischarge": {
+              "Code": "USRIB",
+              "Name": "Rickenbacker International Apt"
+            },
+            "PortOfLoading": {
+              "Code": "USANC",
+              "Name": "Anchorage"
+            },
+            "LegOrder": "3",
+            "ActualArrival": "",
+            "ActualDeparture": "",
+            "AircraftType": {
+              "Code": ""
+            },
+            "BookingStatus": {
+              "Code": "PLN",
+              "Description": "Planned"
+            },
+            "Carrier": {
+              "AddressType": "Carrier",
+              "Address1": "9260 ESTERO PARK COMMONS BLVD STE 200",
+              "Address2": "",
+              "AddressOverride": "false",
+              "AddressShortCode": "9260 ESTERO PARK COMMONS",
+              "City": "ESTERO",
+              "CompanyName": "WESTERN GLOBAL AIRLINES LLC",
+              "Country": {
+                "Code": "US",
+                "Name": "United States"
+              },
+              "Email": "",
+              "Fax": "",
+              "OrganizationCode": "WESGLOESG",
+              "Phone": "",
+              "Port": {
+                "Code": "USESG",
+                "Name": "Estero"
+              },
+              "Postcode": "33928-6468",
+              "ScreeningStatus": {
+                "Code": "CLR",
+                "Description": "Clear"
+              },
+              "State": {
+                "_": "FL",
+                "$": {
+                  "Description": "Florida"
+                }
+              },
+              "RegistrationNumberCollection": {
+                "RegistrationNumber": {
+                  "Type": {
+                    "Code": "CCC",
+                    "Description": "Standard Carrier Alpha Code (Sea)"
+                  },
+                  "CountryOfIssue": {
+                    "Code": "US",
+                    "Name": "United States"
+                  },
+                  "Value": "KD"
+                }
+              }
+            },
+            "CarrierBookingReference": "",
+            "CarrierServiceLevel": {
+              "Code": ""
+            },
+            "DocumentCutOff": "",
+            "EmptyCutOff": "",
+            "EmptyReceivalCommences": "",
+            "EstimatedArrival": "2024-05-15T19:58:00",
+            "EstimatedDeparture": "2024-05-15T14:58:00",
+            "FCLAvailability": "",
+            "FCLCutOff": "",
+            "FCLReceivalCommences": "",
+            "FCLStorage": "",
+            "HazzardCutOffDate": "",
+            "HazzardReceivalCommences": "",
+            "IsCargoOnly": "true",
+            "LCLAvailability": "",
+            "LCLCutOff": "",
+            "LCLReceivalCommences": "",
+            "LCLStorageDate": "",
+            "LegNotes": "",
+            "LegType": "Flight3",
+            "ReeferCutOff": "",
+            "ReeferReceivalCommences": "",
+            "ScheduledArrival": "2024-05-13T12:58:00",
+            "ScheduledDeparture": "2024-05-13T12:58:00",
+            "TransportMode": "Air",
+            "VesselLloydsIMO": "",
+            "VesselName": "",
+            "VGMCutOff": "",
+            "VoyageFlightNo": "KD123"
+          }
+        ]
+      }
+    }
+  }
+}

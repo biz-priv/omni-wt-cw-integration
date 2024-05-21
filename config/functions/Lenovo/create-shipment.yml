@@ -11,7 +11,7 @@ function:
       - '!**/*'
       - src/create-shipment/Lenovo/*
       - src/shared/*
-
+  events:
     - existingS3:
         bucket: ${ssm:/omni-dw/${self:provider.stage}/wms/bucket/name}
         events:

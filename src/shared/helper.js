@@ -1,6 +1,6 @@
-'use strict'
+'use strict';
 
-const AWS = require('aws-sdk')
+const AWS = require('aws-sdk');
 const momentTZ = require('moment-timezone');
 const xml2js = require('xml2js');
 
@@ -13,6 +13,8 @@ const STATUSES = {
   READY: 'READY',
   SENT: 'SENT',
   FAILED: 'FAILED',
+  SUCCESS: 'SUCCESS',
+  SKIPPED: 'SKIPPED',
 };
 
 async function getS3Object(bucket, key) {
@@ -42,5 +44,5 @@ module.exports = {
   cstDateTime,
   STATUSES,
   getS3Object,
-  xmlToJson
-}
+  xmlToJson,
+};

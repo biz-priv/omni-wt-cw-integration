@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const AWS = require('aws-sdk');
 
@@ -6,7 +6,7 @@ const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const sns = new AWS.SNS({ apiVersion: '2010-03-31' });
 const _ = require('lodash');
 
-async function publishToSNS(message, subject) {
+async function publishToSNS({ message, subject }) {
   const params = {
     Message: message,
     Subject: `Lambda function ${subject} has failed.`,
@@ -71,5 +71,8 @@ function getDynamoUpdateParam(data) {
 }
 
 module.exports = {
-  dbQuery, publishToSNS, putItem, getDynamoUpdateParam
-}
+  dbQuery,
+  publishToSNS,
+  putItem,
+  getDynamoUpdateParam,
+};

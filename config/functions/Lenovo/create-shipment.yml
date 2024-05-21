@@ -1,7 +1,7 @@
 ---
 function:
-  name: lenovo-create-shipment-${self:provider.stage}
-  handler: src/create-shipment/index.handler
+  name: omni-wt-cw-lenovo-create-shipment-${self:provider.stage}
+  handler: src/create-shipment/Lenovo/index.handler
   memorySize: 2048
   timeout: 900
   layers:
@@ -9,7 +9,7 @@ function:
   package:
     patterns:
       - '!**/*'
-      - src/create-shipment/index.js
+      - src/create-shipment/Lenovo/*
       - src/shared/*
 
   events:
@@ -24,8 +24,8 @@ function:
 
   environment:
     WT_URL: ${ssm:/omni-dw/${self:provider.stage}/createShipment/wt/url}
-    CW_URL: 'https://trxts3services.wisegrid.net/eAdaptor'
-    CW_ENDPOINT_AUTHORIZATION: 'Basic dHJ4dHMzOjY0ODg1Nw=='
-    LOGS_TABLE: 'omni-lenovo-status-dev'
+    CW_URL: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/url}
+    CW_ENDPOINT_AUTHORIZATION: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/auth}
+    LOGS_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment-status-table-name}
     wt_soap_username: ${ssm:/omni-dw/${self:provider.stage}/wt/soap/username~true}
     wt_soap_password: ${ssm:/omni-dw/${self:provider.stage}/wt/soap/password~true}

@@ -12,15 +12,13 @@ function:
       - src/create-shipment/Lenovo/*
       - src/shared/*
 
-  events:
-    - s3:
+    - existingS3:
         bucket: ${ssm:/omni-dw/${self:provider.stage}/wms/bucket/name}
-        existing: true
         events:
           - s3:ObjectCreated:*
         rules:
-          - prefix: ${ssm:/${self:service}/${self:provider.stage}/s3-prefix}
-          - suffix: ${ssm:/${self:service}/${self:provider.stage}/s3-suffix}
+          - prefix: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/s3-prefix}
+          - suffix: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/s3-suffix}         
 
   environment:
     WT_URL: ${ssm:/omni-dw/${self:provider.stage}/createShipment/wt/url}

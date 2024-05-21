@@ -48,3 +48,6 @@ layers:
     compatibleRuntimes:
       - nodejs20.x
     retain: false
+
+plugins:
+  - serverless-plugin-existing-s3

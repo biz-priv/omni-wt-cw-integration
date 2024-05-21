@@ -27,9 +27,10 @@
   },
   "dependencies": {
     "aws-sdk": "^2.1620.0",
-    "fs": "^0.0.1-security",
+    "axios": "^1.7.1",
     "lodash": "^4.17.21",
     "moment-timezone": "^0.5.45",
+    "serverless-plugin-existing-s3": "^2.4.0",
     "xml2js": "^0.6.2"
   },
   "devDependencies": {

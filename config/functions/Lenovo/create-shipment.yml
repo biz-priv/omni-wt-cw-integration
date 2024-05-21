@@ -17,7 +17,7 @@ function:
         events:
           - s3:ObjectCreated:*
         rules:
-          - prefix: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/s3-prefix}
+          - prefix: 'CargoWiseOutbound/Lenovo/TEST_LENOVO'
           - suffix: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/s3-suffix}
 
   environment:

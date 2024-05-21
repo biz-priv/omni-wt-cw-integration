@@ -27,5 +27,5 @@ function:
     CW_URL: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/url}
     CW_ENDPOINT_AUTHORIZATION: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/auth}
     LOGS_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment-status-table-name}
-    wt_soap_username: ${ssm:/omni-dw/${self:provider.stage}/wt/soap/username~true}
-    wt_soap_password: ${ssm:/omni-dw/${self:provider.stage}/wt/soap/password~true}
+    wt_soap_username: ${ssm:/omni-dw/${self:provider.stage}/wt/soap/username}
+    wt_soap_password: ${ssm:/omni-dw/${self:provider.stage}/wt/soap/password}

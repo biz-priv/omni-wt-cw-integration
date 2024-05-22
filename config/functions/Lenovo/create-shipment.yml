@@ -12,15 +12,17 @@ function:
       - src/create-shipment/Lenovo/*
       - src/shared/*
   events:
-    - existingS3:
+    - s3:
         bucket: ${ssm:/omni-dw/${self:provider.stage}/wms/bucket/name}
+        existing: true
         events:
           - s3:ObjectCreated:*
         rules:
-          - prefix: 'CargoWiseOutbound/Lenovo/TEST_LENOVO'
-          - suffix: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/s3-suffix}
+          - prefix: ${ssm:/${self:service}/${self:provider.stage}/s3-prefix}
+          - suffix: ${ssm:/${self:service}/${self:provider.stage}/s3-suffix}
 
   environment:
+    ERROR_SNS_ARN: ${ssm:/omni-reports/${self:provider.stage}/error-notification/sns/arn}
     WT_URL: ${ssm:/omni-dw/${self:provider.stage}/createShipment/wt/url}
     CW_URL: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/url}
     CW_ENDPOINT_AUTHORIZATION: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/auth}

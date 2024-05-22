@@ -9,7 +9,7 @@ const _ = require('lodash');
 async function publishToSNS({ message, subject }) {
   const params = {
     Message: message,
-    Subject: `Lambda function ${subject} has failed.`,
+    Subject: subject,
     TopicArn: process.env.ERROR_SNS_ARN,
   };
   try {
@@ -41,13 +41,14 @@ async function dbQuery(params) {
       console.info('dbRead > params ', params);
       items = await dynamoDB.query(params).promise();
       scanResults = scanResults.concat(_.get(items, 'Items', []));
+      console.info('🚀 ~ file: dynamo.js:44 ~ dbQuery ~ scanResults:', scanResults);
       params.ExclusiveStartKey = _.get(items, 'LastEvaluatedKey');
     } while (typeof items.LastEvaluatedKey !== 'undefined');
   } catch (e) {
     console.error('DynamoDb scan error. ', ' Params: ', params, ' Error: ', e);
     throw e;
   }
-  return { Items: scanResults };
+  return _.get(items, 'Items', []);
 }
 
 function getDynamoUpdateParam(data) {

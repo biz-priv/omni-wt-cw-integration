@@ -15,7 +15,6 @@ async function extractData(dataObj) {
     );
 
     const packingLineArray = Array.isArray(packingLine) ? packingLine : [packingLine];
-    console.info('🚀 ~ file: test.js:356 ~ extractData ~ packingLine:', packingLineArray);
 
     const dateCollection = get(
       dataObj,

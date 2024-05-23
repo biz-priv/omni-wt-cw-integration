@@ -1,0 +1,26 @@
+---
+function:
+  name: omni-wt-cw-lenovo-add-milestone-${self:provider.stage}
+  handler: src/add-milestone/Lenovo/index.handler
+  runtime: nodejs20.x
+  timeout: 900
+  layers:
+    - { Ref: NodeModulesLambdaLayer }
+  package:
+    patterns:
+      - '!**/*'
+      - src/add-milestone/Lenovo/index.js
+      - src/Shared/**
+  events:
+    - sqs:
+        arn: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/add-milestone/sqs/queue.arn}
+        batchSize: 10
+  environment:
+    SHIPMENT_HEADER_TABLE: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/shipment-header/ddb.tableName}
+    REFERENCE_TABLE: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/references/ddb.tableName}
+    STAGE: ${self:provider.stage}
+    REFERENCE_TABLE_INDEX: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/references/ddb.orderNoIndex}
+    STATUS_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/add-milestone-status-table-name}
+    CW_URL: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/url}
+    CW_ENDPOINT_AUTHORIZATION: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/auth}
+    ERROR_SNS_ARN: ${ssm:/omni-reports/${self:provider.stage}/error-notification/sns/arn}

@@ -2,7 +2,7 @@
 
 const { get } = require('lodash');
 const xml2js = require('xml2js');
-const moment = require('moment-timezone');
+// const moment = require('moment-timezone');
 
 async function extractData(dataObj) {
   console.info('🚀 ~ file: test.js:353 ~ extractData ~ dataObj:', dataObj);
@@ -16,19 +16,12 @@ async function extractData(dataObj) {
 
     const packingLineArray = Array.isArray(packingLine) ? packingLine : [packingLine];
 
-    const dateCollection = get(
-      dataObj,
-      'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.DateCollection.Date',
-      []
-    );
-
     const readyDate = get(
-      dateCollection.find((date) => date.Type === 'Arrival'),
-      'Value',
-      ''
+      dataObj,
+      'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.LocalProcessing.LCLAvailable'
     );
 
-    const readyTime = moment(readyDate).add(6, 'hours').format('YYYY-MM-DDTHH:mm:ss');
+    const readyTime = readyDate;
 
     const referenceNumber = get(
       dataObj,

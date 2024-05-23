@@ -79,9 +79,10 @@ module.exports.handler = async (event, context) => {
       ]);
 
       if (shipmentHeaderResult.length === 0) {
-        throw new Error(
+        console.info(
           `No data found in ${process.env.SHIPMENT_HEADER_TABLE} table for FK_OrderNo: ${orderNo}.`
         );
+        return;
       }
 
       if (referencesResult.length === 0) {

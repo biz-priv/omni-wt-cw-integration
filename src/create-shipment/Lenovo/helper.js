@@ -5,7 +5,7 @@ const xml2js = require('xml2js');
 // const moment = require('moment-timezone');
 
 async function extractData(dataObj) {
-  console.info('🚀 ~ file: test.js:353 ~ extractData ~ dataObj:', dataObj);
+  console.info('🚀 ~ file: test.js:353 ~ extractData ~ dataObj:', JSON.stringify(dataObj));
 
   try {
     const packingLine = get(

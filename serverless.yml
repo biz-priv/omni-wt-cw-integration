@@ -48,6 +48,7 @@ package:
 
 functions:
   create-shipment: ${file(config/functions/Lenovo/create-shipment.yml):function}
+  add-milestone: ${file(config/functions/Lenovo/add-milestone.yml):function}
 
 layers:
   NodeModules:

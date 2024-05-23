@@ -10,7 +10,7 @@ function:
     patterns:
       - '!**/*'
       - src/add-milestone/Lenovo/index.js
-      - src/Shared/**
+      - src/shared/**
   events:
     - sqs:
         arn: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/add-milestone/sqs/queue.arn}

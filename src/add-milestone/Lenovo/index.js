@@ -1,7 +1,7 @@
 'use strict';
 
 const AWS = require('aws-sdk');
-const { get, includes, map } = require('lodash');
+const { get, includes } = require('lodash');
 const axios = require('axios');
 const xml2js = require('xml2js');
 const moment = require('moment-timezone');
@@ -52,11 +52,12 @@ module.exports.handler = async (event, context) => {
 
       const headerParams = {
         TableName: process.env.SHIPMENT_HEADER_TABLE,
-        KeyConditionExpression: 'PK_OrderNo = :PK_OrderNo',
-        FilterExpression: 'ShipQuote = :shipquote',
+        KeyConditionExpression: 'PK_OrderNo = :orderNo',
+        FilterExpression: 'ShipQuote = :shipquote AND BillNo = :billno',
         ExpressionAttributeValues: {
-          ':PK_OrderNo': orderNo,
+          ':orderNo': orderNo,
           ':shipquote': 'S',
+          ':billno': lenovoCustomerId
         },
       };
 
@@ -88,13 +89,6 @@ module.exports.handler = async (event, context) => {
           `No data found in ${process.env.REFERENCE_TABLE} table for FK_OrderNo: ${orderNo}.`
         );
       }
-
-      const billNumbers = map(shipmentHeaderResult, 'BillNo');
-      if (!billNumbers.includes(lenovoCustomerId)) {
-        console.info('This event is not related to Lenovo. So, skipping the process.');
-        return;
-      }
-
       const housebill = get(shipmentHeaderResult, '[0].Housebill');
       console.info('Housebill:', housebill);
 

@@ -1,6 +1,6 @@
 ---
 function:
-  name: omni-fourkites-doc-upload-table-status-checker-${self:provider.stage}
+  name: omni-wt-cw-lenovo-pod-upload-table-status-checker-${self:provider.stage}
   handler: src/pod-docs/Lenovo/table-status-checker.handler
   description: Omni Fourkites Documents upload
   package:

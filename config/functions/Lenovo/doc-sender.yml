@@ -1,6 +1,6 @@
 ---
 function:
-  name: omni-fourkites-doc-upload-doc-sender-${self:provider.stage}
+  name: omni-wt-cw-lenovo-doc-sender-${self:provider.stage}
   handler: src/pod-docs/Lenovo/doc-sender.handler
   description: WT - CW Lenovo Documents upload
   package:

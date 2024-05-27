@@ -20,4 +20,4 @@ function:
     DOC_STATUS_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/pod-status-table-name}
     CUSTOMER_LIST_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/customer-list-table-name}
     REFERENCE_TABLE: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/references/ddb.tableName}
-    REFERENCE_TABLE_ORDER_NO_INDEX: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/references/ddb.orderNoIndex}
+    REFERENCE_TABLE_INDEX: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/references/ddb.orderNoIndex}

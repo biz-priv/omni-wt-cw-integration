@@ -22,7 +22,7 @@ async function publishToSNS(message, functionName) {
   const params = {
     Message: `${message} \n Retrigger process: Set the status to PENDING and ResetCount to 0 of that particular record in ${process.env.DOC_STATUS_TABLE} after fixing the issue.`,
     Subject: `Lambda function ${functionName} has failed.`,
-    TopicArn: process.env.ERROR_SNS_TOPIC_ARN,
+    TopicArn: process.env.ERROR_SNS_ARN,
   };
   console.info('🙂 -> file: helper.js:28 -> publishToSNS -> params:', params);
   try {

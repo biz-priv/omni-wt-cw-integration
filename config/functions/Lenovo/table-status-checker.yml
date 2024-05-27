@@ -20,4 +20,4 @@ function:
     DOC_STATUS_TABLE_STATUS_INDEX: ${ssm:/omni-fourkites-updates-infra/${self:provider.stage}/fourkites-doc-upload-status-table-status-index}
     CUSTOMER_LIST_TABLE: ${ssm:/omni-fourkites-updates-infra/${self:provider.stage}/fourkites-customer-list-table-name}
     REFERENCE_TABLE: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/references/ddb.tableName}
-    REFERENCE_TABLE_ORDER_NO_INDEX: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/references/ddb.orderNoIndex}
+    REFERENCE_TABLE_INDEX: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/references/ddb.orderNoIndex}

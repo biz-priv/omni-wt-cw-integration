@@ -8,7 +8,7 @@ const {
   getShipemntHeaderData,
   getDataFromCustomerList,
   getDocStatusTableData,
-  getReferencesData
+  getReferencesData,
 } = require('./dynamodb');
 
 let functionName;
@@ -72,7 +72,7 @@ module.exports.handler = async (event, context) => {
           '🙂 -> file: shipment-file-stream-processor.js:34 -> event.Records.map -> shipmentHeaderData:',
           shipmentHeaderData
         );
-        const referencesData = await getReferencesData({ orderNo })
+        const referencesData = await getReferencesData({ orderNo });
         if (referencesData === 0) {
           await insertIntoDocStatusTable({
             orderNo,
@@ -87,7 +87,7 @@ module.exports.handler = async (event, context) => {
           console.info('References data is not found. Skipping.');
           return 'References data is not found. Skipping.';
         }
-        const refNumber = get(referencesData, '[0].ReferenceNo', '')
+        const refNumber = get(referencesData, '[0].ReferenceNo', '');
         if (shipmentHeaderData.length === 0) {
           await insertIntoDocStatusTable({
             orderNo,
@@ -141,7 +141,7 @@ module.exports.handler = async (event, context) => {
         )
           ? STATUSES.READY
           : STATUSES.PENDING;
-  
+
         //* Insert the record into the doc status table. If all the tables are ready, set the status to ready. If not, set the status to pending.
         await insertIntoDocStatusTable({
           orderNo,
@@ -153,7 +153,7 @@ module.exports.handler = async (event, context) => {
           tableStatuses: originalTableStatuses,
           billNo,
           houseBill,
-          refNumber
+          refNumber,
         });
         return true;
       } catch (error) {

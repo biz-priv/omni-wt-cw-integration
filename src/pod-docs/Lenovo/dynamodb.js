@@ -53,7 +53,7 @@ async function insertIntoDocStatusTable({
   tableStatuses,
   billNo,
   houseBill,
-  refNumber
+  refNumber,
 }) {
   try {
     const insertParams = {
@@ -72,7 +72,7 @@ async function insertIntoDocStatusTable({
         CreatedAt: getCstTimestamp(),
         LastUpdatedAt: getCstTimestamp(),
         LastUpdateBy: functionName,
-        ReferenceNo: refNumber
+        ReferenceNo: refNumber,
       },
     };
     console.info('🙂 -> file: dynamodb.js:86 -> insertParams:', insertParams);
@@ -198,5 +198,5 @@ module.exports = {
   getDocStatusTableDataByStatus,
   deleteDocStatusTableData,
   updateDocStatusTableData,
-  getReferencesData
+  getReferencesData,
 };

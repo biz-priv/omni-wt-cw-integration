@@ -66,7 +66,6 @@ function getDynamoUpdateParam(data) {
   return { ExpressionAttributeNames, ExpressionAttributeValues, UpdateExpression };
 }
 
-
 module.exports = {
   STATUSES,
   tableStatuses,

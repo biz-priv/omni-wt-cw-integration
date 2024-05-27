@@ -24,7 +24,7 @@ function:
     SHIPMENT_HEADER: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/shipment-header/ddb.tableName}
     DOC_STATUS_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/pod-status-table-name}
     CW_URL: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/url}
-    CW_ENDPOINT_AUTHORIZATION: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/auth}    
+    CW_ENDPOINT_AUTHORIZATION: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/auth}
     DOC_STATUS_TABLE_STATUS_INDEX: ${ssm:/omni-fourkites-updates-infra/${self:provider.stage}/fourkites-doc-upload-status-table-status-index}
     CUSTOMER_LIST_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/customer-list-table-name}
     REFERENCE_TABLE: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/references/ddb.tableName}

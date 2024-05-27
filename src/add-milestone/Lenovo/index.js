@@ -24,7 +24,7 @@ module.exports.handler = async (event, context) => {
       console.info('Skipped as this is an update or delete shipment.');
       return;
     }
-    
+
     if (
       get(message, 'dynamoTableName', '') === `omni-wt-rt-shipment-milestone-${process.env.STAGE}`
     ) {
@@ -57,7 +57,7 @@ module.exports.handler = async (event, context) => {
         ExpressionAttributeValues: {
           ':orderNo': orderNo,
           ':shipquote': 'S',
-          ':billno': lenovoCustomerId
+          ':billno': lenovoCustomerId,
         },
       };
 

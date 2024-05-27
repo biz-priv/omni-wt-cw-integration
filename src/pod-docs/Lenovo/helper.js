@@ -33,7 +33,7 @@ async function publishToSNS(message, functionName) {
 }
 
 function getCstTimestamp(date = new Date()) {
-  return moment(date).tz('America/Chicago').format('YYYY:MM:DD HH:mm:ss');
+  return moment(date).tz('America/Chicago').format('YYYY-MM-DD HH:mm:ss');
 }
 
 const tableParams = {

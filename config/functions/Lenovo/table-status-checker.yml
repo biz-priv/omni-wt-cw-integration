@@ -1,0 +1,23 @@
+---
+function:
+  name: omni-fourkites-doc-upload-table-status-checker-${self:provider.stage}
+  handler: src/pod-docs/Lenovo/table-status-checker.handler
+  description: Omni Fourkites Documents upload
+  package:
+    patterns:
+      - '!**/*'
+      - 'src/pod-docs/Lenovo/table-status-checker.js'
+      - 'src/pod-docs/Lenovo/helper.js'
+      - 'src/pod-docs/Lenovo/dynamodb.js'
+  runtime: nodejs18.x
+  layers:
+    - { Ref: NodeModulesLambdaLayer }
+  events:
+    - schedule: cron(*/1 * * * ? *) #cron for every 1 min
+  environment:
+    SHIPMENT_HEADER: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/shipment-header/ddb.tableName}
+    DOC_STATUS_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/pod-status-table-name}
+    DOC_STATUS_TABLE_STATUS_INDEX: ${ssm:/omni-fourkites-updates-infra/${self:provider.stage}/fourkites-doc-upload-status-table-status-index}
+    CUSTOMER_LIST_TABLE: ${ssm:/omni-fourkites-updates-infra/${self:provider.stage}/fourkites-customer-list-table-name}
+    REFERENCE_TABLE: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/references/ddb.tableName}
+    REFERENCE_TABLE_ORDER_NO_INDEX: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/references/ddb.orderNoIndex}

@@ -22,7 +22,6 @@ function:
           - suffix: ${ssm:/${self:service}/${self:provider.stage}/s3-suffix}
 
   environment:
-    ERROR_SNS_ARN: ${ssm:/omni-reports/${self:provider.stage}/error-notification/sns/arn}
     WT_URL: ${ssm:/omni-dw/${self:provider.stage}/createShipment/wt/url}
     CW_URL: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/url}
     CW_ENDPOINT_AUTHORIZATION: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/auth}

@@ -24,7 +24,7 @@ module.exports.handler = async (event, context) => {
       console.info('Skipped as this is an update or delete shipment.');
       return;
     }
-
+    
     if (
       get(message, 'dynamoTableName', '') === `omni-wt-rt-shipment-milestone-${process.env.STAGE}`
     ) {
@@ -211,7 +211,7 @@ const handleError = async (error, context, event) => {
   const orderStatusId = get(data, 'FK_OrderStatusId', '');
 
   try {
-    await sendSNSNotification(context, error);
+    await sendSNSNotification(context, error, orderNo, orderStatusId);
     console.info('SNS notification has been sent');
   } catch (snsError) {
     console.error('Error while sending SNS notification:', snsError);
@@ -230,8 +230,8 @@ const handleError = async (error, context, event) => {
   });
 };
 
-const sendSNSNotification = (context, error) =>
+const sendSNSNotification = (context, error, orderNo, orderStatusId) =>
   publishToSNS({
-    message: `Error in function ${context.functionName}.\nError Details: ${error.message}`,
-    subject: 'LENOVO ADD MILESTONE ERROR',
+    message: `Error in ${context.functionName}.\n\nOrderNo: ${orderNo}.\n\nOrderStatusId: ${orderStatusId}.\nError Details: ${error.message}.`,
+    subject: `LENOVO ADD MILESTONE ERROR ~ OrderNo: ${orderNo} / OrderStatusId: ${orderStatusId}`,
   });

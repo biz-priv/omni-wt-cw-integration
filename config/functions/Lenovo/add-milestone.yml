@@ -23,4 +23,3 @@ function:
     STATUS_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/add-milestone-status-table-name}
     CW_URL: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/url}
     CW_ENDPOINT_AUTHORIZATION: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/auth}
-    ERROR_SNS_ARN: ${ssm:/omni-reports/${self:provider.stage}/error-notification/sns/arn}

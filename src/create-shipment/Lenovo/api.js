@@ -20,11 +20,11 @@ async function sendToWT(postData) {
     if (get(res, 'status', '') === 200) {
       return get(res, 'data', '');
     }
-    throw new Error(`WORLD TRAK API Request Failed: ${res}`);
+    throw new Error(`\n\nWORLD TRAK API Request Failed: ${res}`);
   } catch (error) {
     console.error('WORLD TRAK API Request Failed: ', error);
     const errorMsg = get(error, 'response.data', error.message);
-    throw new Error(`Error:${errorMsg}\n Payload: ${postData}`);
+    throw new Error(`${errorMsg}.\n\nPayload: ${postData}.`);
   }
 }
 
@@ -44,10 +44,10 @@ async function sendToCW(postData) {
     if (get(res, 'status', '') === 200) {
       return get(res, 'data', '');
     }
-    throw new Error(`CARGOWISE API Request Failed: ${res}`);
+    throw new Error(`\n\nCARGOWISE API Request Failed: ${res}`);
   } catch (error) {
     const errorMsg = get(error, 'response.data', error.message);
-    throw new Error(`Error:${errorMsg}\n Payload: ${postData}`);
+    throw new Error(`${errorMsg}\n Payload: ${postData}`);
   }
 }
 

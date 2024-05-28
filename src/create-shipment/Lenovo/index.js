@@ -3,11 +3,13 @@
 const AWS = require('aws-sdk');
 const { get, unset } = require('lodash');
 
+const ses = new AWS.SES();
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const { publishToSNS, putItem, dbQuery } = require('../../shared/dynamo');
 const { getS3Object, xmlToJson, STATUSES, cstDateTime } = require('../../shared/helper');
 const { preparePayloadForWT, extractData, payloadToCW } = require('./helper');
 const { sendToWT, sendToCW } = require('./api');
+
 
 let s3Bucket = '';
 let s3Key = '';
@@ -15,7 +17,7 @@ let s3Key = '';
 module.exports.handler = async (event, context) => {
   console.info('🙂 -> file: index.js:9 -> event:', JSON.stringify(event));
   const dynamoData = {};
-
+  let xmlfromCw;
   try {
     ({ s3Bucket, s3Key } = extractS3Info(event));
     const fileName = s3Key.split('/').pop();
@@ -24,7 +26,7 @@ module.exports.handler = async (event, context) => {
 
     const xmlData = await getS3Object(s3Bucket, s3Key);
     dynamoData.XmlFromCW = xmlData;
-
+    xmlfromCw = xmlData;
     const jsonData = await xmlToJson(xmlData);
     const data = await extractData(jsonData);
 
@@ -41,7 +43,7 @@ module.exports.handler = async (event, context) => {
     );
 
     if (recordExisting) {
-      return await handleExistingRecord(dynamoData);
+      return await handleExistingRecord(dynamoData, xmlfromCw);
     }
 
     const [xmlWTResponse, xmlCWResponse] = await processWTAndCW(
@@ -57,7 +59,7 @@ module.exports.handler = async (event, context) => {
     await putItem({ tableName: process.env.LOGS_TABLE, item: dynamoData });
     return 'Success';
   } catch (error) {
-    return await handleError(error, context, event, dynamoData);
+    return await handleError(error, context, event, dynamoData, xmlfromCw);
   }
 };
 
@@ -66,7 +68,7 @@ const extractS3Info = (event) => ({
   s3Key: get(event, 'Records[0].s3.object.key', ''),
 });
 
-const validateWTResponse = (response) => {
+const validateWTResponse = (response, payloadToWt) => {
   const errorMessage = get(
     response,
     'soap:Envelope.soap:Body.AddNewShipmentV3Response.AddNewShipmentV3Result.ErrorMessage',
@@ -79,11 +81,11 @@ const validateWTResponse = (response) => {
   );
 
   if (errorMessage || !housebill) {
-    throw new Error(`WORLD TRAK API call failed: ${errorMessage}`);
+    throw new Error(`WORLD TRAK API call failed: ${errorMessage}.\n\nPayload: ${payloadToWt}`);
   }
 };
 
-const validateCWResponse = (response) => {
+const validateCWResponse = (response, xmlCWPayload) => {
   const eventType = get(response, 'UniversalResponse.Data.UniversalEvent.Event.EventType', '');
   const context = get(
     response,
@@ -95,15 +97,15 @@ const validateCWResponse = (response) => {
 
   if (eventType !== 'DIM' || processingStatusCode !== 'PRS') {
     throw new Error(
-      `CARGOWISE API call failed: ${get(response, 'UniversalResponse.ProcessingLog', '')}`
+      `CARGOWISE API call failed: ${get(response, 'UniversalResponse.ProcessingLog', '')}. \n\nPayload: ${xmlCWPayload}`
     );
   }
 };
 
-const handleError = async (error, context, event, dynamoData) => {
+const handleError = async (error, context, event, dynamoData, xmlfromCw) => {
   console.error('Error:', error);
   try {
-    await sendSNSNotification(context, error, event, dynamoData);
+    await sendSNSNotification(context, error, event, dynamoData, xmlfromCw);
     console.info('SNS notification has been sent');
   } catch (snsError) {
     console.error('Error while sending SNS notification:', snsError);
@@ -115,9 +117,9 @@ const handleError = async (error, context, event, dynamoData) => {
   return 'Failed';
 };
 
-const sendSNSNotification = (context, error, event, dynamoData) =>
+const sendSNSNotification = (context, error, event, dynamoData, xmlfromCw) =>
   publishToSNS({
-    message: `An error occurred in function ${context.functionName}.\n\nERROR DETAILS: ${error.message}.\n\nShipmentId: ${get(dynamoData, 'ShipmentId', '')}.\n\n Xml From CW: ${get(dynamoDB, 'XmlFromCW', '')}.\n\nXml to WT: ${get(dynamoDB, 'XmlWTPayload', '')}. \n\nEVENT: ${JSON.stringify(event)}.\n\nS3BUCKET: ${s3Bucket}.\n\nS3KEY: ${s3Key}.\n\nLAMBDA TRIGGER: This lambda will trigger when there is a XML file dropped in a s3 Bucket(for s3 bucket and the file path, please refer to the event).\n\nRETRIGGER PROCESS: After fixing the issue, please retrigger the process by reuploading the file mentioned in the event.\n\nNote: Use the ShipmentId: ${get(dynamoData, 'ShipmentId', '')} for better search in the logs and also check in dynamodb: ${process.env.LOGS_TABLE} for understanding the complete data.`,
+    message: `An error occurred in function ${context.functionName}.\n\nERROR DETAILS: ${error}.\n\nShipmentId: ${get(dynamoData, 'ShipmentId', '')}.\n\n Xml From CW: ${xmlfromCw}. \n\nEVENT: ${JSON.stringify(event)}.\n\nS3BUCKET: ${s3Bucket}.\n\nS3KEY: ${s3Key}.\n\nLAMBDA TRIGGER: This lambda will trigger when there is a XML file dropped in a s3 Bucket(for s3 bucket and the file path, please refer to the event).\n\nRETRIGGER PROCESS: After fixing the issue, please retrigger the process by reuploading the file mentioned in the event.\n\nNote: Use the ShipmentId: ${get(dynamoData, 'ShipmentId', '')} for better search in the logs and also check in dynamodb: ${process.env.LOGS_TABLE} for understanding the complete data.`,
     subject: `LENOVO CREATE SHIPMENT ERROR ~ ShipmentId: ${get(dynamoData, 'ShipmentId', '')}`,
   });
 
@@ -134,7 +136,7 @@ const checkExistingRecord = async (shipmentId) => {
   return recordExisting.length > 0 && recordExisting[0].Status === STATUSES.SUCCESS;
 };
 
-const handleExistingRecord = async (data) => {
+const handleExistingRecord = async (data, xmlfromCw) => {
   console.info(
     `Record with ShipmentId: ${data.ShipmentId} is already sent to WT. Skipping the Process...`
   );
@@ -143,8 +145,8 @@ const handleExistingRecord = async (data) => {
   unset(data, 'ShipmentId');
 
   data.ResetCount = Number(get(data, 'ResetCount', 0)) + 1;
-  data.ErrorMsg = `Record with ShipmentId: ${shipmentId} is already sent to WT. Skipping the Process...`;
-
+  data.ErrorMsg = `Record with ShipmentId: ${shipmentId} is already sent to WT.`;
+  await sendSESEmail({message: `Record with ShipmentId: ${shipmentId} is already sent to WT.\n\nS3 KEY: ${s3Key}.\n\nXML from CW: ${xmlfromCw}`, subject: `LENOVO CREATE SHIPMENT DUPLICATES ALERT ~ ShipmentId: ${shipmentId}`})
   await updateDynamoDBRecord(shipmentId, data);
   return 'Skipped';
 };
@@ -189,7 +191,7 @@ const updateDynamoDBRecord = async (shipmentId, data) => {
 const processWTAndCW = async (payloadToWt, shipmentId, dynamoData) => {
   const xmlWTResponse = await sendToWT(payloadToWt);
   const xmlWTObjResponse = await xmlToJson(xmlWTResponse);
-  validateWTResponse(xmlWTObjResponse);
+  validateWTResponse(xmlWTObjResponse, payloadToWt);
 
   const housebill = get(
     xmlWTObjResponse,
@@ -202,7 +204,34 @@ const processWTAndCW = async (payloadToWt, shipmentId, dynamoData) => {
   const xmlCWPayload = await payloadToCW(shipmentId, housebill);
   const xmlCWResponse = await sendToCW(xmlCWPayload);
   const xmlCWObjResponse = await xmlToJson(xmlCWResponse);
-  validateCWResponse(xmlCWObjResponse);
+  validateCWResponse(xmlCWObjResponse, xmlCWPayload);
 
   return [xmlWTResponse, xmlCWResponse];
 };
+
+
+async function sendSESEmail({ message, subject }) {
+  try {
+    const params = {
+      Destination: {
+        ToAddresses: ['applications@omnilogistics.com', 'omnidev@bizcloudexperts.com'],
+      },
+      Message: {
+        Body: {
+          Text: {
+            Data: `${message}`,
+            Charset: 'UTF-8',
+          },
+        },
+        Subject: subject,
+      },
+      Source: 'no-reply@omnilogistics.com',
+    };
+    console.info('🚀 ~ file: helper.js:1747 ~ sendSESEmail ~ params:', params);
+
+    await ses.sendEmail(params).promise();
+  } catch (error) {
+    console.error('Error sending email with SES:', error);
+    throw error;
+  }
+}

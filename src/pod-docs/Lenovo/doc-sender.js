@@ -56,9 +56,9 @@ module.exports.handler = async (event, context) => {
         startString: '<ImageData>',
         endString: '</ImageData>',
         replacer: 'base64_content',
-      })
-      
-      console.info('sazitizedPayload:', sazitizedPayload)
+      });
+
+      console.info('sazitizedPayload:', sazitizedPayload);
 
       return await updateDocStatusTableData({
         docType,
@@ -207,9 +207,15 @@ function validateCWResponse(response) {
 
 function stringReplacer({ mainString, startString, endString, replacer }) {
   const startIndex = mainString.search(startString) + startString.length;
-  console.info(':slightly_smiling_face: -> file: sender.js:272 -> stringReplacer -> startIndex:', startIndex);
+  console.info(
+    ':slightly_smiling_face: -> file: sender.js:272 -> stringReplacer -> startIndex:',
+    startIndex
+  );
   const endIndex = mainString.search(endString);
-  console.info(':slightly_smiling_face: -> file: sender.js:274 -> stringReplacer -> endIndex:', endIndex);
+  console.info(
+    ':slightly_smiling_face: -> file: sender.js:274 -> stringReplacer -> endIndex:',
+    endIndex
+  );
   if (endIndex === -1) return mainString;
   return mainString.replace(mainString.substring(startIndex, endIndex), replacer);
 }

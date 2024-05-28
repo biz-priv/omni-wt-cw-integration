@@ -23,7 +23,8 @@ async function sendToWT(postData) {
     throw new Error(`WORLD TRAK API Request Failed: ${res}`);
   } catch (error) {
     console.error('WORLD TRAK API Request Failed: ', error);
-    throw error;
+    const errorMsg = get(error, 'response.data', error.message);
+    throw new Error(`Error:${errorMsg}\n Payload: ${postData}`);
   }
 }
 
@@ -45,8 +46,8 @@ async function sendToCW(postData) {
     }
     throw new Error(`CARGOWISE API Request Failed: ${res}`);
   } catch (error) {
-    console.error('CARGOWISE API Request Failed: ', error);
-    throw error;
+    const errorMsg = get(error, 'response.data', error.message);
+    throw new Error(`Error:${errorMsg}\n Payload: ${postData}`);
   }
 }
 

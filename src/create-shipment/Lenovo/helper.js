@@ -192,11 +192,11 @@ async function preparePayloadForWT(data) {
       },
     };
     const xmlBuilder = new xml2js.Builder({
-      render: {
-        pretty: true,
-        indent: '    ',
-        newline: '\n',
-      },
+      // render: {
+      //   pretty: true,
+      //   indent: '    ',
+      //   newline: '\n',
+      // },
     });
     const xmlPayload = xmlBuilder.buildObject(payload);
     return xmlPayload;

@@ -1,6 +1,6 @@
 'use strict';
 
-const { get, set } = require('lodash');
+const { get } = require('lodash');
 const AWS = require('aws-sdk');
 const xml2js = require('xml2js');
 const axios = require('axios');
@@ -51,18 +51,21 @@ module.exports.handler = async (event, context) => {
       const xmlCWObjResponse = await xmlToJson(xmlCWResponse);
       validateCWResponse(xmlCWObjResponse);
 
-      const sanitizedPayload = set(
-        payload,
-        'UniversalEvent.Event.AttachedDocumentCollection.AttachedDocument.ImageData',
-        'base64'
-      );
+      const sazitizedPayload = stringReplacer({
+        mainString: payload,
+        startString: '<ImageData>',
+        endString: '</ImageData>',
+        replacer: 'base64_content',
+      })
+      
+      console.info('sazitizedPayload:', sazitizedPayload)
 
       return await updateDocStatusTableData({
         docType,
         orderNo: fileNumber,
         functionName,
-        payload: sanitizedPayload,
-        xmlCWResponse,
+        payload: sazitizedPayload,
+        response: xmlCWResponse,
         status: STATUSES.SENT,
         message: 'Document sent successfully.',
       });
@@ -200,4 +203,13 @@ function validateCWResponse(response) {
     const processingLog = get(response, 'UniversalResponse.ProcessingLog', '');
     throw new Error(`CARGOWISE API call failed: ${processingLog}`);
   }
+}
+
+function stringReplacer({ mainString, startString, endString, replacer }) {
+  const startIndex = mainString.search(startString) + startString.length;
+  console.info(':slightly_smiling_face: -> file: sender.js:272 -> stringReplacer -> startIndex:', startIndex);
+  const endIndex = mainString.search(endString);
+  console.info(':slightly_smiling_face: -> file: sender.js:274 -> stringReplacer -> endIndex:', endIndex);
+  if (endIndex === -1) return mainString;
+  return mainString.replace(mainString.substring(startIndex, endIndex), replacer);
 }

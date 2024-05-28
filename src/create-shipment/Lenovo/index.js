@@ -119,7 +119,7 @@ const handleError = async (error, context, event, dynamoData, xmlfromCw) => {
 
 const sendSNSNotification = (context, error, event, dynamoData, xmlfromCw) =>
   publishToSNS({
-    message: `An error occurred in function ${context.functionName}.\n\nERROR DETAILS: ${error}.\n\nShipmentId: ${get(dynamoData, 'ShipmentId', '')}.\n\n Xml From CW: ${xmlfromCw}. \n\nEVENT: ${JSON.stringify(event)}.\n\nS3BUCKET: ${s3Bucket}.\n\nS3KEY: ${s3Key}.\n\nLAMBDA TRIGGER: This lambda will trigger when there is a XML file dropped in a s3 Bucket(for s3 bucket and the file path, please refer to the event).\n\nRETRIGGER PROCESS: After fixing the issue, please retrigger the process by reuploading the file mentioned in the event.\n\nNote: Use the ShipmentId: ${get(dynamoData, 'ShipmentId', '')} for better search in the logs and also check in dynamodb: ${process.env.LOGS_TABLE} for understanding the complete data.`,
+    message: `An error occurred in function ${context.functionName}.\n\nERROR DETAILS: ${error}.\n\nShipmentId: ${get(dynamoData, 'ShipmentId', '')}.\n\nEVENT: ${JSON.stringify(event)}.\n\nS3BUCKET: ${s3Bucket}.\n\nS3KEY: ${s3Key}.\n\nLAMBDA TRIGGER: This lambda will trigger when there is a XML file dropped in a s3 Bucket(for s3 bucket and the file path, please refer to the event).\n\nRETRIGGER PROCESS: After fixing the issue, please retrigger the process by reuploading the file mentioned in the event.\n\nNote: Use the ShipmentId: ${get(dynamoData, 'ShipmentId', '')} for better search in the logs and also check in dynamodb: ${process.env.LOGS_TABLE} for understanding the complete data.\n\n Xml From CW: ${xmlfromCw}.`,
     subject: `LENOVO CREATE SHIPMENT ERROR ~ ShipmentId: ${get(dynamoData, 'ShipmentId', '')}`,
   });
 
@@ -223,7 +223,10 @@ async function sendSESEmail({ message, subject }) {
             Charset: 'UTF-8',
           },
         },
-        Subject: subject,
+        Subject: {
+          Data: subject,
+          Charset: 'UTF-8',
+        },
       },
       Source: 'no-reply@omnilogistics.com',
     };

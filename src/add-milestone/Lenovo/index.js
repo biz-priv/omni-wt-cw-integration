@@ -5,11 +5,27 @@ const { get, includes } = require('lodash');
 const axios = require('axios');
 const xml2js = require('xml2js');
 const moment = require('moment-timezone');
-const { dbQuery, putItem, publishToSNS } = require('../../shared/dynamo');
+const { dbQuery, putItem, publishToSNS, getDynamoUpdateParam } = require('../../shared/dynamo');
 const { xmlToJson, cstDateTime, STATUSES } = require('../../shared/helper');
+
+const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
 const lenovoCustomerId = '17773';
 const allowedMilestones = ['PUP', 'TTC', 'DEL'];
+
+const checkExistingRecord = async (orderNo, orderStatusId) => {
+  const statusParams = {
+    TableName: process.env.STATUS_TABLE,
+    KeyConditionExpression: 'OrderNo = :orderNo AND OrderStatusId = :orderStatusId',
+    ExpressionAttributeValues: {
+      ':orderNo': orderNo,
+      ':orderStatusId': orderStatusId
+    }
+  };
+
+  const recordExisting = await dbQuery(statusParams);
+  return recordExisting.length > 0 && recordExisting[0].Status === STATUSES.SENT;
+};
 
 module.exports.handler = async (event, context) => {
   try {
@@ -19,20 +35,28 @@ module.exports.handler = async (event, context) => {
     const message = JSON.parse(get(recordBody, 'Message', ''));
     console.info('🚀 ~ file: index.js:22 ~ module.exports.handler= ~ message:', message);
 
-    const oldImage = get(message, 'OldImage', '');
-    if (oldImage !== '') {
-      console.info('Skipped as this is an update or delete shipment.');
-      return;
-    }
-
     if (
       get(message, 'dynamoTableName', '') === `omni-wt-rt-shipment-milestone-${process.env.STAGE}`
     ) {
-      console.info(message);
-      const data = AWS.DynamoDB.Converter.unmarshall(get(message, 'NewImage', {}));
+      const newImage = get(message, 'NewImage', {});
+      const oldImage = get(message, 'OldImage', undefined);
+      const data = AWS.DynamoDB.Converter.unmarshall(newImage);
       const orderNo = get(data, 'FK_OrderNo', '');
       const orderStatusId = get(data, 'FK_OrderStatusId', '');
       const eventDateTime = get(data, 'EventDateTime');
+      const oldEventDateTime = oldImage ? get(AWS.DynamoDB.Converter.unmarshall(oldImage), 'EventDateTime') : null;
+      /* 
+      1. Handle OldImage being undefined: Insert events won't have OldImage, so oldEventDateTime is set to null if OldImage is undefined.
+      2. Skip checking existing record if eventDateTime has changed: Check for existing records only when oldEventDateTime is present and equal to eventDateTime.
+      3. Retain current logic for further processing: Continue processing the event if it's a valid milestone and the other conditions are met. */
+      if (oldEventDateTime === eventDateTime) {
+        // Check if record exists with status SENT if eventDateTime has not changed
+        const isRecordSent = await checkExistingRecord(orderNo, orderStatusId);
+        if (isRecordSent) {
+          console.info(`Record with OrderNo: ${orderNo} and OrderStatusId: ${orderStatusId} already sent.`);
+          return;
+        }
+      }
 
       console.info('Order Status ID:', orderStatusId);
       console.info('Event DateTime:', eventDateTime);
@@ -115,7 +139,7 @@ module.exports.handler = async (event, context) => {
           EventDateTime: formattedDateTime,
           Payload: cwPayload,
           Response: xmlCWResponse,
-          InsertedTimeStamp: cstDateTime,
+          InsertedTimeStamp: new Date().toISOString(),
         },
       });
     }
@@ -217,19 +241,36 @@ const handleError = async (error, context, event) => {
     console.error('Error while sending SNS notification:', snsError);
   }
 
-  const ErrorMsg = `${error.message}`;
-  await putItem({
+  const errorMsg = `${error.message}`;
+  await updateItem({
     tableName: process.env.STATUS_TABLE,
-    item: {
-      OrderNo: orderNo,
-      OrderStatusId: orderStatusId,
+    key: { OrderNo: orderNo, OrderStatusId: orderStatusId },
+    attributes: {
       Status: STATUSES.FAILED,
-      ErrorMsg,
+      ErrorMsg: errorMsg,
       InsertedTimeStamp: cstDateTime,
     },
   });
 };
 
+async function updateItem({ tableName, key, attributes }) {
+  const { ExpressionAttributeNames, ExpressionAttributeValues, UpdateExpression } = getDynamoUpdateParam(attributes);
+
+  const params = {
+    TableName: tableName,
+    Key: key,
+    UpdateExpression,
+    ExpressionAttributeNames,
+    ExpressionAttributeValues,
+  };
+
+  try {
+    return await dynamoDB.update(params).promise();
+  } catch (e) {
+    console.error('Update Item Error: ', e, '\nUpdate params: ', params);
+    throw new Error('UpdateItemError');
+  }
+}
 const sendSNSNotification = (context, error, orderNo, orderStatusId) =>
   publishToSNS({
     message: `Error in ${context.functionName}.\n\nOrderNo: ${orderNo}.\n\nOrderStatusId: ${orderStatusId}.\nError Details: ${error.message}.`,

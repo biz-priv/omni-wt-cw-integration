@@ -10,14 +10,12 @@ const { getS3Object, xmlToJson, STATUSES, cstDateTime } = require('../../shared/
 const { preparePayloadForWT, extractData, payloadToCW } = require('./helper');
 const { sendToWT, sendToCW } = require('./api');
 
-
 let s3Bucket = '';
 let s3Key = '';
 
 module.exports.handler = async (event, context) => {
   console.info('🙂 -> file: index.js:9 -> event:', JSON.stringify(event));
   const dynamoData = {};
-  let xmlfromCw;
   try {
     ({ s3Bucket, s3Key } = extractS3Info(event));
     const fileName = s3Key.split('/').pop();
@@ -26,7 +24,6 @@ module.exports.handler = async (event, context) => {
 
     const xmlData = await getS3Object(s3Bucket, s3Key);
     dynamoData.XmlFromCW = xmlData;
-    xmlfromCw = xmlData;
     const jsonData = await xmlToJson(xmlData);
     const data = await extractData(jsonData);
 
@@ -43,7 +40,7 @@ module.exports.handler = async (event, context) => {
     );
 
     if (recordExisting) {
-      return await handleExistingRecord(dynamoData, xmlfromCw);
+      return await handleExistingRecord(dynamoData);
     }
 
     const [xmlWTResponse, xmlCWResponse] = await processWTAndCW(
@@ -59,7 +56,7 @@ module.exports.handler = async (event, context) => {
     await putItem({ tableName: process.env.LOGS_TABLE, item: dynamoData });
     return 'Success';
   } catch (error) {
-    return await handleError(error, context, event, dynamoData, xmlfromCw);
+    return await handleError(error, context, event, dynamoData);
   }
 };
 
@@ -102,24 +99,26 @@ const validateCWResponse = (response, xmlCWPayload) => {
   }
 };
 
-const handleError = async (error, context, event, dynamoData, xmlfromCw) => {
+const handleError = async (error, context, event, dynamoData) => {
   console.error('Error:', error);
   try {
-    await sendSNSNotification(context, error, event, dynamoData, xmlfromCw);
+    await sendSNSNotification(context, error, event, dynamoData);
     console.info('SNS notification has been sent');
   } catch (snsError) {
     console.error('Error while sending SNS notification:', snsError);
   }
 
-  dynamoData.ErrorMsg = `${error}`;
-  dynamoData.Status = STATUSES.FAILED;
-  await putItem({ tableName: process.env.LOGS_TABLE, item: dynamoData });
+  const errorMessage = `${error.message}`;
+  // dynamoData.Status = STATUSES.FAILED;
+  const shipmentId = get(dynamoData, 'ShipmentId', '');
+  unset(dynamoData, 'ShipmentId');
+  await updateDynamoDBRecord(shipmentId, errorMessage, STATUSES.FAILED ); // use update item.
   return 'Failed';
 };
 
-const sendSNSNotification = (context, error, event, dynamoData, xmlfromCw) =>
+const sendSNSNotification = (context, error, event, dynamoData) =>
   publishToSNS({
-    message: `An error occurred in function ${context.functionName}.\n\nERROR DETAILS: ${error}.\n\nShipmentId: ${get(dynamoData, 'ShipmentId', '')}.\n\nEVENT: ${JSON.stringify(event)}.\n\nS3BUCKET: ${s3Bucket}.\n\nS3KEY: ${s3Key}.\n\nLAMBDA TRIGGER: This lambda will trigger when there is a XML file dropped in a s3 Bucket(for s3 bucket and the file path, please refer to the event).\n\nRETRIGGER PROCESS: After fixing the issue, please retrigger the process by reuploading the file mentioned in the event.\n\nNote: Use the ShipmentId: ${get(dynamoData, 'ShipmentId', '')} for better search in the logs and also check in dynamodb: ${process.env.LOGS_TABLE} for understanding the complete data.\n\n Xml From CW: ${xmlfromCw}.`,
+    message: `An error occurred in function ${context.functionName}.\n\nERROR DETAILS: ${error}.\n\nShipmentId: ${get(dynamoData, 'ShipmentId', '')}.\n\nEVENT: ${JSON.stringify(event)}.\n\nS3BUCKET: ${s3Bucket}.\n\nS3KEY: ${s3Key}.\n\nLAMBDA TRIGGER: This lambda will trigger when there is a XML file dropped in a s3 Bucket(for s3 bucket and the file path, please refer to the event).\n\nRETRIGGER PROCESS: After fixing the issue, please retrigger the process by reuploading the file mentioned in the event.\n\nNote: Use the ShipmentId: ${get(dynamoData, 'ShipmentId', '')} for better search in the logs and also check in dynamodb: ${process.env.LOGS_TABLE} for understanding the complete data.`,
     subject: `LENOVO CREATE SHIPMENT ERROR ~ ShipmentId: ${get(dynamoData, 'ShipmentId', '')}`,
   });
 
@@ -136,22 +135,23 @@ const checkExistingRecord = async (shipmentId) => {
   return recordExisting.length > 0 && recordExisting[0].Status === STATUSES.SUCCESS;
 };
 
-const handleExistingRecord = async (data, xmlfromCw) => {
+const handleExistingRecord = async (data) => {
   console.info(
     `Record with ShipmentId: ${data.ShipmentId} is already sent to WT. Skipping the Process...`
   );
 
   const shipmentId = get(data, 'ShipmentId', '');
   unset(data, 'ShipmentId');
-
-  data.ResetCount = Number(get(data, 'ResetCount', 0)) + 1;
-  data.ErrorMsg = `Record with ShipmentId: ${shipmentId} is already sent to WT.`;
-  await sendSESEmail({message: `Record with ShipmentId: ${shipmentId} is already sent to WT.\n\nS3 KEY: ${s3Key}.\n\nXML from CW: ${xmlfromCw}`, subject: `LENOVO CREATE SHIPMENT DUPLICATES ALERT ~ ShipmentId: ${shipmentId}`})
-  await updateDynamoDBRecord(shipmentId, data);
+  const errorMsg = `Record with ShipmentId: ${shipmentId} is already sent to WT.`;
+  await sendSESEmail({
+    message: `Record with ShipmentId: ${shipmentId} is already sent to WT.\n\nS3 KEY: ${s3Key}.`,
+    subject: `LENOVO CREATE SHIPMENT DUPLICATES ALERT ~ ShipmentId: ${shipmentId}`,
+  });
+  await updateDynamoDBRecord(shipmentId, errorMsg, STATUSES.SUCCESS);
   return 'Skipped';
 };
 
-const updateDynamoDBRecord = async (shipmentId, data) => {
+const updateDynamoDBRecord = async (shipmentId, errorMessage, status) => {
   const params = {
     TableName: process.env.LOGS_TABLE,
     Key: { ShipmentId: shipmentId },
@@ -159,9 +159,9 @@ const updateDynamoDBRecord = async (shipmentId, data) => {
         SET 
           #InsertedTimeStamp = :InsertedTimeStamp, 
           #ErrorMsg = :ErrorMsg,
-          #ResetCount = if_not_exists(#ResetCount, :start) + :increment
+          #ResetCount = :resetcount,
+          #Status = :status
       `,
-    ConditionExpression: 'attribute_not_exists(ShipmentId) OR #Status <> :success',
     ExpressionAttributeNames: {
       '#InsertedTimeStamp': 'InsertedTimeStamp',
       '#ResetCount': 'ResetCount',
@@ -169,11 +169,10 @@ const updateDynamoDBRecord = async (shipmentId, data) => {
       '#Status': 'Status',
     },
     ExpressionAttributeValues: {
-      ':InsertedTimeStamp': get(data, 'InsertedTimeStamp', ''),
-      ':ErrorMsg': get(data, 'ErrorMsg', ''),
-      ':start': 0,
-      ':increment': 1,
-      ':success': STATUSES.SUCCESS,
+      ':InsertedTimeStamp': cstDateTime,
+      ':ErrorMsg': errorMessage || '',
+      ':resetcount': status === STATUSES.SUCCESS ? +1 : 0,
+      ':status': status,
     },
     ReturnValues: 'UPDATED_NEW',
   };
@@ -208,7 +207,6 @@ const processWTAndCW = async (payloadToWt, shipmentId, dynamoData) => {
 
   return [xmlWTResponse, xmlCWResponse];
 };
-
 
 async function sendSESEmail({ message, subject }) {
   try {

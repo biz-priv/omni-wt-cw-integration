@@ -144,7 +144,7 @@ function payloadToCW(b64str, filename, referenceNo) {
         DataContext: {
           DataTargetCollection: {
             DataTarget: {
-              Type: 'WarehouseOrder',
+              Type: 'ForwardingShipment',
               Key: referenceNo,
             },
           },

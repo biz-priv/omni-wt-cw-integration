@@ -2,6 +2,37 @@
 
 const { get } = require('lodash');
 const xml2js = require('xml2js');
+const Joi = require('joi');
+
+
+const attributeSourceMap = {
+  forwardingShipmentKey: 'UniversalShipment.Shipment.DataContext.DataSourceCollection.DataSource[?(@.Type==="ForwardingShipment")].Key',
+  referenceNumber: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.LocalProcessing.OrderNumberCollection.OrderNumber.OrderReference',
+  shipperAddress1: 'UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Address1',
+  shipperAddress2: 'UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Address2',
+  shipperCity: 'UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].City',
+  shipperName: 'UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].CompanyName',
+  shipperZip: 'UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Postcode',
+  shipperState: 'UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].State._',
+  shipperCountry: 'UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Country.Code',
+  shipperEmail: 'UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Email',
+  shipperPhone: 'UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Phone',
+  shipperFax: 'UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Fax',
+  consigneeAddress1: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Address1',
+  consigneeAddress2: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Address2',
+  consigneeCity: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].City',
+  consigneeName: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].CompanyName',
+  consigneeZip: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Postcode',
+  consigneeState: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].State._',
+  consigneeCountry: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Country.Code',
+  consigneeEmail: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Email',
+  consigneeFax: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Fax',
+  consigneePhone: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Phone',
+  readyDate: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.LocalProcessing.LCLAvailable',
+  readyTime: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.LocalProcessing.LCLAvailable',
+  shipmentLines: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.PackingLineCollection.PackingLine',
+};
+
 
 async function extractData(dataObj) {
   console.info('🚀 ~ file: test.js:353 ~ extractData ~ dataObj:', JSON.stringify(dataObj));
@@ -57,7 +88,7 @@ async function extractData(dataObj) {
     );
 
     const consigneeAddress = organizationAddressForConsignee.find(
-      (address) => address.AddressType === 'ConsignorPickupDeliveryAddress'
+      (address) => address.AddressType === 'ConsigneePickupDeliveryAddress'
     );
 
     const shipmentLineValues = packingLineArray.map((item) => ({
@@ -107,6 +138,9 @@ async function extractData(dataObj) {
 
 async function preparePayloadForWT(data) {
   try {
+    // Validate the data object against the schema
+    const validatedData = await validateData(data);
+    // Prepare the payload
     const payload = {
       'soap:Envelope': {
         '$': {
@@ -132,12 +166,12 @@ async function preparePayloadForWT(data) {
               ReferenceList: {
                 NewShipmentRefsV3: [
                   {
-                    ReferenceNo: get(data, 'forwardingShipmentKey', ''),
+                    ReferenceNo: get(validatedData, 'forwardingShipmentKey', ''),
                     CustomerTypeV3: 'BillTo',
                     RefTypeId: 'SID',
                   },
                   {
-                    ReferenceNo: get(data, 'referenceNumber', ''),
+                    ReferenceNo: get(validatedData, 'referenceNumber', ''),
                     CustomerTypeV3: 'BillTo',
                     RefTypeId: 'ORD',
                   },
@@ -148,33 +182,33 @@ async function preparePayloadForWT(data) {
               ShipmentType: 'Shipment',
               Mode: 'Domestic',
               DeclaredType: 'LL',
-              CustomerNo: get(data, 'customerNo', ''),
-              BillToAcct: get(data, 'customerNo', ''),
-              Station: get(data, 'station', ''),
-              ShipperAddress1: get(data, 'shipperAddress1', ''),
-              ShipperAddress2: get(data, 'shipperAddress2', ''),
-              ShipperCity: get(data, 'shipperCity', ''),
-              ShipperName: get(data, 'shipperName', ''),
-              ShipperCountry: get(data, 'shipperCountry', ''),
-              ShipperEmail: get(data, 'shipperEmail', ''),
-              ShipperFax: get(data, 'shipperFax', ''),
-              ShipperPhone: get(data, 'shipperPhone', ''),
-              ShipperZip: get(data, 'shipperZip', ''),
-              ShipperState: get(data, 'shipperState', ''),
-              ReadyDate: get(data, 'readyDate', ''),
-              ReadyTime: get(data, 'readyTime', ''),
-              ConsigneeAddress1: get(data, 'consigneeAddress1', ''),
-              ConsigneeAddress2: get(data, 'consigneeAddress2', ''),
-              ConsigneeCity: get(data, 'consigneeCity', ''),
-              ConsigneeName: get(data, 'consigneeName', ''),
-              ConsigneeCountry: get(data, 'consigneeCountry', ''),
-              ConsigneeEmail: get(data, 'consigneeEmail', ''),
-              ConsigneeFax: get(data, 'consigneeFax', ''),
-              ConsigneePhone: get(data, 'consigneePhone', ''),
-              ConsigneeZip: get(data, 'consigneeZip', ''),
-              ConsigneeState: get(data, 'consigneeState', ''),
+              CustomerNo: get(validatedData, 'customerNo', ''),
+              BillToAcct: get(validatedData, 'customerNo', ''),
+              Station: get(validatedData, 'station', ''),
+              ShipperAddress1: get(validatedData, 'shipperAddress1', ''),
+              ShipperAddress2: get(validatedData, 'shipperAddress2', ''),
+              ShipperCity: get(validatedData, 'shipperCity', ''),
+              ShipperName: get(validatedData, 'shipperName', ''),
+              ShipperCountry: get(validatedData, 'shipperCountry', ''),
+              ShipperEmail: get(validatedData, 'shipperEmail', ''),
+              ShipperFax: get(validatedData, 'shipperFax', ''),
+              ShipperPhone: get(validatedData, 'shipperPhone', ''),
+              ShipperZip: get(validatedData, 'shipperZip', ''),
+              ShipperState: get(validatedData, 'shipperState', ''),
+              ReadyDate: get(validatedData, 'readyDate', ''),
+              ReadyTime: get(validatedData, 'readyTime', ''),
+              ConsigneeAddress1: get(validatedData, 'consigneeAddress1', ''),
+              ConsigneeAddress2: get(validatedData, 'consigneeAddress2', ''),
+              ConsigneeCity: get(validatedData, 'consigneeCity', ''),
+              ConsigneeName: get(validatedData, 'consigneeName', ''),
+              ConsigneeCountry: get(validatedData, 'consigneeCountry', ''),
+              ConsigneeEmail: get(validatedData, 'consigneeEmail', ''),
+              ConsigneeFax: get(validatedData, 'consigneeFax', ''),
+              ConsigneePhone: get(validatedData, 'consigneePhone', ''),
+              ConsigneeZip: get(validatedData, 'consigneeZip', ''),
+              ConsigneeState: get(validatedData, 'consigneeState', ''),
               ShipmentLineList: {
-                NewShipmentDimLineV3: get(data, 'shipmentLines', []).map((line) => ({
+                NewShipmentDimLineV3: get(validatedData, 'shipmentLines', []).map((line) => ({
                   Description: get(line, 'GoodsDescription', ''),
                   Height: Number(get(line, 'Height', 0)).toFixed(5),
                   Length: Number(get(line, 'Length', 0)).toFixed(5),
@@ -191,6 +225,8 @@ async function preparePayloadForWT(data) {
         },
       },
     };
+
+    // Convert the payload to XML
     const xmlBuilder = new xml2js.Builder({
       // render: {
       //   pretty: true,
@@ -247,6 +283,51 @@ async function payloadToCW(shipmentId, housebill) {
   }
 }
 
+function generateError(attribute, sourcePath) {
+  return new Error(`${attribute} is required. Please populate the attribute from the CW. SourcePath: ${sourcePath}.`);
+}
+
+async function validateData(data) {
+  const schema = Joi.object({
+    forwardingShipmentKey: Joi.string().required().error(generateError('forwardingShipmentKey', attributeSourceMap.forwardingShipmentKey)),
+    referenceNumber: Joi.string().required().error(generateError('referenceNumber', attributeSourceMap.referenceNumber)),
+    customerNo: Joi.string().required().error(generateError('customerNo', '')),
+    station: Joi.string().required().error(generateError('station', '')),
+    shipperAddress1: Joi.string().required().error(generateError('shipperAddress1', attributeSourceMap.shipperAddress1)),
+    shipperAddress2: Joi.string().allow('').optional(),
+    shipperCity: Joi.string().required().error(generateError('shipperCity', attributeSourceMap.shipperCity)),
+    shipperName: Joi.string().required().error(generateError('shipperName', attributeSourceMap.shipperName)),
+    shipperCountry: Joi.string().required().error(generateError('shipperCountry', attributeSourceMap.shipperCountry)),
+    shipperEmail: Joi.string().allow('').optional(),
+    shipperFax: Joi.string().allow('').optional(),
+    shipperPhone: Joi.string().allow('').optional(),
+    shipperZip: Joi.string().required().error(generateError('shipperZip', attributeSourceMap.shipperZip)),
+    shipperState: Joi.string().required().error(generateError('shipperState', attributeSourceMap.shipperState)),
+    readyDate: Joi.string().required().error(generateError('readyDate', attributeSourceMap.readyDate)),
+    readyTime: Joi.string().required().error(generateError('readyTime', attributeSourceMap.readyTime)),
+    consigneeAddress1: Joi.string().required().error(generateError('consigneeAddress1', attributeSourceMap.consigneeAddress1)),
+    consigneeAddress2: Joi.string().allow('').optional(),
+    consigneeCity: Joi.string().required().error(generateError('consigneeCity', attributeSourceMap.consigneeCity)),
+    consigneeName: Joi.string().required().error(generateError('consigneeName', attributeSourceMap.consigneeName)),
+    consigneeCountry: Joi.string().required().error(generateError('consigneeCountry', attributeSourceMap.consigneeCountry)),
+    consigneeEmail: Joi.string().allow('').optional(),
+    consigneeFax: Joi.string().allow('').optional(),
+    consigneePhone: Joi.string().allow('').optional(),
+    consigneeZip: Joi.string().required().error(generateError('consigneeZip', attributeSourceMap.consigneeZip)),
+    consigneeState: Joi.string().required().error(generateError('consigneeState', attributeSourceMap.consigneeState)),
+    shipmentLines: Joi.array().items(Joi.object({
+      GoodsDescription: Joi.string().required().error(generateError('GoodsDescription', 'PackingLine.GoodsDescription')),
+      Height: Joi.number().required().error(generateError('Height', 'PackingLine.Height')),
+      Length: Joi.number().required().error(generateError('Length', 'PackingLine.Length')),
+      PackQty: Joi.number().required().error(generateError('PackQty', 'PackingLine.PackQty')),
+      PackType: Joi.string().required().error(generateError('PackType', 'PackingLine.PackType')),
+      Weight: Joi.number().required().error(generateError('Weight', 'PackingLine.Weight')),
+      Width: Joi.number().required().error(generateError('Width', 'PackingLine.Width')),
+    })).required().error(generateError('shipmentLines', attributeSourceMap.shipmentLines)),
+  });
+
+  return schema.validateAsync(data, { abortEarly: false });
+}
 module.exports = {
   preparePayloadForWT,
   payloadToCW,

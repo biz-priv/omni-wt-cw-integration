@@ -284,7 +284,7 @@ async function payloadToCW(shipmentId, housebill) {
 }
 
 function generateError(attribute, sourcePath) {
-  return new Error(`${attribute} is required. Please populate the attribute from the CW. SourcePath: ${sourcePath}.`);
+  return new Error(`${attribute} is required. Please populate the attribute from the CW.\nSourcePath: ${sourcePath}`);
 }
 
 async function validateData(data) {
@@ -326,8 +326,14 @@ async function validateData(data) {
     })).required().error(generateError('shipmentLines', attributeSourceMap.shipmentLines)),
   });
 
-  return schema.validateAsync(data, { abortEarly: false });
+  const { error } = schema.validate(data, { abortEarly: false });
+
+  if (error) {
+    const errors = error.details.map(detail => detail.message);
+    throw new Error(errors.join('\n'));
+  }
 }
+
 module.exports = {
   preparePayloadForWT,
   payloadToCW,

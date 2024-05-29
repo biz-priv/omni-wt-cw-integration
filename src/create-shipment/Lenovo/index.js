@@ -26,12 +26,12 @@ module.exports.handler = async (event, context) => {
     dynamoData.XmlFromCW = xmlData;
     const jsonData = await xmlToJson(xmlData);
     const data = await extractData(jsonData);
-
-    const payloadToWt = await preparePayloadForWT(data);
-    dynamoData.XmlWTPayload = payloadToWt;
     const shipmentId = get(data, 'forwardingShipmentKey', '');
     console.info('🚀 ~ file: index.js:34 ~ module.exports.handler= ~ shipmentId:', shipmentId);
     dynamoData.ShipmentId = shipmentId;
+
+    const payloadToWt = await preparePayloadForWT(data);
+    dynamoData.XmlWTPayload = payloadToWt;
 
     const recordExisting = await checkExistingRecord(shipmentId);
     console.info(
@@ -118,7 +118,7 @@ const handleError = async (error, context, event, dynamoData) => {
 
 const sendSNSNotification = (context, error, event, dynamoData) =>
   publishToSNS({
-    message: `An error occurred in function ${context.functionName}.\n\nERROR DETAILS: ${error}.\n\nShipmentId: ${get(dynamoData, 'ShipmentId', '')}.\n\nEVENT: ${JSON.stringify(event)}.\n\nS3BUCKET: ${s3Bucket}.\n\nS3KEY: ${s3Key}.\n\nLAMBDA TRIGGER: This lambda will trigger when there is a XML file dropped in a s3 Bucket(for s3 bucket and the file path, please refer to the event).\n\nRETRIGGER PROCESS: After fixing the issue, please retrigger the process by reuploading the file mentioned in the event.\n\nNote: Use the ShipmentId: ${get(dynamoData, 'ShipmentId', '')} for better search in the logs and also check in dynamodb: ${process.env.LOGS_TABLE} for understanding the complete data.`,
+    message: `An error occurred in function ${context.functionName}.\n\n ${error}.\n\nShipmentId: ${get(dynamoData, 'ShipmentId', '')}.\n\nEVENT: ${JSON.stringify(event)}.\n\nS3BUCKET: ${s3Bucket}.\n\nS3KEY: ${s3Key}.\n\nLAMBDA TRIGGER: This lambda will trigger when there is a XML file dropped in a s3 Bucket(for s3 bucket and the file path, please refer to the event).\n\nRETRIGGER PROCESS: After fixing the issue, please retrigger the process by reuploading the file mentioned in the event.\n\nNote: Use the ShipmentId: ${get(dynamoData, 'ShipmentId', '')} for better search in the logs and also check in dynamodb: ${process.env.LOGS_TABLE} for understanding the complete data.`,
     subject: `LENOVO CREATE SHIPMENT ERROR ~ ShipmentId: ${get(dynamoData, 'ShipmentId', '')}`,
   });
 

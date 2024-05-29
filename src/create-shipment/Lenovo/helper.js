@@ -6,31 +6,31 @@ const Joi = require('joi');
 
 
 const attributeSourceMap = {
-  forwardingShipmentKey: 'UniversalShipment.Shipment.DataContext.DataSourceCollection.DataSource[?(@.Type==="ForwardingShipment")].Key',
-  referenceNumber: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.LocalProcessing.OrderNumberCollection.OrderNumber.OrderReference',
-  shipperAddress1: 'UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Address1',
-  shipperAddress2: 'UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Address2',
-  shipperCity: 'UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].City',
-  shipperName: 'UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].CompanyName',
-  shipperZip: 'UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Postcode',
-  shipperState: 'UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].State._',
-  shipperCountry: 'UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Country.Code',
-  shipperEmail: 'UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Email',
-  shipperPhone: 'UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Phone',
-  shipperFax: 'UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Fax',
-  consigneeAddress1: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Address1',
-  consigneeAddress2: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Address2',
-  consigneeCity: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].City',
-  consigneeName: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].CompanyName',
-  consigneeZip: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Postcode',
-  consigneeState: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].State._',
-  consigneeCountry: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Country.Code',
-  consigneeEmail: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Email',
-  consigneeFax: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Fax',
-  consigneePhone: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Phone',
-  readyDate: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.LocalProcessing.LCLAvailable',
-  readyTime: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.LocalProcessing.LCLAvailable',
-  shipmentLines: 'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.PackingLineCollection.PackingLine',
+  forwardingShipmentKey: 'UniversalInterchange.Body.UniversalShipment.Shipment.DataContext.DataSourceCollection.DataSource[?(@.Type==="ForwardingShipment")].Key',
+  referenceNumber: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.LocalProcessing.OrderNumberCollection.OrderNumber.OrderReference',
+  shipperAddress1: 'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Address1',
+  shipperAddress2: 'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Address2',
+  shipperCity: 'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].City',
+  shipperName: 'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].CompanyName',
+  shipperZip: 'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Postcode',
+  shipperState: 'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].State._',
+  shipperCountry: 'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Country.Code',
+  shipperEmail: 'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Email',
+  shipperPhone: 'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Phone',
+  shipperFax: 'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Fax',
+  consigneeAddress1: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Address1',
+  consigneeAddress2: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Address2',
+  consigneeCity: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].City',
+  consigneeName: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].CompanyName',
+  consigneeZip: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Postcode',
+  consigneeState: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].State._',
+  consigneeCountry: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Country.Code',
+  consigneeEmail: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Email',
+  consigneeFax: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Fax',
+  consigneePhone: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Phone',
+  readyDate: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.LocalProcessing.LCLAvailable',
+  readyTime: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.LocalProcessing.LCLAvailable',
+  shipmentLines: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.PackingLineCollection.PackingLine',
 };
 
 
@@ -40,7 +40,7 @@ async function extractData(dataObj) {
   try {
     const packingLine = get(
       dataObj,
-      'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.PackingLineCollection.PackingLine',
+      'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.PackingLineCollection.PackingLine',
       []
     );
 
@@ -48,26 +48,26 @@ async function extractData(dataObj) {
 
     const readyDate = get(
       dataObj,
-      'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.LocalProcessing.LCLAvailable'
+      'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.LocalProcessing.LCLAvailable'
     );
 
     const readyTime = readyDate;
 
     const referenceNumber = get(
       dataObj,
-      'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.LocalProcessing.OrderNumberCollection.OrderNumber.OrderReference',
+      'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.LocalProcessing.OrderNumberCollection.OrderNumber.OrderReference',
       ''
     );
 
     const dataSourceCollection = get(
       dataObj,
-      'UniversalShipment.Shipment.DataContext.DataSourceCollection.DataSource',
+      'UniversalInterchange.Body.UniversalShipment.Shipment.DataContext.DataSourceCollection.DataSource',
       []
     );
 
     const organizationAddressForShipper = get(
       dataObj,
-      'UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress',
+      'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress',
       []
     );
 
@@ -83,7 +83,7 @@ async function extractData(dataObj) {
 
     const organizationAddressForConsignee = get(
       dataObj,
-      'UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress',
+      'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress',
       []
     );
 
@@ -284,7 +284,7 @@ async function payloadToCW(shipmentId, housebill) {
 }
 
 function generateError(attribute, sourcePath) {
-  return new Error(`${attribute} is required. Please populate the attribute from the CW.\nSourcePath ${sourcePath}`);
+  return new Error(`${attribute} is required. Please populate the attribute from the CW.\n SourcePath ${sourcePath}`);
 }
 
 function validateData(data) {

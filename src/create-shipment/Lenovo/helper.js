@@ -284,10 +284,10 @@ async function payloadToCW(shipmentId, housebill) {
 }
 
 function generateError(attribute, sourcePath) {
-  return new Error(`${attribute} is required. Please populate the attribute from the CW.\nSourcePath: ${sourcePath}`);
+  return new Error(`${attribute} is required. Please populate the attribute from the CW ${sourcePath}.`);
 }
 
-async function validateData(data) {
+function validateData(data) {
   const schema = Joi.object({
     forwardingShipmentKey: Joi.string().required().error(generateError('forwardingShipmentKey', attributeSourceMap.forwardingShipmentKey)),
     referenceNumber: Joi.string().required().error(generateError('referenceNumber', attributeSourceMap.referenceNumber)),
@@ -298,9 +298,9 @@ async function validateData(data) {
     shipperCity: Joi.string().required().error(generateError('shipperCity', attributeSourceMap.shipperCity)),
     shipperName: Joi.string().required().error(generateError('shipperName', attributeSourceMap.shipperName)),
     shipperCountry: Joi.string().required().error(generateError('shipperCountry', attributeSourceMap.shipperCountry)),
-    shipperEmail: Joi.string().allow('').optional(),
+    shipperEmail: Joi.string().email().required().error(generateError('shipperEmail', attributeSourceMap.shipperEmail)),
     shipperFax: Joi.string().allow('').optional(),
-    shipperPhone: Joi.string().allow('').optional(),
+    shipperPhone: Joi.string().required().error(generateError('shipperPhone', attributeSourceMap.shipperPhone)),
     shipperZip: Joi.string().required().error(generateError('shipperZip', attributeSourceMap.shipperZip)),
     shipperState: Joi.string().required().error(generateError('shipperState', attributeSourceMap.shipperState)),
     readyDate: Joi.string().required().error(generateError('readyDate', attributeSourceMap.readyDate)),
@@ -310,9 +310,9 @@ async function validateData(data) {
     consigneeCity: Joi.string().required().error(generateError('consigneeCity', attributeSourceMap.consigneeCity)),
     consigneeName: Joi.string().required().error(generateError('consigneeName', attributeSourceMap.consigneeName)),
     consigneeCountry: Joi.string().required().error(generateError('consigneeCountry', attributeSourceMap.consigneeCountry)),
-    consigneeEmail: Joi.string().allow('').optional(),
+    consigneeEmail: Joi.string().email().required().error(generateError('consigneeEmail', attributeSourceMap.consigneeEmail)),
     consigneeFax: Joi.string().allow('').optional(),
-    consigneePhone: Joi.string().allow('').optional(),
+    consigneePhone: Joi.string().required().error(generateError('consigneePhone', attributeSourceMap.consigneePhone)),
     consigneeZip: Joi.string().required().error(generateError('consigneeZip', attributeSourceMap.consigneeZip)),
     consigneeState: Joi.string().required().error(generateError('consigneeState', attributeSourceMap.consigneeState)),
     shipmentLines: Joi.array().items(Joi.object({
@@ -326,14 +326,8 @@ async function validateData(data) {
     })).required().error(generateError('shipmentLines', attributeSourceMap.shipmentLines)),
   });
 
-  const { error } = schema.validate(data, { abortEarly: false });
-
-  if (error) {
-    const errors = error.details.map(detail => detail.message);
-    throw new Error(errors.join('\n'));
-  }
+  return schema.validateAsync(data, { abortEarly: false });
 }
-
 module.exports = {
   preparePayloadForWT,
   payloadToCW,

@@ -284,7 +284,7 @@ async function payloadToCW(shipmentId, housebill) {
 }
 
 function generateError(attribute, sourcePath) {
-  return new Error(`${attribute} is required. Please populate the attribute from the CW ${sourcePath}.`);
+  return new Error(`${attribute} is required. Please populate the attribute from the CW.\nSourcePath ${sourcePath}`);
 }
 
 function validateData(data) {
@@ -298,9 +298,9 @@ function validateData(data) {
     shipperCity: Joi.string().required().error(generateError('shipperCity', attributeSourceMap.shipperCity)),
     shipperName: Joi.string().required().error(generateError('shipperName', attributeSourceMap.shipperName)),
     shipperCountry: Joi.string().required().error(generateError('shipperCountry', attributeSourceMap.shipperCountry)),
-    shipperEmail: Joi.string().email().required().error(generateError('shipperEmail', attributeSourceMap.shipperEmail)),
+    shipperEmail: Joi.string().allow('').optional(),
     shipperFax: Joi.string().allow('').optional(),
-    shipperPhone: Joi.string().required().error(generateError('shipperPhone', attributeSourceMap.shipperPhone)),
+    shipperPhone: Joi.string().allow('').optional(),
     shipperZip: Joi.string().required().error(generateError('shipperZip', attributeSourceMap.shipperZip)),
     shipperState: Joi.string().required().error(generateError('shipperState', attributeSourceMap.shipperState)),
     readyDate: Joi.string().required().error(generateError('readyDate', attributeSourceMap.readyDate)),
@@ -310,9 +310,9 @@ function validateData(data) {
     consigneeCity: Joi.string().required().error(generateError('consigneeCity', attributeSourceMap.consigneeCity)),
     consigneeName: Joi.string().required().error(generateError('consigneeName', attributeSourceMap.consigneeName)),
     consigneeCountry: Joi.string().required().error(generateError('consigneeCountry', attributeSourceMap.consigneeCountry)),
-    consigneeEmail: Joi.string().email().required().error(generateError('consigneeEmail', attributeSourceMap.consigneeEmail)),
+    consigneeEmail: Joi.string().allow('').optional(),
     consigneeFax: Joi.string().allow('').optional(),
-    consigneePhone: Joi.string().required().error(generateError('consigneePhone', attributeSourceMap.consigneePhone)),
+    consigneePhone: Joi.string().allow('').optional(),
     consigneeZip: Joi.string().required().error(generateError('consigneeZip', attributeSourceMap.consigneeZip)),
     consigneeState: Joi.string().required().error(generateError('consigneeState', attributeSourceMap.consigneeState)),
     shipmentLines: Joi.array().items(Joi.object({

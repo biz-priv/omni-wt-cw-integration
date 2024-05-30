@@ -209,13 +209,13 @@ async function preparePayloadForWT(data) {
               ConsigneeState: get(validatedData, 'consigneeState', ''),
               ShipmentLineList: {
                 NewShipmentDimLineV3: get(validatedData, 'shipmentLines', []).map((line) => ({
-                  Description: get(line, 'GoodsDescription', ''),
+                  Description: get(line, 'GoodsDescription', '').substring(0,35),
                   Height: Number(get(line, 'Height', 0)).toFixed(5),
                   Length: Number(get(line, 'Length', 0)).toFixed(5),
                   DimUOMV3: 'in',
                   Pieces: get(line, 'PackQty', 0),
                   PieceType: get(line, 'PackType', ''),
-                  Weight: Number(get(line, 'Weight', 0)).toFixed(2),
+                  Weigth: Number(get(line, 'Weight', 0)).toFixed(2),
                   WeightUOMV3: 'lb',
                   Width: Number(get(line, 'Width', 0)).toFixed(5),
                 })),
@@ -228,11 +228,11 @@ async function preparePayloadForWT(data) {
 
     // Convert the payload to XML
     const xmlBuilder = new xml2js.Builder({
-      // render: {
-      //   pretty: true,
-      //   indent: '    ',
-      //   newline: '\n',
-      // },
+      render: {
+        pretty: true,
+        indent: '    ',
+        newline: '\n',
+      },
     });
     const xmlPayload = xmlBuilder.buildObject(payload);
     return xmlPayload;

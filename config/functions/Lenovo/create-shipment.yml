@@ -3,7 +3,7 @@ function:
   name: omni-wt-cw-lenovo-create-shipment-${self:provider.stage}
   handler: src/create-shipment/Lenovo/index.handler
   memorySize: 2048
-  timeout: 900
+  timeout: 45
   layers:
     - !Ref NodeModulesLambdaLayer
   package:
@@ -23,7 +23,7 @@ function:
     - sqs:
         arn: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment/sqs/queue.arn}
         batchSize: 1
-        
+
   environment:
     WT_URL: ${ssm:/omni-dw/${self:provider.stage}/createShipment/wt/url}
     CW_URL: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/url}

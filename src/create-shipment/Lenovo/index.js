@@ -10,60 +10,65 @@ const { getS3Object, xmlToJson, STATUSES, cstDateTime } = require('../../shared/
 const { preparePayloadForWT, extractData, payloadToCW } = require('./helper');
 const { sendToWT, sendToCW } = require('./api');
 
-let s3Bucket = '';
-let s3Key = '';
-
 module.exports.handler = async (event, context) => {
   console.info('🙂 -> file: index.js:9 -> event:', JSON.stringify(event));
-  const dynamoData = {};
-  try {
-    ({ s3Bucket, s3Key } = extractS3Info(event));
-    const fileName = s3Key.split('/').pop();
-    console.info('🚀 ~ file: index.js:15 ~ module.exports.handler= ~ fileName:', fileName);
-    dynamoData.InsertedTimeStamp = cstDateTime;
 
-    const xmlData = await getS3Object(s3Bucket, s3Key);
-    dynamoData.XmlFromCW = xmlData;
-    const jsonData = await xmlToJson(xmlData);
-    const data = await extractData(jsonData);
-    const shipmentId = get(data, 'forwardingShipmentKey', '');
-    console.info('🚀 ~ file: index.js:34 ~ module.exports.handler= ~ shipmentId:', shipmentId);
-    dynamoData.ShipmentId = shipmentId;
+  const processRecord = async (record) => {
+    const messageBody = JSON.parse(record.body);
+    console.info('🚀 ~ Message body:', messageBody);
 
-    const payloadToWt = await preparePayloadForWT(data);
-    dynamoData.XmlWTPayload = payloadToWt;
+    const dynamoData = {};
 
-    const recordExisting = await checkExistingRecord(shipmentId);
-    console.info(
-      '🚀 ~ file: index.js:36 ~ module.exports.handler= ~ recordExisting:',
-      recordExisting
-    );
+    try {
+      const { s3Bucket, s3Key } = messageBody;
+      const fileName = s3Key.split('/').pop();
+      console.info('🚀 ~ file: index.js:15 ~ module.exports.handler= ~ fileName:', fileName);
+      dynamoData.InsertedTimeStamp = cstDateTime;
+      dynamoData.S3Bucket = s3Bucket;
+      dynamoData.S3Key = s3Key;
 
-    if (recordExisting) {
-      return await handleExistingRecord(dynamoData);
+      const xmlData = await getS3Object(s3Bucket, s3Key);
+      dynamoData.XmlFromCW = xmlData;
+      const jsonData = await xmlToJson(xmlData);
+      const data = await extractData(jsonData);
+      const shipmentId = get(data, 'forwardingShipmentKey', '');
+      console.info('🚀 ~ file: index.js:34 ~ module.exports.handler= ~ shipmentId:', shipmentId);
+      dynamoData.ShipmentId = shipmentId;
+
+      const payloadToWt = await preparePayloadForWT(data);
+      dynamoData.XmlWTPayload = payloadToWt;
+
+      const recordExisting = await checkExistingRecord(shipmentId);
+      console.info(
+        '🚀 ~ file: index.js:36 ~ module.exports.handler= ~ recordExisting:',
+        recordExisting
+      );
+
+      if (recordExisting) {
+        await handleExistingRecord(dynamoData);
+        return; // Skip further processing for this message
+      }
+
+      const [xmlWTResponse, xmlCWResponse] = await processWTAndCW(
+        payloadToWt,
+        shipmentId,
+        dynamoData
+      );
+
+      dynamoData.XmlWTResponse = xmlWTResponse;
+      dynamoData.XmlCWResponse = xmlCWResponse;
+
+      dynamoData.Status = 'SUCCESS';
+      await putItem({ tableName: process.env.LOGS_TABLE, item: dynamoData });
+    } catch (error) {
+      await handleError(error, context, messageBody, dynamoData);
     }
+  };
 
-    const [xmlWTResponse, xmlCWResponse] = await processWTAndCW(
-      payloadToWt,
-      shipmentId,
-      dynamoData
-    );
+  await Promise.all(event.Records.map(processRecord));
 
-    dynamoData.XmlWTResponse = xmlWTResponse;
-    dynamoData.XmlCWResponse = xmlCWResponse;
-
-    dynamoData.Status = 'SUCCESS';
-    await putItem({ tableName: process.env.LOGS_TABLE, item: dynamoData });
-    return 'Success';
-  } catch (error) {
-    return await handleError(error, context, event, dynamoData);
-  }
+  return 'Success';
 };
-
-const extractS3Info = (event) => ({
-  s3Bucket: get(event, 'Records[0].s3.bucket.name', ''),
-  s3Key: get(event, 'Records[0].s3.object.key', ''),
-});
 
 const validateWTResponse = (response, payloadToWt) => {
   const errorMessage = get(
@@ -117,7 +122,7 @@ const handleError = async (error, context, event, dynamoData) => {
 
 const sendSNSNotification = (context, error, event, dynamoData) =>
   publishToSNS({
-    message: `An error occurred in function ${context.functionName}.\n\n ${error}.\n\nShipmentId: ${get(dynamoData, 'ShipmentId', '')}.\n\nEVENT: ${JSON.stringify(event)}.\n\nS3BUCKET: ${s3Bucket}.\n\nS3KEY: ${s3Key}.\n\nLAMBDA TRIGGER: This lambda will trigger when there is a XML file dropped in a s3 Bucket(for s3 bucket and the file path, please refer to the event).\n\nRETRIGGER PROCESS: After fixing the issue, please retrigger the process by reuploading the file mentioned in the event.\n\nNote: Use the ShipmentId: ${get(dynamoData, 'ShipmentId', '')} for better search in the logs and also check in dynamodb: ${process.env.LOGS_TABLE} for understanding the complete data.`,
+    message: `An error occurred in function ${context.functionName}.\n\n ${error}.\n\nShipmentId: ${get(dynamoData, 'ShipmentId', '')}.\n\nEVENT: ${JSON.stringify(event)}.\n\nS3BUCKET: ${get(dynamoData, 'S3Bucket', '')}.\n\nS3KEY: ${get(dynamoData, 'S3Key', '')}.\n\nLAMBDA TRIGGER: This lambda will trigger when there is a XML file dropped in a s3 Bucket(for s3 bucket and the file path, please refer to the event).\n\nRETRIGGER PROCESS: After fixing the issue, please retrigger the process by reuploading the file mentioned in the event.\n\nNote: Use the ShipmentId: ${get(dynamoData, 'ShipmentId', '')} for better search in the logs and also check in dynamodb: ${process.env.LOGS_TABLE} for understanding the complete data.`,
     subject: `${upperCase(process.env.STAGE)} - LENOVO CREATE SHIPMENT ERROR ~ ShipmentId: ${get(dynamoData, 'ShipmentId', '')}`,
   });
 
@@ -143,7 +148,7 @@ const handleExistingRecord = async (data) => {
   unset(data, 'ShipmentId');
   const errorMsg = `Record with ShipmentId: ${shipmentId} is already sent to WT.`;
   await sendSESEmail({
-    message: `Record with ShipmentId: ${shipmentId} is already sent to WT.\n\nS3 KEY: ${s3Key}.`,
+    message: `Record with ShipmentId: ${shipmentId} is already sent to WT.\n\nS3 KEY: ${data.S3Key}.`,
     subject: `${upperCase(process.env.STAGE)} - LENOVO CREATE SHIPMENT DUPLICATES ALERT ~ ShipmentId: ${shipmentId}`,
   });
   await updateDynamoDBRecord(shipmentId, errorMsg, STATUSES.SUCCESS);

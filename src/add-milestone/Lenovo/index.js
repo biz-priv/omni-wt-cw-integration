@@ -55,12 +55,16 @@ const handleShipmentMilestone = async (message) => {
   const orderNo = get(data, 'FK_OrderNo', '');
   const orderStatusId = get(data, 'FK_OrderStatusId', '');
   const eventDateTime = get(data, 'EventDateTime');
-  const oldEventDateTime = oldImage ? get(AWS.DynamoDB.Converter.unmarshall(oldImage), 'EventDateTime') : null;
+  const oldEventDateTime = oldImage
+    ? get(AWS.DynamoDB.Converter.unmarshall(oldImage), 'EventDateTime')
+    : null;
 
   if (oldEventDateTime === eventDateTime) {
     const isRecordSent = await checkExistingRecord(orderNo, orderStatusId);
     if (isRecordSent) {
-      console.info(`Record with OrderNo: ${orderNo} and OrderStatusId: ${orderStatusId} already sent.`);
+      console.info(
+        `Record with OrderNo: ${orderNo} and OrderStatusId: ${orderStatusId} already sent.`
+      );
       return;
     }
   }
@@ -104,15 +108,22 @@ const handleShipmentMilestone = async (message) => {
     },
   };
 
-  const [shipmentHeaderResult, referencesResult] = await Promise.all([dbQuery(headerParams), dbQuery(referenceParams)]);
+  const [shipmentHeaderResult, referencesResult] = await Promise.all([
+    dbQuery(headerParams),
+    dbQuery(referenceParams),
+  ]);
 
   if (isEmpty(shipmentHeaderResult)) {
-    console.info(`No data found in ${process.env.SHIPMENT_HEADER_TABLE} table for FK_OrderNo: ${orderNo}.`);
+    console.info(
+      `No data found in ${process.env.SHIPMENT_HEADER_TABLE} table for FK_OrderNo: ${orderNo}.`
+    );
     return;
   }
 
   if (isEmpty(referencesResult)) {
-    throw new Error(`No data found in ${process.env.REFERENCE_TABLE} table for FK_OrderNo: ${orderNo}.`);
+    throw new Error(
+      `No data found in ${process.env.REFERENCE_TABLE} table for FK_OrderNo: ${orderNo}.`
+    );
   }
 
   const housebill = get(shipmentHeaderResult, '[0].Housebill');
@@ -153,14 +164,19 @@ const handleAparFailure = async (message) => {
   const fdCode = get(data, 'FDCode', '');
   console.info('🚀 ~ file: index.js:159 ~ module.exports.handler= ~ fdCode:', fdCode);
   const lenovoException = getLenovoException(fdCode);
-  console.info('🚀 ~ file: index.js:161 ~ module.exports.handler= ~ lenovoException:', lenovoException);
+  console.info(
+    '🚀 ~ file: index.js:161 ~ module.exports.handler= ~ lenovoException:',
+    lenovoException
+  );
   const lenovoCode = get(lenovoException, 'lenovoCode');
   console.info('🚀 ~ file: test.js:3074 ~ lenovoCode:', lenovoCode);
   const description = get(lenovoException, 'description');
   console.info('🚀 ~ file: test.js:3074 ~ lenovoCode:', description);
 
   if (lenovoCode === 'Unknown' || isEmpty(lenovoCode)) {
-    console.info(`For fdCode: ${fdCode} the lenovo exception code is missing. Skipping the process`);
+    console.info(
+      `For fdCode: ${fdCode} the lenovo exception code is missing. Skipping the process`
+    );
     return;
   }
 
@@ -187,15 +203,22 @@ const handleAparFailure = async (message) => {
     },
   };
 
-  const [shipmentHeaderResult, referencesResult] = await Promise.all([dbQuery(headerParams), dbQuery(referenceParams)]);
+  const [shipmentHeaderResult, referencesResult] = await Promise.all([
+    dbQuery(headerParams),
+    dbQuery(referenceParams),
+  ]);
 
   if (isEmpty(shipmentHeaderResult)) {
-    console.info(`No data found in ${process.env.SHIPMENT_HEADER_TABLE} table for FK_OrderNo: ${orderNo}.`);
+    console.info(
+      `No data found in ${process.env.SHIPMENT_HEADER_TABLE} table for FK_OrderNo: ${orderNo}.`
+    );
     return;
   }
 
   if (isEmpty(referencesResult)) {
-    throw new Error(`No data found in ${process.env.REFERENCE_TABLE} table for FK_OrderNo: ${orderNo}.`);
+    throw new Error(
+      `No data found in ${process.env.REFERENCE_TABLE} table for FK_OrderNo: ${orderNo}.`
+    );
   }
 
   const housebill = get(shipmentHeaderResult, '[0].Housebill');
@@ -217,7 +240,9 @@ const handleAparFailure = async (message) => {
 
   const trackingResult = await dbQuery(trackingParams);
   if (isEmpty(trackingResult)) {
-    throw new Error(`No data found in ${process.env.TRACKING_NOTES_TABLE} table for FK_OrderNo: ${orderNo}.`);
+    throw new Error(
+      `No data found in ${process.env.TRACKING_NOTES_TABLE} table for FK_OrderNo: ${orderNo}.`
+    );
   }
 
   const dateTimeEntered = get(trackingResult, 'DateTimeEntered');
@@ -236,7 +261,7 @@ const handleAparFailure = async (message) => {
     tableName: process.env.STATUS_TABLE,
     item: {
       OrderNo: orderNo,
-      OrderStatusId: fdCode,
+      OrderStatusId: `DELAY-${fdCode}-${description}`,
       ReferenceNo: referenceNo,
       Status: STATUSES.SENT,
       EventDateTime: formattedDateTime,
@@ -378,12 +403,24 @@ const handleError = async (error, context, event) => {
   const data = AWS.DynamoDB.Converter.unmarshall(get(message, 'NewImage', {}));
   const orderNo = get(data, 'FK_OrderNo', '');
   let orderStatusId;
+  let fdCode;
+  let lenovoException;
+  let description;
   if (
     get(message, 'dynamoTableName', '') === `omni-wt-rt-shipment-milestone-${process.env.STAGE}`
   ) {
     orderStatusId = get(data, 'FK_OrderStatusId', '');
   } else {
-    orderStatusId = 'Delays';
+    fdCode = get(data, 'FDCode', '');
+    console.info('🚀 ~ file: index.js:159 ~ module.exports.handler= ~ fdCode:', fdCode);
+    lenovoException = getLenovoException(fdCode);
+    console.info(
+      '🚀 ~ file: index.js:161 ~ module.exports.handler= ~ lenovoException:',
+      lenovoException
+    );
+    description = get(lenovoException, 'description');
+    console.info('🚀 ~ file: test.js:3074 ~ lenovoCode:', description);
+    orderStatusId = `DELAY-${fdCode}-${description}`;
   }
 
   try {

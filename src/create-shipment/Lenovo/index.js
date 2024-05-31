@@ -109,10 +109,9 @@ const handleError = async (error, context, event, dynamoData) => {
   }
 
   const errorMessage = `${error.message}`;
-  // dynamoData.Status = STATUSES.FAILED;
   const shipmentId = get(dynamoData, 'ShipmentId', '');
   unset(dynamoData, 'ShipmentId');
-  await updateDynamoDBRecord(shipmentId, errorMessage, STATUSES.FAILED ); // use update item.
+  await updateDynamoDBRecord(shipmentId, errorMessage, STATUSES.FAILED); // use update item.
   return 'Failed';
 };
 
@@ -212,7 +211,7 @@ async function sendSESEmail({ message, subject }) {
   try {
     const params = {
       Destination: {
-        ToAddresses: ['applications@omnilogistics.com', 'omnidev@bizcloudexperts.com'],
+        ToAddresses: ['kvallabhaneni@omnilogistics.com', 'omnidev@bizcloudexperts.com', 'alwhite@omnilogistics.com'],
       },
       Message: {
         Body: {

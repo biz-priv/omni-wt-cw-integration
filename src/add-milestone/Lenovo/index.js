@@ -216,9 +216,8 @@ const handleAparFailure = async (message) => {
   };
 
   const trackingResult = await dbQuery(trackingParams);
-  if (isEmpty(trackingResult.Items)) {
-    console.info('No words found from Note like %(Customer Service Failure) for orderNo:', orderNo);
-    return;
+  if (isEmpty(trackingResult)) {
+    throw new Error(`No data found in ${process.env.TRACKING_NOTES_TABLE} table for FK_OrderNo: ${orderNo}.`);
   }
 
   const dateTimeEntered = get(trackingResult, 'DateTimeEntered');
@@ -237,7 +236,7 @@ const handleAparFailure = async (message) => {
     tableName: process.env.STATUS_TABLE,
     item: {
       OrderNo: orderNo,
-      OrderStatusId: 'Delays',
+      OrderStatusId: fdCode,
       ReferenceNo: referenceNo,
       Status: STATUSES.SENT,
       EventDateTime: formattedDateTime,

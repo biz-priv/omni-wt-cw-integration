@@ -68,12 +68,14 @@ async function extractData(dataObj) {
       }
       return value ? [value] : [];
     };
-    
-    const packingLine = ensureArray(get(
-      dataObj,
-      'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.PackingLineCollection.PackingLine',
-      []
-    ));
+
+    const packingLine = ensureArray(
+      get(
+        dataObj,
+        'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.PackingLineCollection.PackingLine',
+        []
+      )
+    );
 
     const readyDate = get(
       dataObj,
@@ -88,17 +90,21 @@ async function extractData(dataObj) {
       ''
     );
 
-    const dataSourceCollection = ensureArray(get(
-      dataObj,
-      'UniversalInterchange.Body.UniversalShipment.Shipment.DataContext.DataSourceCollection.DataSource',
-      []
-    ));
+    const dataSourceCollection = ensureArray(
+      get(
+        dataObj,
+        'UniversalInterchange.Body.UniversalShipment.Shipment.DataContext.DataSourceCollection.DataSource',
+        []
+      )
+    );
 
-    const organizationAddressForShipper = ensureArray(get(
-      dataObj,
-      'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress',
-      []
-    ));
+    const organizationAddressForShipper = ensureArray(
+      get(
+        dataObj,
+        'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress',
+        []
+      )
+    );
 
     const forwardingShipmentKey = get(
       dataSourceCollection.find((dataSource) => dataSource.Type === 'ForwardingShipment'),
@@ -110,11 +116,13 @@ async function extractData(dataObj) {
       (address) => address.AddressType === 'ReceivingForwarderAddress'
     );
 
-    const organizationAddressForConsignee = ensureArray(get(
-      dataObj,
-      'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress',
-      []
-    ));
+    const organizationAddressForConsignee = ensureArray(
+      get(
+        dataObj,
+        'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress',
+        []
+      )
+    );
 
     const consigneeAddress = organizationAddressForConsignee.find(
       (address) => address.AddressType === 'ConsigneePickupDeliveryAddress'

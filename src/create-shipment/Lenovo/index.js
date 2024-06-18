@@ -11,32 +11,46 @@ const { preparePayloadForWT, extractData, payloadToCW } = require('./helper');
 const { sendToWT, sendToCW } = require('./api');
 
 module.exports.handler = async (event, context) => {
-  console.info('🙂 -> file: index.js:9 -> event:', JSON.stringify(event));
+  console.info('😊 -> file: index.js:9 -> event:', JSON.stringify(event));
 
   const processRecord = async (record) => {
     const messageBody = JSON.parse(record.body);
-    console.info('🚀 ~ Message body:', messageBody);
 
-    const dynamoData = {};
+    // Check if the messageBody is as expected
+    if (!messageBody || !get(messageBody, 'Records[0]')) {
+      console.info('Message body does not meet the expected format. Skipping...');
+      return;
+    }
 
+    const s3Data = get(messageBody, 'Records[0].s3');
+
+    // Check if the event is as expected
+    if (s3Data?.bucket || !s3Data?.object) {
+      console.info('Event does not meet the expected format. Skipping...');
+      return;
+    }
+
+    const s3Bucket = s3Data.bucket.name;
+    const s3Key = s3Data.object.key;
+    const dynamoDbItem = {
+      InsertedTimeStamp: cstDateTime,
+      S3Bucket: s3Bucket,
+      S3Key: s3Key,
+    };
     try {
-      const { s3Bucket, s3Key } = messageBody;
       const fileName = s3Key.split('/').pop();
       console.info('🚀 ~ file: index.js:15 ~ module.exports.handler= ~ fileName:', fileName);
-      dynamoData.InsertedTimeStamp = cstDateTime;
-      dynamoData.S3Bucket = s3Bucket;
-      dynamoData.S3Key = s3Key;
 
       const xmlData = await getS3Object(s3Bucket, s3Key);
-      dynamoData.XmlFromCW = xmlData;
+      dynamoDbItem.XmlFromCW = xmlData;
       const jsonData = await xmlToJson(xmlData);
       const data = await extractData(jsonData);
       const shipmentId = get(data, 'forwardingShipmentKey', '');
       console.info('🚀 ~ file: index.js:34 ~ module.exports.handler= ~ shipmentId:', shipmentId);
-      dynamoData.ShipmentId = shipmentId;
+      dynamoDbItem.ShipmentId = shipmentId;
 
       const payloadToWt = await preparePayloadForWT(data);
-      dynamoData.XmlWTPayload = payloadToWt;
+      dynamoDbItem.XmlWTPayload = payloadToWt;
 
       const recordExisting = await checkExistingRecord(shipmentId);
       console.info(
@@ -45,23 +59,23 @@ module.exports.handler = async (event, context) => {
       );
 
       if (recordExisting) {
-        await handleExistingRecord(dynamoData);
+        await handleExistingRecord(dynamoDbItem);
         return; // Skip further processing for this message
       }
 
       const [xmlWTResponse, xmlCWResponse] = await processWTAndCW(
         payloadToWt,
         shipmentId,
-        dynamoData
+        dynamoDbItem
       );
 
-      dynamoData.XmlWTResponse = xmlWTResponse;
-      dynamoData.XmlCWResponse = xmlCWResponse;
+      dynamoDbItem.XmlWTResponse = xmlWTResponse;
+      dynamoDbItem.XmlCWResponse = xmlCWResponse;
 
-      dynamoData.Status = 'SUCCESS';
-      await putItem({ tableName: process.env.LOGS_TABLE, item: dynamoData });
+      dynamoDbItem.Status = 'SUCCESS';
+      await putItem({ tableName: process.env.LOGS_TABLE, item: dynamoDbItem });
     } catch (error) {
-      await handleError(error, context, messageBody, dynamoData);
+      await handleError(error, context, messageBody, dynamoDbItem);
     }
   };
 
@@ -216,7 +230,11 @@ async function sendSESEmail({ message, subject }) {
   try {
     const params = {
       Destination: {
-        ToAddresses: ['kvallabhaneni@omnilogistics.com', 'omnidev@bizcloudexperts.com', 'alwhite@omnilogistics.com'],
+        ToAddresses: [
+          'kvallabhaneni@omnilogistics.com',
+          'omnidev@bizcloudexperts.com',
+          'alwhite@omnilogistics.com',
+        ],
       },
       Message: {
         Body: {

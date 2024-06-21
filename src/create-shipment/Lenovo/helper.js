@@ -367,6 +367,7 @@ async function checkHousebillExists(referenceNo) {
 
     const xmlResponse = await sendToCheckHousebillExists(payload);
     const jsonResponse = await xmlToJson(xmlResponse);
+    console.info('jsonResponse',JSON.stringify(jsonResponse));
 
     const shipmentDetails = get(jsonResponse, 'soap:Envelope.soap:Body.GetShipmentsByReferenceNoResponse.GetShipmentsByReferenceNoResult.ShipmentDetail', {});
     let housebill = '';

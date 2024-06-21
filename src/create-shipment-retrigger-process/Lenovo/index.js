@@ -5,7 +5,6 @@ const AWS = require('aws-sdk');
 const { publishToSNS } = require('../../shared/dynamo');
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
-// const sns = new AWS.SNS();
 
 const { LOGS_TABLE } = process.env;
 
@@ -25,20 +24,9 @@ module.exports.handler = async (event, context) => {
         return 'success';
     } catch (e) {
         console.error('Error while updating status as READY for FAILED records', e);
-        // try {
-        //     const params = {
-        //       Message: `An error occurred in function ${context.functionName}.\n\nERROR DETAILS: ${e}.`,
-        //       Subject: `CW to WT Create Shipment retry process for Lenovo ERROR ${context.functionName}`,
-        //       TopicArn: process.env.ERROR_SNS_ARN,
-        //     };
-        //     await sns.publish(params).promise();
-        //     console.info('SNS notification has sent');
-        //   } catch (err) {
-        //     console.error('Error while sending sns notification: ', err);
-        //   }
         publishToSNS({
             message: `An error occurred in function ${context.functionName}.\n\nERROR DETAILS: ${e}.`,
-            subject: `CW to WT Create Shipment retry process for Lenovo ERROR ${context.functionName}`,
+            subject: `${context.functionName} failed`,
           });
         return 'failed';
     }

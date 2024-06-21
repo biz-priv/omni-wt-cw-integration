@@ -2,9 +2,11 @@
 
 const AWS = require('aws-sdk');
 const { get, unset } = require('lodash');
+
 const { Converter } = AWS.DynamoDB;
 
 const ses = new AWS.SES();
+const sqs = new AWS.SQS();
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const { publishToSNS, putItem, dbQuery } = require('../../shared/dynamo');
 const { getS3Object, xmlToJson, STATUSES, cstDateTime } = require('../../shared/helper');
@@ -13,13 +15,12 @@ const { sendToWT, sendToCW } = require('./api');
 
 let s3Bucket = '';
 let s3Key = '';
-let eventType = '';
-let dynamoData = {};
 
 module.exports.handler = async (event, context) => {
   console.info('🙂 -> file: index.js:9 -> event:', JSON.stringify(event));
+  let eventType = '';
+  let dynamoData = {};
   try {
-
     if (get(event, 'Records[0].eventSource', '') === 'aws:dynamodb') {
       dynamoData = Converter.unmarshall(get(event, 'Records[0].dynamodb.NewImage'), '');
       s3Bucket = get(dynamoData, 'S3Bucket', '');
@@ -81,7 +82,7 @@ module.exports.handler = async (event, context) => {
       //   console.error('Error while sending sns notification: ', err);
       // }
       publishToSNS({
-        message: `Shipment is created successfully after retry.\n\nShipmentId: ${get(dynamoData, 'ShipmentId', '')}.\n\nId: ${get(dynamoData, 'Id', '')}.\n\nS3BUCKET: ${s3Bucket}.\n\nS3KEY: ${s3Key}`,
+        message: `Shipment is created successfully after retry.\n\nShipmentId: ${get(dynamoData, 'ShipmentId', '')}.\n\nS3BUCKET: ${s3Bucket}.\n\nS3KEY: ${s3Key}`,
         subject: `${process.env.STAGE} ~ Lenovo - CW to WT Create Shipment Reprocess Success for ShipmentId: ${get(dynamoData, 'ShipmentId', '')}`,
       });
     }
@@ -90,6 +91,11 @@ module.exports.handler = async (event, context) => {
     await putItem({ tableName: process.env.LOGS_TABLE, item: dynamoData });
     return 'Success';
   } catch (error) {
+    const receiptHandle = get(event, 'Records[0].receiptHandle', '');
+    sqs.deleteMessage({
+      QueueUrl: 'https://sqs.us-east-1.amazonaws.com/332281781429/wt-cw-create-shipment-queue-dev',
+      ReceiptHandle: receiptHandle
+    })
     return await handleError(error, context, event, dynamoData, eventType);
   }
 };
@@ -238,7 +244,7 @@ const processWTAndCW = async (payloadToWt, shipmentId, dynamoData, eventType) =>
       const xmlCWObjResponse = await xmlToJson(xmlCWResponse);
       validateCWResponse(xmlCWObjResponse, xmlCWPayload);
 
-      return [xmlWTResponse, xmlCWResponse];
+      return [get(dynamoData, 'XmlWTResponse', ''), xmlCWResponse];
       // try {
       //   const params = {
       //     Message: `Shipment is created successfully after retry.\n\nShipmentId: ${get(dynamoData, 'ShipmentId', '')}.\n\nId: ${get(dynamoData, 'Id', '')}.\n\nS3BUCKET: ${s3Bucket}.\n\nS3KEY: ${s3Key}`,

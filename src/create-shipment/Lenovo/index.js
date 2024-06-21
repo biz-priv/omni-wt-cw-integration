@@ -8,7 +8,7 @@ const ses = new AWS.SES();
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const { publishToSNS, putItem, dbQuery } = require('../../shared/dynamo');
 const { getS3Object, xmlToJson, STATUSES, cstDateTime } = require('../../shared/helper');
-const { preparePayloadForWT, extractData, payloadToCW } = require('./helper');
+const { preparePayloadForWT, extractData, payloadToCW, checkHousebillExists } = require('./helper');
 const { sendToWT, sendToCW } = require('./api');
 
 let s3Bucket = '';
@@ -29,7 +29,7 @@ module.exports.handler = async (event, context) => {
       // console.info('Id :', get(dynamoData, 'Id', ''));
     }
     else {
-      eventType = 's3';
+      eventType = 'SQS';
       ({ s3Bucket, s3Key } = extractS3Info(event));
       dynamoData = { S3Bucket: s3Bucket, S3Key: s3Key };
       const fileName = s3Key.split('/').pop();
@@ -143,7 +143,7 @@ const handleError = async (error, context, event, dynamoData, eventType) => {
   }
 
   const errorMessage = `${error.message}`;
-  dynamoData.ErrorMsg = errorMessage
+  dynamoData.ErrorMsg = errorMessage;
   dynamoData.Status = STATUSES.FAILED;
   // const shipmentId = get(dynamoData, 'ShipmentId', '');
   // unset(dynamoData, 'ShipmentId');
@@ -232,7 +232,7 @@ const processWTAndCW = async (payloadToWt, shipmentId, dynamoData, eventType) =>
     // const refNo = get(xmlObj, 'UniversalShipment.Shipment.Order.OrderNumber', '');
     const checkHousebill = await checkHousebillExists(shipmentId);
     if (checkHousebill !== '') {
-      console.info(`Housebill already created : The housebill number for '${refNo}' already created in WT and the Housebill No. is '${checkHousebill}'`);
+      console.info(`Housebill already created : The housebill number for '${shipmentId}' already created in WT and the Housebill No. is '${checkHousebill}'`);
       const xmlCWPayload = await payloadToCW(shipmentId, checkHousebill);
       const xmlCWResponse = await sendToCW(xmlCWPayload);
       const xmlCWObjResponse = await xmlToJson(xmlCWResponse);

@@ -51,7 +51,31 @@ async function sendToCW(postData) {
   }
 }
 
+async function sendToCheckHousebillExists(postData) {
+  try {
+    const config = {
+      url: process.env.CHECK_HOUSEBILL_EXISTS_API_URL,
+      method: 'post',
+      headers: {
+        'Content-Type': 'text/xml',
+      },
+      data: postData,
+    };
+
+    console.info('config: ', config);
+    const res = await axios.request(config);
+    if (get(res, 'status', '') === 200) {
+      return get(res, 'data', '');
+    }
+    throw new Error(`Check for Housebill API Request Failed: ${res}`);
+  } catch (error) {
+    console.error('Check for Housebill API Request Failed: ', error);
+    throw error;
+  }
+}
+
 module.exports = {
   sendToCW,
   sendToWT,
+  sendToCheckHousebillExists,
 };

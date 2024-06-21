@@ -3,6 +3,8 @@
 const { get } = require('lodash');
 const xml2js = require('xml2js');
 const Joi = require('joi');
+const { sendToCheckHousebillExists } = require('./api');
+const { xmlToJson } = require('../../shared/helper');
 
 
 const attributeSourceMap = {
@@ -328,8 +330,74 @@ function validateData(data) {
 
   return schema.validateAsync(data, { abortEarly: false });
 }
+
+async function checkHousebillExists(referenceNo) {
+  try {
+    const builder = new xml2js.Builder({
+      headless: true,
+    });
+
+    const payload = builder.buildObject({
+      'soap:Envelope': {
+        '$': {
+          'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+          'xmlns:xsd': 'http://www.w3.org/2001/XMLSchema',
+          'xmlns:soap': 'http://schemas.xmlsoap.org/soap/envelope/'
+        },
+        'soap:Header': {
+          'AuthHeader': {
+            '$': {
+              'xmlns': 'http://tempuri.org/'
+            },
+            'UserName': process.env.CHECK_HOUSEBILL_EXISTS_API_USERNAME,
+            'Password': process.env.CHECK_HOUSEBILL_EXISTS_API_PASSWORD
+          }
+        },
+        'soap:Body': {
+          'GetShipmentsByReferenceNo': {
+            '$': {
+              'xmlns': 'http://tempuri.org/'
+            },
+            'RefNo': referenceNo,
+            'RefType': 'B'
+          }
+        }
+      }
+    });
+
+    const xmlResponse = await sendToCheckHousebillExists(payload);
+    const jsonResponse = await xmlToJson(xmlResponse);
+
+    const shipmentDetails = get(jsonResponse, 'soap:Envelope.soap:Body.GetShipmentsByReferenceNoResponse.GetShipmentsByReferenceNoResult.ShipmentDetail', {});
+    let housebill = '';
+    if (Array.isArray(shipmentDetails)) {
+      const housebills = shipmentDetails.map(detail => {
+        const trackingNo = get(detail, 'TrackingNo', '');
+        return trackingNo.length > 4 ? trackingNo.substring(4) : '';
+      });
+
+      const numericHousebills = housebills.map(housebillNo => parseInt(housebillNo, 10)).filter(Number.isFinite);
+
+      housebill = numericHousebills.reduce((max, current) => {
+        return current > max ? current : max;
+      }, 0).toString();
+    } else if (Object.keys(shipmentDetails).length > 0) {
+      const trackingNo = get(shipmentDetails, 'TrackingNo', '');
+      housebill = trackingNo.length > 4 ? trackingNo.substring(4) : '';
+    } else {
+      housebill = '';
+    }
+
+    return housebill;
+  } catch (error) {
+    console.error('Error in prepareCWpayload: ', error);
+    throw error;
+  }
+}
+
 module.exports = {
   preparePayloadForWT,
   payloadToCW,
   extractData,
+  checkHousebillExists,
 };

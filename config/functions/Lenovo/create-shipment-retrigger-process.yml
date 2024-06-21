@@ -1,0 +1,18 @@
+---
+function:
+  name: omni-wt-cw-lenovo-create-shipment-retrigger-process-${self:provider.stage}
+  handler: src/create-shipment-retrigger-process/Lenovo/index.handler
+  memorySize: 2048
+  timeout: 900
+  layers:
+    - !Ref NodeModulesLambdaLayer
+  package:
+    patterns:
+      - '!**/*'
+      - src/create-shipment-retrigger-process/Lenovo/*
+      - src/shared/*
+  events:
+    - schedule: cron(*/1 * * * ? *) #cron for every 1 min
+  environment:
+    LOGS_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment-status-table-name}
+    STAGE: ${self:provider.stage}

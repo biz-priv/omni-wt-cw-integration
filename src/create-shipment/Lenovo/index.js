@@ -2,6 +2,7 @@
 
 const AWS = require('aws-sdk');
 const { get, unset } = require('lodash');
+const { Converter } = AWS.DynamoDB;
 
 const ses = new AWS.SES();
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
@@ -12,19 +13,33 @@ const { sendToWT, sendToCW } = require('./api');
 
 let s3Bucket = '';
 let s3Key = '';
+let eventType = '';
+let dynamoData = {};
 
 module.exports.handler = async (event, context) => {
   console.info('🙂 -> file: index.js:9 -> event:', JSON.stringify(event));
-  const dynamoData = {};
   try {
-    ({ s3Bucket, s3Key } = extractS3Info(event));
-    const fileName = s3Key.split('/').pop();
-    console.info('🚀 ~ file: index.js:15 ~ module.exports.handler= ~ fileName:', fileName);
-    dynamoData.InsertedTimeStamp = cstDateTime;
 
-    const xmlData = await getS3Object(s3Bucket, s3Key);
-    dynamoData.XmlFromCW = xmlData;
-    const jsonData = await xmlToJson(xmlData);
+    if (get(event, 'Records[0].eventSource', '') === 'aws:dynamodb') {
+      dynamoData = Converter.unmarshall(get(event, 'Records[0].dynamodb.NewImage'), '');
+      s3Bucket = get(dynamoData, 'S3Bucket', '');
+      s3Key = get(dynamoData, 'S3Key', '');
+      // shipmentId = get(dynamoData, 'ShipmentId', '');
+      eventType = 'dynamo';
+      // console.info('Id :', get(dynamoData, 'Id', ''));
+    }
+    else {
+      eventType = 's3';
+      ({ s3Bucket, s3Key } = extractS3Info(event));
+      dynamoData = { S3Bucket: s3Bucket, S3Key: s3Key };
+      const fileName = s3Key.split('/').pop();
+      console.info('🚀 ~ file: index.js:15 ~ module.exports.handler= ~ fileName:', fileName);
+      dynamoData.InsertedTimeStamp = cstDateTime;
+
+      const xmlData = await getS3Object(s3Bucket, s3Key);
+      dynamoData.XmlFromCW = xmlData;
+    }
+    const jsonData = await xmlToJson(get(dynamoData, 'XmlFromCW', ''));
     const data = await extractData(jsonData);
     const shipmentId = get(data, 'forwardingShipmentKey', '');
     console.info('🚀 ~ file: index.js:34 ~ module.exports.handler= ~ shipmentId:', shipmentId);
@@ -46,17 +61,36 @@ module.exports.handler = async (event, context) => {
     const [xmlWTResponse, xmlCWResponse] = await processWTAndCW(
       payloadToWt,
       shipmentId,
-      dynamoData
+      dynamoData,
+      eventType
     );
 
     dynamoData.XmlWTResponse = xmlWTResponse;
     dynamoData.XmlCWResponse = xmlCWResponse;
 
+    if (eventType === 'dynamo') {
+      // try {
+      //   const params = {
+      //     Message: `Shipment is created successfully after retry.\n\nShipmentId: ${get(dynamoData, 'ShipmentId', '')}.\n\nId: ${get(dynamoData, 'Id', '')}.\n\nS3BUCKET: ${s3Bucket}.\n\nS3KEY: ${s3Key}`,
+      //     Subject: `${process.env.STAGE} - CW to WT Create Shipment Reprocess Success for ShipmentId: ${get(dynamoData, 'ShipmentId', '')}`,
+      //     TopicArn: process.env.NOTIFICATION_ARN,
+      //   };
+      //   await sns.publish(params).promise();
+      //   console.info('SNS notification has sent');
+      // } catch (err) {
+      //   console.error('Error while sending sns notification: ', err);
+      // }
+      publishToSNS({
+        message: `Shipment is created successfully after retry.\n\nShipmentId: ${get(dynamoData, 'ShipmentId', '')}.\n\nId: ${get(dynamoData, 'Id', '')}.\n\nS3BUCKET: ${s3Bucket}.\n\nS3KEY: ${s3Key}`,
+        subject: `${process.env.STAGE} ~ Lenovo - CW to WT Create Shipment Reprocess Success for ShipmentId: ${get(dynamoData, 'ShipmentId', '')}`,
+      });
+    }
+
     dynamoData.Status = 'SUCCESS';
     await putItem({ tableName: process.env.LOGS_TABLE, item: dynamoData });
     return 'Success';
   } catch (error) {
-    return await handleError(error, context, event, dynamoData);
+    return await handleError(error, context, event, dynamoData, eventType);
   }
 };
 
@@ -99,7 +133,7 @@ const validateCWResponse = (response, xmlCWPayload) => {
   }
 };
 
-const handleError = async (error, context, event, dynamoData) => {
+const handleError = async (error, context, event, dynamoData, eventType) => {
   console.error('Error:', error);
   try {
     await sendSNSNotification(context, error, event, dynamoData);
@@ -109,10 +143,16 @@ const handleError = async (error, context, event, dynamoData) => {
   }
 
   const errorMessage = `${error.message}`;
-  // dynamoData.Status = STATUSES.FAILED;
-  const shipmentId = get(dynamoData, 'ShipmentId', '');
-  unset(dynamoData, 'ShipmentId');
-  await updateDynamoDBRecord(shipmentId, errorMessage, STATUSES.FAILED ); // use update item.
+  dynamoData.ErrorMsg = errorMessage
+  dynamoData.Status = STATUSES.FAILED;
+  // const shipmentId = get(dynamoData, 'ShipmentId', '');
+  // unset(dynamoData, 'ShipmentId');
+  if (eventType === 'dynamo') {
+    dynamoData.RetryCount = String(Number(dynamoData.RetryCount) + 1);
+  } else {
+    dynamoData.RetryCount = '0';
+  }
+  await putItem({ tableName: process.env.LOGS_TABLE, item: dynamoData });
   return 'Failed';
 };
 
@@ -187,7 +227,33 @@ const updateDynamoDBRecord = async (shipmentId, errorMessage, status) => {
   }
 };
 
-const processWTAndCW = async (payloadToWt, shipmentId, dynamoData) => {
+const processWTAndCW = async (payloadToWt, shipmentId, dynamoData, eventType) => {
+  if (eventType === 'dynamo') {
+    // const refNo = get(xmlObj, 'UniversalShipment.Shipment.Order.OrderNumber', '');
+    const checkHousebill = await checkHousebillExists(shipmentId);
+    if (checkHousebill !== '') {
+      console.info(`Housebill already created : The housebill number for '${refNo}' already created in WT and the Housebill No. is '${checkHousebill}'`);
+      const xmlCWPayload = await payloadToCW(shipmentId, checkHousebill);
+      const xmlCWResponse = await sendToCW(xmlCWPayload);
+      const xmlCWObjResponse = await xmlToJson(xmlCWResponse);
+      validateCWResponse(xmlCWObjResponse, xmlCWPayload);
+
+      return [xmlWTResponse, xmlCWResponse];
+      // try {
+      //   const params = {
+      //     Message: `Shipment is created successfully after retry.\n\nShipmentId: ${get(dynamoData, 'ShipmentId', '')}.\n\nId: ${get(dynamoData, 'Id', '')}.\n\nS3BUCKET: ${s3Bucket}.\n\nS3KEY: ${s3Key}`,
+      //     Subject: `${process.env.STAGE} - CW to WT Create Shipment Reprocess Success for ShipmentId: ${get(dynamoData, 'ShipmentId', '')}`,
+      //     TopicArn: process.env.NOTIFICATION_ARN,
+      //   };
+      //   await sns.publish(params).promise();
+      //   console.info('SNS notification has sent');
+      // } catch (err) {
+      //   console.error('Error while sending sns notification: ', err);
+      // }
+      // await putItem(dynamoData);
+      // return `Housebill already created : The housebill number for '${refNo}' already created in WT and the Housebill No. is '${checkHousebill}'`;
+    }
+  }
   const xmlWTResponse = await sendToWT(payloadToWt);
   const xmlWTObjResponse = await xmlToJson(xmlWTResponse);
   validateWTResponse(xmlWTObjResponse, payloadToWt);

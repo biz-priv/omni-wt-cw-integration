@@ -23,13 +23,13 @@ function:
     #     rules:
     #       - prefix: ${ssm:/${self:service}/${self:provider.stage}/s3-prefix}
     #       - suffix: ${ssm:/${self:service}/${self:provider.stage}/s3-suffix}
-    - stream:
-        arn: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment-status-stream-arn}
-        batchSize: 1
-        maximumRetryAttempts: 1
-        bisectBatchOnFunctionError: true
-        filterPatterns:
-          - { dynamodb: { NewImage: { Status: { S: ['READY'] } } } }
+    # - stream:
+    #     arn: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment-status-stream-arn}
+    #     batchSize: 1
+    #     maximumRetryAttempts: 1
+    #     bisectBatchOnFunctionError: true
+    #     filterPatterns:
+    #       - { dynamodb: { NewImage: { Status: { S: ['READY'] } } } }
 
   environment:
     WT_URL: ${ssm:/omni-dw/${self:provider.stage}/createShipment/wt/url}

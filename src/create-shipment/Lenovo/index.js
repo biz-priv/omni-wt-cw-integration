@@ -91,19 +91,37 @@ module.exports.handler = async (event, context) => {
     await putItem({ tableName: process.env.LOGS_TABLE, item: dynamoData });
     return 'Success';
   } catch (error) {
-    const receiptHandle = get(event, 'Records[0].receiptHandle', '');
-    sqs.deleteMessage({
-      QueueUrl: 'https://sqs.us-east-1.amazonaws.com/332281781429/wt-cw-create-shipment-queue-dev',
-      ReceiptHandle: receiptHandle
-    })
+    try {
+      const receiptHandle = get(event, 'Records[0].receiptHandle', '');
+
+      console.info('receiptHandle:', receiptHandle);
+
+      if (!receiptHandle) {
+        throw new Error('No receipt handle found in the event');
+      }
+
+      // Delete the message from the SQS queue
+      const deleteParams = {
+        QueueUrl: 'https://sqs.us-east-1.amazonaws.com/332281781429/wt-cw-create-shipment-queue-dev',
+        ReceiptHandle: receiptHandle
+      };
+
+      await sqs.deleteMessage(deleteParams).promise();
+      console.info('Message deleted successfully');
+    } catch (e) {
+      console.error('Error processing SQS event:', e);
+    }
     return await handleError(error, context, event, dynamoData, eventType);
   }
 };
 
-const extractS3Info = (event) => ({
-  s3Bucket: get(event, 'Records[0].s3.bucket.name', ''),
-  s3Key: get(event, 'Records[0].s3.object.key', ''),
-});
+const extractS3Info = (event) => {
+  const body = JSON.parse(event.Records[0].body);
+  return {
+    s3Bucket: get(body, 'Records[0].s3.bucket.name', ''),
+    s3Key: get(body, 'Records[0].s3.object.key', ''),
+  };
+};
 
 const validateWTResponse = (response, payloadToWt) => {
   const errorMessage = get(

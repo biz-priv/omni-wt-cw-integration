@@ -13,7 +13,7 @@ function:
       - src/shared/*
   events:
     - sqs:
-        arn: ${ssm:/omni-wt-cw-integration/${self:provider.stage} .arn}
+        arn: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment/sqs/queue.arn}
         batchSize: 1
     # - s3:
     #     bucket: ${ssm:/omni-dw/${self:provider.stage}/wms/bucket/name}

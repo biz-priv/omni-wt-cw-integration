@@ -89,7 +89,7 @@ module.exports.handler = async (event, context) => {
 
       // Delete the message from the SQS queue
       const deleteParams = {
-        QueueUrl: 'https://sqs.us-east-1.amazonaws.com/332281781429/wt-cw-create-shipment-queue-dev',
+        QueueUrl: process.env.QUEUE_URL,
         ReceiptHandle: receiptHandle
       };
 

@@ -42,3 +42,4 @@ function:
     CHECK_HOUSEBILL_EXISTS_API_USERNAME: ${ssm:/omni-dw/${self:provider.stage}/cw-to-wt/check-housebill-exists-api/username}
     CHECK_HOUSEBILL_EXISTS_API_PASSWORD: ${ssm:/omni-dw/${self:provider.stage}/cw-to-wt/check-housebill-exists-api/password}
     STAGE: ${self:provider.stage}
+    QUEUE_URL: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment/sqs/queue.url}

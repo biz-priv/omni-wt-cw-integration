@@ -78,25 +78,28 @@ module.exports.handler = async (event, context) => {
     await putItem({ tableName: process.env.LOGS_TABLE, item: dynamoData });
     return 'Success';
   } catch (error) {
-    try {
-      const receiptHandle = get(event, 'Records[0].receiptHandle', '');
+    if (eventType === 'SQS') {
 
-      console.info('receiptHandle:', receiptHandle);
+      try {
+        const receiptHandle = get(event, 'Records[0].receiptHandle', '');
 
-      if (!receiptHandle) {
-        throw new Error('No receipt handle found in the event');
+        console.info('receiptHandle:', receiptHandle);
+
+        if (!receiptHandle) {
+          throw new Error('No receipt handle found in the event');
+        }
+
+        // Delete the message from the SQS queue
+        const deleteParams = {
+          QueueUrl: process.env.QUEUE_URL,
+          ReceiptHandle: receiptHandle
+        };
+
+        await sqs.deleteMessage(deleteParams).promise();
+        console.info('Message deleted successfully');
+      } catch (e) {
+        console.error('Error processing SQS event:', e);
       }
-
-      // Delete the message from the SQS queue
-      const deleteParams = {
-        QueueUrl: process.env.QUEUE_URL,
-        ReceiptHandle: receiptHandle
-      };
-
-      await sqs.deleteMessage(deleteParams).promise();
-      console.info('Message deleted successfully');
-    } catch (e) {
-      console.error('Error processing SQS event:', e);
     }
     return await handleError(error, context, event, dynamoData, eventType);
   }
@@ -167,7 +170,7 @@ const handleError = async (error, context, event, dynamoData, eventType) => {
 
 const sendSNSNotification = (context, error, event, dynamoData) =>
   publishToSNS({
-    message: `An error occurred in function ${context.functionName}.\n\n ${error}.\n\nShipmentId: ${get(dynamoData, 'ShipmentId', '')}.\n\nEVENT: ${JSON.stringify(event)}.\n\nS3BUCKET: ${s3Bucket}.\n\nS3KEY: ${s3Key}.\n\nLAMBDA TRIGGER: This lambda will trigger when there is a XML file dropped in a s3 Bucket(for s3 bucket and the file path, please refer to the event).\n\nRETRIGGER PROCESS: After fixing the issue, please retrigger the process by reuploading the file mentioned in the event.\n\nNote: Use the ShipmentId: ${get(dynamoData, 'ShipmentId', '')} for better search in the logs and also check in dynamodb: ${process.env.LOGS_TABLE} for understanding the complete data.`,
+    message: `An error occurred in function ${context.functionName}.\n\n ${error}.\n\nShipmentId: ${get(dynamoData, 'ShipmentId', '')}.\n\nS3BUCKET: ${s3Bucket}.\n\nS3KEY: ${s3Key}.\n\nLAMBDA TRIGGER: This lambda will trigger when there is a XML file dropped in a s3 Bucket(for s3 bucket and the file path, please refer to the event).\n\nRETRIGGER PROCESS: After fixing the issue, please retrigger the process by reuploading the file mentioned in the event.\n\nNote: Use the ShipmentId: ${get(dynamoData, 'ShipmentId', '')} for better search in the logs and also check in dynamodb: ${process.env.LOGS_TABLE} for understanding the complete data.`,
     subject: `LENOVO CREATE SHIPMENT ERROR ~ ShipmentId: ${get(dynamoData, 'ShipmentId', '')}`,
   });
 

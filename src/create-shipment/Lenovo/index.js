@@ -1,7 +1,7 @@
 'use strict';
 
 const AWS = require('aws-sdk');
-const { get, unset } = require('lodash');
+const { get, unset, upperCase } = require('lodash');
 
 const { Converter } = AWS.DynamoDB;
 
@@ -69,7 +69,7 @@ module.exports.handler = async (event, context) => {
     dynamoData.XmlWTResponse = xmlWTResponse;
     dynamoData.XmlCWResponse = xmlCWResponse;
 
-    const xmlPayloadToAddTrakingNotesToWT = await payloadToAddTrakingNotesToWT(get(dynamoData, 'Housebill', ''),get(dynamoData, 'shipmentId', ''));
+    const xmlPayloadToAddTrakingNotesToWT = await payloadToAddTrakingNotesToWT(get(dynamoData, 'Housebill', ''),get(dynamoData, 'ShipmentId', ''));
     dynamoData.XmlPayloadToAddTrakingNotesToWT = xmlPayloadToAddTrakingNotesToWT;
 
     const xmlAddTrakingNotesToWTResponse = await trackingNotesAPICall(xmlPayloadToAddTrakingNotesToWT);
@@ -215,7 +215,7 @@ const handleExistingRecord = async (data) => {
   const errorMsg = `Record with ShipmentId: ${shipmentId} is already sent to WT.`;
   await sendSESEmail({
     message: `Record with ShipmentId: ${shipmentId} is already sent to WT.\n\nS3 KEY: ${s3Key}.`,
-    subject: `LENOVO CREATE SHIPMENT DUPLICATES ALERT ~ ShipmentId: ${shipmentId}`,
+    subject: `${upperCase(process.env.STAGE)} - LENOVO CREATE SHIPMENT DUPLICATES ALERT ~ ShipmentId: ${shipmentId}`,
   });
   await updateDynamoDBRecord(shipmentId, errorMsg, STATUSES.SUCCESS);
   return 'Skipped';
@@ -259,7 +259,6 @@ const updateDynamoDBRecord = async (shipmentId, errorMessage, status) => {
 
 const processWTAndCW = async (payloadToWt, shipmentId, dynamoData, eventType) => {
   if (eventType === 'dynamo') {
-    // const refNo = get(xmlObj, 'UniversalShipment.Shipment.Order.OrderNumber', '');
     const checkHousebill = await checkHousebillExists(shipmentId);
     if (checkHousebill !== '') {
       console.info(`Housebill already created : The housebill number for '${shipmentId}' already created in WT and the Housebill No. is '${checkHousebill}'`);
@@ -301,7 +300,7 @@ async function sendSESEmail({ message, subject }) {
   try {
     const params = {
       Destination: {
-        ToAddresses: ['applications@omnilogistics.com', 'omnidev@bizcloudexperts.com'],
+        ToAddresses: ['alwhite@omnilogistics.com', 'kvallabhaneni@omnilogistics.com'],
       },
       Message: {
         Body: {

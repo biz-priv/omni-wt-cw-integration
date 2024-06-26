@@ -51,10 +51,10 @@ async function sendToCW(postData) {
   }
 }
 
-async function sendToCheckHousebillExists(postData) {
+async function trackingNotesAPICall(postData) {
   try {
     const config = {
-      url: process.env.CHECK_HOUSEBILL_EXISTS_API_URL,
+      url: process.env.TRACKING_NOTES_API_URL,
       method: 'post',
       headers: {
         'Content-Type': 'text/xml',
@@ -77,5 +77,5 @@ async function sendToCheckHousebillExists(postData) {
 module.exports = {
   sendToCW,
   sendToWT,
-  sendToCheckHousebillExists,
+  trackingNotesAPICall,
 };

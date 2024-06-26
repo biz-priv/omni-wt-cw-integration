@@ -38,8 +38,8 @@ function:
     LOGS_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment-status-table-name}
     wt_soap_username: ${ssm:/omni-dw/${self:provider.stage}/wt/soap/username}
     wt_soap_password: ${ssm:/omni-dw/${self:provider.stage}/wt/soap/password}
-    CHECK_HOUSEBILL_EXISTS_API_URL: ${ssm:/omni-dw/${self:provider.stage}/cw-to-wt/check-housebill-exists-api/url}
-    CHECK_HOUSEBILL_EXISTS_API_USERNAME: ${ssm:/omni-dw/${self:provider.stage}/cw-to-wt/check-housebill-exists-api/username}
-    CHECK_HOUSEBILL_EXISTS_API_PASSWORD: ${ssm:/omni-dw/${self:provider.stage}/cw-to-wt/check-housebill-exists-api/password}
     STAGE: ${self:provider.stage}
     QUEUE_URL: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment/sqs/queue.url}
+    API_USER_ID: ${ssm:/omni-dw/${self:provider.stage}/wt/username}
+    API_PASS: ${ssm:/omni-dw/${self:provider.stage}/wt/password}
+    TRACKING_NOTES_API_URL: ${ssm:/omni-ivia/${self:provider.stage}/createShipment/xmlUpdate/url}

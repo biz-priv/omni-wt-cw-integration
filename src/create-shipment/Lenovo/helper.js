@@ -3,7 +3,7 @@
 const { get } = require('lodash');
 const xml2js = require('xml2js');
 const Joi = require('joi');
-const { sendToCheckHousebillExists } = require('./api');
+const { trackingNotesAPICall } = require('./api');
 const { xmlToJson } = require('../../shared/helper');
 
 
@@ -349,8 +349,8 @@ async function checkHousebillExists(referenceNo) {
             '$': {
               'xmlns': 'http://tempuri.org/'
             },
-            'UserName': process.env.CHECK_HOUSEBILL_EXISTS_API_USERNAME,
-            'Password': process.env.CHECK_HOUSEBILL_EXISTS_API_PASSWORD
+            'UserName': process.env.API_USER_ID,
+            'Password': process.env.API_PASS
           }
         },
         'soap:Body': {
@@ -365,7 +365,7 @@ async function checkHousebillExists(referenceNo) {
       }
     });
 
-    const xmlResponse = await sendToCheckHousebillExists(payload);
+    const xmlResponse = await trackingNotesAPICall(payload);
     const jsonResponse = await xmlToJson(xmlResponse);
     console.info('jsonResponse',JSON.stringify(jsonResponse));
 
@@ -396,9 +396,46 @@ async function checkHousebillExists(referenceNo) {
   }
 }
 
+async function payloadToAddTrakingNotesToWT(housebill, shipmentId) {
+  try {
+    const xmlData = `
+    <?xml version="1.0"?>
+<soap:Envelope
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Header>
+        <AuthHeader
+            xmlns="http://tempuri.org/">
+            <UserName>${process.env.API_USER_ID}</UserName>
+            <Password>${process.env.API_PASS}</Password>
+        </AuthHeader>
+    </soap:Header>
+    <soap:Body>
+        <WriteTrackingNote
+            xmlns="http://tempuri.org/">
+            <HandlingStation/>
+            <HouseBill>${housebill}</HouseBill>
+            <TrackingNotes>
+                <TrackingNotes>
+                    <TrackingNoteMessage>&lt;a href="https://trxelpwebtracker.wisegrid.net/Login/Login.aspx?QuickViewNumber=${shipmentId}" target="_blank"&gt;${shipmentId}&lt;/a&gt;</TrackingNoteMessage>
+                </TrackingNotes>
+            </TrackingNotes>
+        </WriteTrackingNote>
+    </soap:Body>
+</soap:Envelope>
+    `
+    return xmlData;
+  } catch (error) {
+    console.error('Error in payloadToAddTrakingNotesToWT:', error);
+    throw error;
+  }
+}
+
 module.exports = {
   preparePayloadForWT,
   payloadToCW,
   extractData,
   checkHousebillExists,
+  payloadToAddTrakingNotesToWT
 };

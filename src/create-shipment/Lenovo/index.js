@@ -20,7 +20,9 @@ module.exports.handler = async (event, context) => {
   console.info('🙂 -> file: index.js:9 -> event:', JSON.stringify(event));
   let eventType = '';
   let dynamoData = {
-    Steps: '{\'WT Shipment Creation\': \'PENDING\', \'CW Send Housebill\': \'PENDING\', \'Add Tracking Notes to WT\': \'PENDING\'}'
+    WTApiCall: 'PENDING',
+    CWApiCall: 'PENDING',
+    AddTrakingNotesToWTApiCall: 'PENDING'
   };
   try {
     if (get(event, 'Records[0].eventSource', '') === 'aws:dynamodb') {
@@ -78,8 +80,7 @@ module.exports.handler = async (event, context) => {
     const jsonAddTrakingNotesToWTResponse = await xmlToJson(xmlAddTrakingNotesToWTResponse);
     const status = get(jsonAddTrakingNotesToWTResponse, 'soap:Envelope.soap:Body.WriteTrackingNoteResponse.WriteTrackingNoteResult', '');
     if(status === 'Success'){
-      dynamoData.Steps = '{\'WT Shipment Creation\': \'SENT\', \'CW Send Housebill\': \'SENT\', \'Add Tracking Notes to WT\': \'SENT\'}';
-      await putItem({ tableName: process.env.LOGS_TABLE, item: dynamoData });
+      dynamoData.AddTrakingNotesToWTApiCall = 'SENT';
     }
     else{
       throw new Error(`Failed to add tracking notes to WT. Received status: ${status}`);
@@ -266,17 +267,14 @@ const processWTAndCW = async (payloadToWt, shipmentId, dynamoData, eventType) =>
       const xmlCWResponse = await sendToCW(xmlCWPayload);
       const xmlCWObjResponse = await xmlToJson(xmlCWResponse);
       validateCWResponse(xmlCWObjResponse, xmlCWPayload);
-      dynamoData.Steps = '{\'WT Shipment Creation\': \'SENT\', \'CW Send Housebill\': \'SENT\', \'Add Tracking Notes to WT\': \'PENDING\'}';
-      await putItem({ tableName: process.env.LOGS_TABLE, item: dynamoData });
-
+      dynamoData.CWApiCall = 'SENT';
       return [get(dynamoData, 'XmlWTResponse', ''), xmlCWResponse];
     }
   }
   const xmlWTResponse = await sendToWT(payloadToWt);
   const xmlWTObjResponse = await xmlToJson(xmlWTResponse);
   validateWTResponse(xmlWTObjResponse, payloadToWt);
-  dynamoData.Steps = '{\'WT Shipment Creation\': \'SENT\', \'CW Send Housebill\': \'PENDING\', \'Add Tracking Notes to WT\': \'PENDING\'}';
-  await putItem({ tableName: process.env.LOGS_TABLE, item: dynamoData });
+  dynamoData.WTApiCall = 'SENT';
 
   const housebill = get(
     xmlWTObjResponse,
@@ -290,9 +288,8 @@ const processWTAndCW = async (payloadToWt, shipmentId, dynamoData, eventType) =>
   const xmlCWResponse = await sendToCW(xmlCWPayload);
   const xmlCWObjResponse = await xmlToJson(xmlCWResponse);
   validateCWResponse(xmlCWObjResponse, xmlCWPayload);
-  dynamoData.Steps = '{\'WT Shipment Creation\': \'SENT\', \'CW Send Housebill\': \'SENT\', \'Add Tracking Notes to WT\': \'PENDING\'}';
-  await putItem({ tableName: process.env.LOGS_TABLE, item: dynamoData });
-
+  dynamoData.CWApiCall = 'SENT';
+  
   return [xmlWTResponse, xmlCWResponse];
 };
 

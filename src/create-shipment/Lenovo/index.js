@@ -123,11 +123,12 @@ module.exports.handler = async (event, context) => {
 };
 
 const extractS3Info = (event) => {
-  const body = JSON.parse(event.Records[0].body);
-  return {
-    s3Bucket: get(body, 'Records[0].s3.bucket.name', ''),
-    s3Key: get(body, 'Records[0].s3.object.key', ''),
-  };
+  const sqsBody = JSON.parse(get(event, 'Records[0].body', '{}'));
+
+  s3Bucket = get(sqsBody, 's3.bucket.name', '');
+  s3Key = get(sqsBody, 's3.object.key', '');
+
+  return { s3Bucket, s3Key };
 };
 
 const validateWTResponse = (response, payloadToWt) => {

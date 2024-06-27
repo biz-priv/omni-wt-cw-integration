@@ -6,14 +6,15 @@ const sqs = new AWS.SQS();
 const { publishToSNS } = require('../../shared/dynamo');
 
 exports.handler = async (event, context) => {
+    console.info('event:', JSON.stringify(event));
     const queueUrl = process.env.QUEUE_URL;
 
     for (const record of event.Records) {
         const params = {
             QueueUrl: queueUrl,
             MessageBody: JSON.stringify(record),
-            MessageGroupId: 's3-events-group', // Group ID for FIFO queues
-            MessageDeduplicationId: record.s3.object.eTag // Unique ID for deduplication
+            MessageGroupId: 's3-events-group',
+            MessageDeduplicationId: record.s3.object.eTag
         };
 
         try {
@@ -25,8 +26,6 @@ exports.handler = async (event, context) => {
                 message: `An error occurred in function ${context.functionName}.\n\nERROR DETAILS: ${error}.`,
                 subject: `${context.functionName} failed`,
             });
-            // You can choose to rethrow the error if you want to fail the entire Lambda execution in case of an error
-            // throw new Error(`Failed to send message for ${record.s3.object.key}. Error: ${error.message}`);
         }
     }
 

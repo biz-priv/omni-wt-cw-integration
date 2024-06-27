@@ -33,6 +33,7 @@ provider:
         - dynamodb:Scan
         - sns:*
         - ses:*
+        - sqs:SendMessage
       Resource: '*'
   environment:
     REGION: ${self:provider.region}

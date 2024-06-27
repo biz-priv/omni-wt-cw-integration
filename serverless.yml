@@ -49,6 +49,7 @@ package:
 functions:
   create-shipment: ${file(config/functions/Lenovo/create-shipment.yml):function}
   create-shipment-retrigger-process: ${file(config/functions/Lenovo/create-shipment-retrigger-process.yml):function}
+  create-shipment-s3-to-queue: ${file(config/functions/Lenovo/create-shipment-s3-to-queue.yml):function}
   add-milestone: ${file(config/functions/Lenovo/add-milestone.yml):function}
   shipment-file-stream-processor: ${file(config/functions/Lenovo/pod-docs-stream-processor.yml):function}
   table-status-checker: ${file(config/functions/Lenovo/table-status-checker.yml):function}

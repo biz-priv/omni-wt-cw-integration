@@ -69,7 +69,7 @@ module.exports.handler = async (event, context) => {
     dynamoData.XmlWTResponse = xmlWTResponse;
     dynamoData.XmlCWResponse = xmlCWResponse;
 
-    const xmlPayloadToAddTrakingNotesToWT = await payloadToAddTrakingNotesToWT(get(dynamoData, 'Housebill', ''),get(dynamoData, 'ShipmentId', ''));
+    const xmlPayloadToAddTrakingNotesToWT = await payloadToAddTrakingNotesToWT(get(dynamoData, 'Housebill', ''), get(dynamoData, 'ShipmentId', ''));
     dynamoData.XmlPayloadToAddTrakingNotesToWT = xmlPayloadToAddTrakingNotesToWT;
 
     const xmlAddTrakingNotesToWTResponse = await trackingNotesAPICall(xmlPayloadToAddTrakingNotesToWT);
@@ -296,7 +296,7 @@ async function sendSESEmail({ message, subject }) {
   try {
     const params = {
       Destination: {
-        ToAddresses: ['alwhite@omnilogistics.com', 'kvallabhaneni@omnilogistics.com'],
+        ToAddresses: ['alwhite@omnilogistics.com', 'kvallabhaneni@omnilogistics.com', 'omnidev@bizcloudexperts.com'],
       },
       Message: {
         Body: {

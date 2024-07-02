@@ -43,3 +43,4 @@ function:
     API_USER_ID: ${ssm:/omni-dw/${self:provider.stage}/wt/username}
     API_PASS: ${ssm:/omni-dw/${self:provider.stage}/wt/password}
     TRACKING_NOTES_API_URL: ${ssm:/omni-ivia/${self:provider.stage}/createShipment/xmlUpdate/url}
+    CW_SHIPMENT_DETAILS: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/cw-webtracker-base/url}

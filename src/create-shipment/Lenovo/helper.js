@@ -106,8 +106,8 @@ async function extractData(dataObj) {
     return {
       forwardingShipmentKey,
       referenceNumber,
-      customerNo: '17773',
-      station: 'T04',
+      customerNo: '55185',
+      station: 'T07',
       shipperAddress1: get(shipperAddress, 'Address1', ''),
       shipperAddress2: get(shipperAddress, 'Address2', ''),
       shipperCity: get(shipperAddress, 'City', ''),

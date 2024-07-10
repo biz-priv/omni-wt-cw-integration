@@ -10,7 +10,7 @@ const { xmlToJson, cstDateTime, STATUSES } = require('../../shared/helper');
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
-const lenovoCustomerId = '17773';
+const lenovoCustomerId = '55185';
 const allowedMilestones = ['PUP', 'TTC', 'DEL'];
 
 const checkExistingRecord = async (orderNo, orderStatusId) => {

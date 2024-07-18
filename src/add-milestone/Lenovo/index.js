@@ -54,7 +54,7 @@ const handleShipmentMilestone = async (message) => {
   const data = AWS.DynamoDB.Converter.unmarshall(newImage);
   const orderNo = get(data, 'FK_OrderNo', '');
   const orderStatusId = get(data, 'FK_OrderStatusId', '');
-  const eventDateTime = get(data, 'EventDateTime','');
+  const eventDateTime = get(data, 'EventDateTime', '');
   const oldEventDateTime = oldImage
     ? get(AWS.DynamoDB.Converter.unmarshall(oldImage), 'EventDateTime')
     : null;

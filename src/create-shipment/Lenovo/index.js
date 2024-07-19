@@ -10,7 +10,13 @@ const sqs = new AWS.SQS();
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const { publishToSNS, putItem, dbQuery } = require('../../shared/dynamo');
 const { getS3Object, xmlToJson, STATUSES, cstDateTime } = require('../../shared/helper');
-const { preparePayloadForWT, extractData, payloadToCW, checkHousebillExists, payloadToAddTrakingNotesToWT } = require('./helper');
+const {
+  preparePayloadForWT,
+  extractData,
+  payloadToCW,
+  checkHousebillExists,
+  payloadToAddTrakingNotesToWT,
+} = require('./helper');
 const { sendToWT, sendToCW, trackingNotesAPICall } = require('./api');
 
 let s3Bucket = '';
@@ -20,7 +26,8 @@ module.exports.handler = async (event, context) => {
   console.info('🙂 -> file: index.js:9 -> event:', JSON.stringify(event));
   let eventType = '';
   let dynamoData = {
-    Steps: '{\'WT Shipment Creation\': \'PENDING\', \'CW Send Housebill\': \'PENDING\', \'Add Tracking Notes to WT\': \'PENDING\'}'
+    Steps:
+      "{'WT Shipment Creation': 'PENDING', 'CW Send Housebill': 'PENDING', 'Add Tracking Notes to WT': 'PENDING'}",
   };
   try {
     if (get(event, 'Records[0].eventSource', '') === 'aws:dynamodb') {
@@ -28,8 +35,7 @@ module.exports.handler = async (event, context) => {
       s3Bucket = get(dynamoData, 'S3Bucket', '');
       s3Key = get(dynamoData, 'S3Key', '');
       eventType = 'dynamo';
-    }
-    else {
+    } else {
       eventType = 'SQS';
       ({ s3Bucket, s3Key } = extractS3Info(event));
       dynamoData = { S3Bucket: s3Bucket, S3Key: s3Key };
@@ -69,18 +75,27 @@ module.exports.handler = async (event, context) => {
     dynamoData.XmlWTResponse = xmlWTResponse;
     dynamoData.XmlCWResponse = xmlCWResponse;
 
-    const xmlPayloadToAddTrakingNotesToWT = await payloadToAddTrakingNotesToWT(get(dynamoData, 'Housebill', ''), get(dynamoData, 'ShipmentId', ''));
+    const xmlPayloadToAddTrakingNotesToWT = await payloadToAddTrakingNotesToWT(
+      get(dynamoData, 'Housebill', ''),
+      get(dynamoData, 'ShipmentId', '')
+    );
     dynamoData.XmlPayloadToAddTrakingNotesToWT = xmlPayloadToAddTrakingNotesToWT;
 
-    const xmlAddTrakingNotesToWTResponse = await trackingNotesAPICall(xmlPayloadToAddTrakingNotesToWT);
+    const xmlAddTrakingNotesToWTResponse = await trackingNotesAPICall(
+      xmlPayloadToAddTrakingNotesToWT
+    );
     dynamoData.XmlAddTrakingNotesToWTResponse = xmlAddTrakingNotesToWTResponse;
 
     const jsonAddTrakingNotesToWTResponse = await xmlToJson(xmlAddTrakingNotesToWTResponse);
-    const status = get(jsonAddTrakingNotesToWTResponse, 'soap:Envelope.soap:Body.WriteTrackingNoteResponse.WriteTrackingNoteResult', '');
+    const status = get(
+      jsonAddTrakingNotesToWTResponse,
+      'soap:Envelope.soap:Body.WriteTrackingNoteResponse.WriteTrackingNoteResult',
+      ''
+    );
     if (status === 'Success') {
-      dynamoData.Steps = '{\'WT Shipment Creation\': \'SENT\', \'CW Send Housebill\': \'SENT\', \'Add Tracking Notes to WT\': \'SENT\'}';
-    }
-    else {
+      dynamoData.Steps =
+        "{'WT Shipment Creation': 'SENT', 'CW Send Housebill': 'SENT', 'Add Tracking Notes to WT': 'SENT'}";
+    } else {
       throw new Error(`Failed to add tracking notes to WT. Received status: ${status}`);
     }
 
@@ -96,7 +111,6 @@ module.exports.handler = async (event, context) => {
     return 'Success';
   } catch (error) {
     if (eventType === 'SQS') {
-
       try {
         const receiptHandle = get(event, 'Records[0].receiptHandle', '');
 
@@ -109,7 +123,7 @@ module.exports.handler = async (event, context) => {
         // Delete the message from the SQS queue
         const deleteParams = {
           QueueUrl: process.env.QUEUE_URL,
-          ReceiptHandle: receiptHandle
+          ReceiptHandle: receiptHandle,
         };
 
         await sqs.deleteMessage(deleteParams).promise();
@@ -261,19 +275,23 @@ const processWTAndCW = async (payloadToWt, shipmentId, dynamoData, eventType) =>
   if (eventType === 'dynamo') {
     const checkHousebill = await checkHousebillExists(shipmentId);
     if (checkHousebill !== '') {
-      console.info(`Housebill already created : The housebill number for '${shipmentId}' already created in WT and the Housebill No. is '${checkHousebill}'`);
+      console.info(
+        `Housebill already created : The housebill number for '${shipmentId}' already created in WT and the Housebill No. is '${checkHousebill}'`
+      );
       const xmlCWPayload = await payloadToCW(shipmentId, checkHousebill);
       const xmlCWResponse = await sendToCW(xmlCWPayload);
       const xmlCWObjResponse = await xmlToJson(xmlCWResponse);
       validateCWResponse(xmlCWObjResponse, xmlCWPayload);
-      dynamoData.Steps = '{\'WT Shipment Creation\': \'SENT\', \'CW Send Housebill\': \'SENT\', \'Add Tracking Notes to WT\': \'PENDING\'}';
+      dynamoData.Steps =
+        "{'WT Shipment Creation': 'SENT', 'CW Send Housebill': 'SENT', 'Add Tracking Notes to WT': 'PENDING'}";
       return [get(dynamoData, 'XmlWTResponse', ''), xmlCWResponse];
     }
   }
   const xmlWTResponse = await sendToWT(payloadToWt);
   const xmlWTObjResponse = await xmlToJson(xmlWTResponse);
   validateWTResponse(xmlWTObjResponse, payloadToWt);
-  dynamoData.Steps = '{\'WT Shipment Creation\': \'SENT\', \'CW Send Housebill\': \'PENDING\', \'Add Tracking Notes to WT\': \'PENDING\'}';
+  dynamoData.Steps =
+    "{'WT Shipment Creation': 'SENT', 'CW Send Housebill': 'PENDING', 'Add Tracking Notes to WT': 'PENDING'}";
 
   const housebill = get(
     xmlWTObjResponse,
@@ -287,7 +305,8 @@ const processWTAndCW = async (payloadToWt, shipmentId, dynamoData, eventType) =>
   const xmlCWResponse = await sendToCW(xmlCWPayload);
   const xmlCWObjResponse = await xmlToJson(xmlCWResponse);
   validateCWResponse(xmlCWObjResponse, xmlCWPayload);
-  dynamoData.Steps = '{\'WT Shipment Creation\': \'SENT\', \'CW Send Housebill\': \'SENT\', \'Add Tracking Notes to WT\': \'PENDING\'}';
+  dynamoData.Steps =
+    "{'WT Shipment Creation': 'SENT', 'CW Send Housebill': 'SENT', 'Add Tracking Notes to WT': 'PENDING'}";
 
   return [xmlWTResponse, xmlCWResponse];
 };

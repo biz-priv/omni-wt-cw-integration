@@ -6,35 +6,58 @@ const Joi = require('joi');
 const { trackingNotesAPICall } = require('./api');
 const { xmlToJson } = require('../../shared/helper');
 
-
 const attributeSourceMap = {
-  forwardingShipmentKey: 'UniversalInterchange.Body.UniversalShipment.Shipment.DataContext.DataSourceCollection.DataSource[?(@.Type==="ForwardingShipment")].Key',
-  referenceNumber: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.LocalProcessing.OrderNumberCollection.OrderNumber.OrderReference',
-  shipperAddress1: 'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Address1',
-  shipperAddress2: 'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Address2',
-  shipperCity: 'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].City',
-  shipperName: 'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].CompanyName',
-  shipperZip: 'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Postcode',
-  shipperState: 'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].State._',
-  shipperCountry: 'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Country.Code',
-  shipperEmail: 'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Email',
-  shipperPhone: 'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Phone',
-  shipperFax: 'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Fax',
-  consigneeAddress1: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Address1',
-  consigneeAddress2: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Address2',
-  consigneeCity: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].City',
-  consigneeName: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].CompanyName',
-  consigneeZip: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Postcode',
-  consigneeState: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].State._',
-  consigneeCountry: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Country.Code',
-  consigneeEmail: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Email',
-  consigneeFax: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Fax',
-  consigneePhone: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Phone',
-  readyDate: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.LocalProcessing.LCLAvailable',
-  readyTime: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.LocalProcessing.LCLAvailable',
-  shipmentLines: 'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.PackingLineCollection.PackingLine',
+  forwardingShipmentKey:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.DataContext.DataSourceCollection.DataSource[?(@.Type==="ForwardingShipment")].Key',
+  referenceNumber:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.LocalProcessing.OrderNumberCollection.OrderNumber.OrderReference',
+  shipperAddress1:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Address1',
+  shipperAddress2:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Address2',
+  shipperCity:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].City',
+  shipperName:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].CompanyName',
+  shipperZip:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Postcode',
+  shipperState:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].State._',
+  shipperCountry:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Country.Code',
+  shipperEmail:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Email',
+  shipperPhone:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Phone',
+  shipperFax:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ReceivingForwarderAddress")].Fax',
+  consigneeAddress1:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Address1',
+  consigneeAddress2:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Address2',
+  consigneeCity:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].City',
+  consigneeName:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].CompanyName',
+  consigneeZip:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Postcode',
+  consigneeState:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].State._',
+  consigneeCountry:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Country.Code',
+  consigneeEmail:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Email',
+  consigneeFax:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Fax',
+  consigneePhone:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.OrganizationAddressCollection.OrganizationAddress[?(@.AddressType==="ConsigneePickupDeliveryAddress")].Phone',
+  readyDate:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.LocalProcessing.LCLAvailable',
+  readyTime:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.LocalProcessing.LCLAvailable',
+  shipmentLines:
+    'UniversalInterchange.Body.UniversalShipment.Shipment.SubShipmentCollection.SubShipment.PackingLineCollection.PackingLine',
 };
-
 
 async function extractData(dataObj) {
   console.info('🚀 ~ file: test.js:353 ~ extractData ~ dataObj:', JSON.stringify(dataObj));
@@ -211,7 +234,7 @@ async function preparePayloadForWT(data) {
               ConsigneeState: get(validatedData, 'consigneeState', ''),
               ShipmentLineList: {
                 NewShipmentDimLineV3: get(validatedData, 'shipmentLines', []).map((line) => ({
-                  Description: get(line, 'GoodsDescription', '').substring(0,35),
+                  Description: get(line, 'GoodsDescription', '').substring(0, 35),
                   Height: Number(get(line, 'Height', 0)).toFixed(5),
                   Length: Number(get(line, 'Length', 0)).toFixed(5),
                   DimUOMV3: 'in',
@@ -286,46 +309,89 @@ async function payloadToCW(shipmentId, housebill) {
 }
 
 function generateError(attribute, sourcePath) {
-  return new Error(`${attribute} is required. Please populate the attribute from the CW.\n SourcePath ${sourcePath}`);
+  return new Error(
+    `${attribute} is required. Please populate the attribute from the CW.\n SourcePath ${sourcePath}`
+  );
 }
 
 function validateData(data) {
   const schema = Joi.object({
-    forwardingShipmentKey: Joi.string().required().error(generateError('forwardingShipmentKey', attributeSourceMap.forwardingShipmentKey)),
-    referenceNumber: Joi.string().required().error(generateError('referenceNumber', attributeSourceMap.referenceNumber)),
+    forwardingShipmentKey: Joi.string()
+      .required()
+      .error(generateError('forwardingShipmentKey', attributeSourceMap.forwardingShipmentKey)),
+    referenceNumber: Joi.string()
+      .required()
+      .error(generateError('referenceNumber', attributeSourceMap.referenceNumber)),
     customerNo: Joi.string().required().error(generateError('customerNo', '')),
     station: Joi.string().required().error(generateError('station', '')),
-    shipperAddress1: Joi.string().required().error(generateError('shipperAddress1', attributeSourceMap.shipperAddress1)),
+    shipperAddress1: Joi.string()
+      .required()
+      .error(generateError('shipperAddress1', attributeSourceMap.shipperAddress1)),
     shipperAddress2: Joi.string().allow('').optional(),
-    shipperCity: Joi.string().required().error(generateError('shipperCity', attributeSourceMap.shipperCity)),
-    shipperName: Joi.string().required().error(generateError('shipperName', attributeSourceMap.shipperName)),
-    shipperCountry: Joi.string().required().error(generateError('shipperCountry', attributeSourceMap.shipperCountry)),
+    shipperCity: Joi.string()
+      .required()
+      .error(generateError('shipperCity', attributeSourceMap.shipperCity)),
+    shipperName: Joi.string()
+      .required()
+      .error(generateError('shipperName', attributeSourceMap.shipperName)),
+    shipperCountry: Joi.string()
+      .required()
+      .error(generateError('shipperCountry', attributeSourceMap.shipperCountry)),
     shipperEmail: Joi.string().allow('').optional(),
     shipperFax: Joi.string().allow('').optional(),
     shipperPhone: Joi.string().allow('').optional(),
-    shipperZip: Joi.string().required().error(generateError('shipperZip', attributeSourceMap.shipperZip)),
-    shipperState: Joi.string().required().error(generateError('shipperState', attributeSourceMap.shipperState)),
-    readyDate: Joi.string().required().error(generateError('readyDate', attributeSourceMap.readyDate)),
-    readyTime: Joi.string().required().error(generateError('readyTime', attributeSourceMap.readyTime)),
-    consigneeAddress1: Joi.string().required().error(generateError('consigneeAddress1', attributeSourceMap.consigneeAddress1)),
+    shipperZip: Joi.string()
+      .required()
+      .error(generateError('shipperZip', attributeSourceMap.shipperZip)),
+    shipperState: Joi.string()
+      .required()
+      .error(generateError('shipperState', attributeSourceMap.shipperState)),
+    readyDate: Joi.string()
+      .required()
+      .error(generateError('readyDate', attributeSourceMap.readyDate)),
+    readyTime: Joi.string()
+      .required()
+      .error(generateError('readyTime', attributeSourceMap.readyTime)),
+    consigneeAddress1: Joi.string()
+      .required()
+      .error(generateError('consigneeAddress1', attributeSourceMap.consigneeAddress1)),
     consigneeAddress2: Joi.string().allow('').optional(),
-    consigneeCity: Joi.string().required().error(generateError('consigneeCity', attributeSourceMap.consigneeCity)),
-    consigneeName: Joi.string().required().error(generateError('consigneeName', attributeSourceMap.consigneeName)),
-    consigneeCountry: Joi.string().required().error(generateError('consigneeCountry', attributeSourceMap.consigneeCountry)),
+    consigneeCity: Joi.string()
+      .required()
+      .error(generateError('consigneeCity', attributeSourceMap.consigneeCity)),
+    consigneeName: Joi.string()
+      .required()
+      .error(generateError('consigneeName', attributeSourceMap.consigneeName)),
+    consigneeCountry: Joi.string()
+      .required()
+      .error(generateError('consigneeCountry', attributeSourceMap.consigneeCountry)),
     consigneeEmail: Joi.string().allow('').optional(),
     consigneeFax: Joi.string().allow('').optional(),
     consigneePhone: Joi.string().allow('').optional(),
-    consigneeZip: Joi.string().required().error(generateError('consigneeZip', attributeSourceMap.consigneeZip)),
-    consigneeState: Joi.string().required().error(generateError('consigneeState', attributeSourceMap.consigneeState)),
-    shipmentLines: Joi.array().items(Joi.object({
-      GoodsDescription: Joi.string().required().error(generateError('GoodsDescription', 'PackingLine.GoodsDescription')),
-      Height: Joi.number().required().error(generateError('Height', 'PackingLine.Height')),
-      Length: Joi.number().required().error(generateError('Length', 'PackingLine.Length')),
-      PackQty: Joi.number().required().error(generateError('PackQty', 'PackingLine.PackQty')),
-      PackType: Joi.string().required().error(generateError('PackType', 'PackingLine.PackType')),
-      Weight: Joi.number().required().error(generateError('Weight', 'PackingLine.Weight')),
-      Width: Joi.number().required().error(generateError('Width', 'PackingLine.Width')),
-    })).required().error(generateError('shipmentLines', attributeSourceMap.shipmentLines)),
+    consigneeZip: Joi.string()
+      .required()
+      .error(generateError('consigneeZip', attributeSourceMap.consigneeZip)),
+    consigneeState: Joi.string()
+      .required()
+      .error(generateError('consigneeState', attributeSourceMap.consigneeState)),
+    shipmentLines: Joi.array()
+      .items(
+        Joi.object({
+          GoodsDescription: Joi.string()
+            .required()
+            .error(generateError('GoodsDescription', 'PackingLine.GoodsDescription')),
+          Height: Joi.number().required().error(generateError('Height', 'PackingLine.Height')),
+          Length: Joi.number().required().error(generateError('Length', 'PackingLine.Length')),
+          PackQty: Joi.number().required().error(generateError('PackQty', 'PackingLine.PackQty')),
+          PackType: Joi.string()
+            .required()
+            .error(generateError('PackType', 'PackingLine.PackType')),
+          Weight: Joi.number().required().error(generateError('Weight', 'PackingLine.Weight')),
+          Width: Joi.number().required().error(generateError('Width', 'PackingLine.Width')),
+        })
+      )
+      .required()
+      .error(generateError('shipmentLines', attributeSourceMap.shipmentLines)),
   });
 
   return schema.validateAsync(data, { abortEarly: false });
@@ -342,46 +408,54 @@ async function checkHousebillExists(referenceNo) {
         '$': {
           'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
           'xmlns:xsd': 'http://www.w3.org/2001/XMLSchema',
-          'xmlns:soap': 'http://schemas.xmlsoap.org/soap/envelope/'
+          'xmlns:soap': 'http://schemas.xmlsoap.org/soap/envelope/',
         },
         'soap:Header': {
-          'AuthHeader': {
-            '$': {
-              'xmlns': 'http://tempuri.org/'
+          AuthHeader: {
+            $: {
+              xmlns: 'http://tempuri.org/',
             },
-            'UserName': process.env.API_USER_ID,
-            'Password': process.env.API_PASS
-          }
+            UserName: process.env.API_USER_ID,
+            Password: process.env.API_PASS,
+          },
         },
         'soap:Body': {
-          'GetShipmentsByReferenceNo': {
-            '$': {
-              'xmlns': 'http://tempuri.org/'
+          GetShipmentsByReferenceNo: {
+            $: {
+              xmlns: 'http://tempuri.org/',
             },
-            'RefNo': referenceNo,
-            'RefType': 'B'
-          }
-        }
-      }
+            RefNo: referenceNo,
+            RefType: 'B',
+          },
+        },
+      },
     });
 
     const xmlResponse = await trackingNotesAPICall(payload);
     const jsonResponse = await xmlToJson(xmlResponse);
-    console.info('jsonResponse',JSON.stringify(jsonResponse));
+    console.info('jsonResponse', JSON.stringify(jsonResponse));
 
-    const shipmentDetails = get(jsonResponse, 'soap:Envelope.soap:Body.GetShipmentsByReferenceNoResponse.GetShipmentsByReferenceNoResult.ShipmentDetail', {});
+    const shipmentDetails = get(
+      jsonResponse,
+      'soap:Envelope.soap:Body.GetShipmentsByReferenceNoResponse.GetShipmentsByReferenceNoResult.ShipmentDetail',
+      {}
+    );
     let housebill = '';
     if (Array.isArray(shipmentDetails)) {
-      const housebills = shipmentDetails.map(detail => {
+      const housebills = shipmentDetails.map((detail) => {
         const trackingNo = get(detail, 'TrackingNo', '');
         return trackingNo.length > 4 ? trackingNo.substring(4) : '';
       });
 
-      const numericHousebills = housebills.map(housebillNo => parseInt(housebillNo, 10)).filter(Number.isFinite);
+      const numericHousebills = housebills
+        .map((housebillNo) => parseInt(housebillNo, 10))
+        .filter(Number.isFinite);
 
-      housebill = numericHousebills.reduce((max, current) => {
-        return current > max ? current : max;
-      }, 0).toString();
+      housebill = numericHousebills
+        .reduce((max, current) => {
+          return current > max ? current : max;
+        }, 0)
+        .toString();
     } else if (Object.keys(shipmentDetails).length > 0) {
       const trackingNo = get(shipmentDetails, 'TrackingNo', '');
       housebill = trackingNo.length > 4 ? trackingNo.substring(4) : '';
@@ -411,5 +485,5 @@ module.exports = {
   payloadToCW,
   extractData,
   checkHousebillExists,
-  payloadToAddTrakingNotesToWT
+  payloadToAddTrakingNotesToWT,
 };

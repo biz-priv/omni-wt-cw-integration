@@ -106,7 +106,7 @@ async function extractData(dataObj) {
     return {
       forwardingShipmentKey,
       referenceNumber,
-      customerNo: '55185',
+      customerNo: process.env.LENOVO_CUST_ID,
       station: 'T07',
       shipperAddress1: get(shipperAddress, 'Address1', ''),
       shipperAddress2: get(shipperAddress, 'Address2', ''),

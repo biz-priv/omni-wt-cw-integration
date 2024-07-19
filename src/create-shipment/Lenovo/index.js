@@ -294,9 +294,11 @@ const processWTAndCW = async (payloadToWt, shipmentId, dynamoData, eventType) =>
 
 async function sendSESEmail({ message, subject }) {
   try {
+    // Split the EMAIL_LIST string into an array of emails
+    const emailArray = process.env.DUPLICATES_DL.split(',');
     const params = {
       Destination: {
-        ToAddresses: ['alwhite@omnilogistics.com', 'kvallabhaneni@omnilogistics.com', 'omnidev@bizcloudexperts.com'],
+        ToAddresses: emailArray,
       },
       Message: {
         Body: {

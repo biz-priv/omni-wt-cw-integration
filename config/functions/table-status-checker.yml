@@ -1,14 +1,14 @@
 ---
 function:
-  name: omni-wt-cw-lenovo-pod-upload-table-status-checker-${self:provider.stage}
-  handler: src/pod-docs/Lenovo/table-status-checker.handler
+  name: omni-wt-cw-pod-upload-table-status-checker-${self:provider.stage}
+  handler: src/pod-docs/table-status-checker.handler
   description: Omni Fourkites Documents upload
   package:
     patterns:
       - '!**/*'
-      - 'src/pod-docs/Lenovo/table-status-checker.js'
-      - 'src/pod-docs/Lenovo/helper.js'
-      - 'src/pod-docs/Lenovo/dynamodb.js'
+      - 'src/pod-docs/table-status-checker.js'
+      - 'src/pod-docs/helper.js'
+      - 'src/pod-docs/dynamodb.js'
   runtime: nodejs18.x
   layers:
     - { Ref: NodeModulesLambdaLayer }

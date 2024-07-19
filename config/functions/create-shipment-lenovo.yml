@@ -15,14 +15,7 @@ function:
     - sqs:
         arn: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment/sqs/queue.arn}
         batchSize: 1
-    # - s3:
-    #     bucket: ${ssm:/omni-dw/${self:provider.stage}/wms/bucket/name}
-    #     existing: true
-    #     events:
-    #       - s3:ObjectCreated:*
-    #     rules:
-    #       - prefix: ${ssm:/${self:service}/${self:provider.stage}/s3-prefix}
-    #       - suffix: ${ssm:/${self:service}/${self:provider.stage}/s3-suffix}
+
     - stream:
         arn: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment-status-stream-arn}
         batchSize: 1
@@ -44,3 +37,4 @@ function:
     API_PASS: ${ssm:/omni-dw/${self:provider.stage}/wt/password}
     TRACKING_NOTES_API_URL: ${ssm:/omni-ivia/${self:provider.stage}/createShipment/xmlUpdate/url}
     CW_SHIPMENT_DETAILS: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/cw-webtracker-base/url}
+    DUPLICATES_DL: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment-duplicates/dl}

@@ -5,12 +5,12 @@ const { get, includes, isEmpty } = require('lodash');
 const axios = require('axios');
 const xml2js = require('xml2js');
 const moment = require('moment-timezone');
-const { dbQuery, putItem, publishToSNS, getDynamoUpdateParam } = require('../../shared/dynamo');
-const { xmlToJson, cstDateTime, STATUSES } = require('../../shared/helper');
+const { dbQuery, putItem, publishToSNS, getDynamoUpdateParam } = require('../shared/dynamo');
+const { xmlToJson, cstDateTime, STATUSES } = require('../shared/helper');
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
-const lenovoCustomerId = '55185';
+const lenovoCustomerId = process.env.LENOVO_CUST_ID;
 const allowedMilestones = ['PUP', 'TTC', 'DEL'];
 
 const checkExistingRecord = async (orderNo, orderStatusId) => {

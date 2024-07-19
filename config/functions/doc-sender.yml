@@ -1,14 +1,14 @@
 ---
 function:
-  name: omni-wt-cw-lenovo-doc-sender-${self:provider.stage}
-  handler: src/pod-docs/Lenovo/doc-sender.handler
+  name: omni-wt-cw-doc-sender-${self:provider.stage}
+  handler: src/pod-docs/doc-sender.handler
   description: WT - CW Lenovo Documents upload
   package:
     patterns:
       - '!**/*'
-      - 'src/pod-docs/Lenovo/dynamodb.js'
-      - 'src/pod-docs/Lenovo/doc-sender.js'
-      - 'src/pod-docs/Lenovo/helper.js'
+      - 'src/pod-docs/dynamodb.js'
+      - 'src/pod-docs/doc-sender.js'
+      - 'src/pod-docs/helper.js'
   runtime: nodejs18.x
   layers:
     - { Ref: NodeModulesLambdaLayer }

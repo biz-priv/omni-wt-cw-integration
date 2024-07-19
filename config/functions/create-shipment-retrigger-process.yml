@@ -1,7 +1,7 @@
 ---
 function:
-  name: omni-wt-cw-lenovo-create-shipment-retrigger-process-${self:provider.stage}
-  handler: src/create-shipment-retrigger-process/Lenovo/index.handler
+  name: omni-wt-cw-create-shipment-retrigger-process-${self:provider.stage}
+  handler: src/create-shipment-retrigger-process/index.handler
   memorySize: 2048
   timeout: 900
   layers:
@@ -9,7 +9,7 @@ function:
   package:
     patterns:
       - '!**/*'
-      - src/create-shipment-retrigger-process/Lenovo/*
+      - src/create-shipment-retrigger-process/*
       - src/shared/*
   events:
     - schedule: cron(*/1 * * * ? *) #cron for every 1 min

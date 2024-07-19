@@ -2,7 +2,7 @@
 
 const { get } = require('lodash');
 const AWS = require('aws-sdk');
-const { publishToSNS } = require('../../shared/dynamo');
+const { publishToSNS } = require('../shared/dynamo');
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 

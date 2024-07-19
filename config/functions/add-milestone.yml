@@ -1,7 +1,7 @@
 ---
 function:
-  name: omni-wt-cw-lenovo-add-milestone-${self:provider.stage}
-  handler: src/add-milestone/Lenovo/index.handler
+  name: omni-wt-cw-add-milestone-${self:provider.stage}
+  handler: src/add-milestone/index.handler
   runtime: nodejs20.x
   timeout: 900
   layers:
@@ -9,7 +9,7 @@ function:
   package:
     patterns:
       - '!**/*'
-      - src/add-milestone/Lenovo/index.js
+      - src/add-milestone/index.js
       - src/shared/**
   events:
     - sqs:

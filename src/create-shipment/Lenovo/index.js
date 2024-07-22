@@ -100,7 +100,7 @@ module.exports.handler = async (event, context) => {
     }
 
     if (eventType === 'dynamo') {
-      publishToSNS({
+      await publishToSNS({
         message: `Shipment is created successfully after retry.\n\nShipmentId: ${get(dynamoData, 'ShipmentId', '')}.\n\nS3BUCKET: ${s3Bucket}.\n\nS3KEY: ${s3Key}`,
         subject: `${process.env.STAGE} ~ Lenovo - CW to WT Create Shipment Reprocess Success for ShipmentId: ${get(dynamoData, 'ShipmentId', '')}`,
       });
@@ -200,11 +200,17 @@ async function handleError(error, context, event, dynamoData, eventType) {
   return 'Failed';
 }
 
-const sendSNSNotification = (context, error, dynamoData) =>
-  publishToSNS({
-    message: `An error occurred in function ${context.functionName}.\n\n ${error}.\n\nShipmentId: ${get(dynamoData, 'ShipmentId', '')}.\n\nS3BUCKET: ${s3Bucket}.\n\nS3KEY: ${s3Key}.\n\nLAMBDA TRIGGER: This lambda will trigger when there is a XML file dropped in a s3 Bucket(for s3 bucket and the file path, please refer to the event).\n\nRETRIGGER PROCESS: After fixing the issue, please retrigger the process by reuploading the file mentioned in the event.\n\nNote: Use the ShipmentId: ${get(dynamoData, 'ShipmentId', '')} for better search in the logs and also check in dynamodb: ${process.env.LOGS_TABLE} for understanding the complete data.`,
-    subject: `${upperCase(process.env.STAGE)} - LENOVO CREATE SHIPMENT ERROR ~ ShipmentId: ${get(dynamoData, 'ShipmentId', '')}`,
-  });
+async function sendSNSNotification(context, error, dynamoData) {
+  try {
+    await publishToSNS({
+      message: `An error occurred in function ${context.functionName}.\n\n ${error}.\n\nShipmentId: ${get(dynamoData, 'ShipmentId', '')}.\n\nS3BUCKET: ${s3Bucket}.\n\nS3KEY: ${s3Key}.\n\nLAMBDA TRIGGER: This lambda will trigger when there is a XML file dropped in a s3 Bucket(for s3 bucket and the file path, please refer to the event).\n\nRETRIGGER PROCESS: After fixing the issue, please retrigger the process by reuploading the file mentioned in the event.\n\nNote: Use the ShipmentId: ${get(dynamoData, 'ShipmentId', '')} for better search in the logs and also check in dynamodb: ${process.env.LOGS_TABLE} for understanding the complete data.`,
+      subject: `${upperCase(process.env.STAGE)} - LENOVO CREATE SHIPMENT ERROR ~ ShipmentId: ${get(dynamoData, 'ShipmentId', '')}`,
+    });
+  } catch (err) {
+    console.error('🚀 ~ file: index.js:210 ~ sendSNSNotification ~ error:', err);
+    throw err;
+  }
+}
 
 async function checkExistingRecord(shipmentId) {
   const statusParams = {

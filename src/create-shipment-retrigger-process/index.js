@@ -24,7 +24,7 @@ module.exports.handler = async (event, context) => {
     return 'success';
   } catch (e) {
     console.error('Error while updating status as READY for FAILED records', e);
-    publishToSNS({
+    await publishToSNS({
       message: `An error occurred in function ${context.functionName}.\n\nERROR DETAILS: ${e}.`,
       subject: `${context.functionName} failed`,
     });

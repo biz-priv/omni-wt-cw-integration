@@ -212,12 +212,17 @@ async function updateItem({ tableName, key, attributes }) {
     throw new Error('UpdateItemError');
   }
 }
-const sendSNSNotification = (context, error, orderNo, orderStatusId) =>
-  publishToSNS({
-    message: `Error in ${context.functionName}.\n\nOrderNo: ${orderNo}.\n\nOrderStatusId: ${orderStatusId}.\nError Details: ${error.message}.`,
-    subject: `${upperCase(process.env.STAGE)} - LENOVO ADD MILESTONE ERROR ~ OrderNo: ${orderNo} / OrderStatusId: ${orderStatusId}`,
-  });
-
+async function sendSNSNotification(context, error, orderNo, orderStatusId) {
+  try {
+    await publishToSNS({
+      message: `Error in ${context.functionName}.\n\nOrderNo: ${orderNo}.\n\nOrderStatusId: ${orderStatusId}.\nError Details: ${error.message}.`,
+      subject: `${upperCase(process.env.STAGE)} - LENOVO ADD MILESTONE ERROR ~ OrderNo: ${orderNo} / OrderStatusId: ${orderStatusId}`,
+    });
+  } catch (err) {
+    console.info('🚀 ~ file: helper.js:222 ~ sendSNSNotification ~ error:', err);
+    throw err;
+  }
+}
 const exceptionMapping = {
   ADE: { lenovoCode: 'C05', description: 'EXPEDITE DELIVERY, EARLY ARRIVAL' },
   APP: { lenovoCode: 'A1', description: 'MISSED DELIVERY' },

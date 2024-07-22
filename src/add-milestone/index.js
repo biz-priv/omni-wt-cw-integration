@@ -29,7 +29,7 @@ module.exports.handler = async (event, context) => {
     const oldImage = get(message, 'OldImage', undefined);
     const data = AWS.DynamoDB.Converter.unmarshall(newImage);
     const orderNo = get(data, 'FK_OrderNo', '');
-    console.info('🚀 ~ file: index.js:32 ~ module.exports.handler= ~ orderNo:', orderNo)
+    console.info('🚀 ~ file: index.js:32 ~ module.exports.handler= ~ orderNo:', orderNo);
 
     const headerParams = {
       TableName: process.env.SHIPMENT_HEADER_TABLE,

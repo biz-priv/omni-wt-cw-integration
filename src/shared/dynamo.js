@@ -71,9 +71,27 @@ function getDynamoUpdateParam(data) {
   return { ExpressionAttributeNames, ExpressionAttributeValues, UpdateExpression };
 }
 
+async function dbRead(params) {
+  let scanResults = [];
+  let items;
+  try {
+    do {
+      console.info('dbRead > params ', params);
+      items = await dynamoDB.query(params).promise();
+      scanResults = scanResults.concat(_.get(items, 'Items', []));
+      params.ExclusiveStartKey = _.get(items, 'LastEvaluatedKey');
+    } while (typeof items.LastEvaluatedKey !== 'undefined');
+  } catch (e) {
+    console.error('DynamoDb scan error. ', ' Params: ', params, ' Error: ', e);
+    throw e;
+  }
+  return { Items: scanResults };
+}
+
 module.exports = {
   dbQuery,
   publishToSNS,
   putItem,
   getDynamoUpdateParam,
+  dbRead,
 };

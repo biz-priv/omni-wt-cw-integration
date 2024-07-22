@@ -136,16 +136,16 @@ module.exports.handler = async (event, context) => {
   }
 };
 
-const extractS3Info = (event) => {
+function extractS3Info(event) {
   const sqsBody = JSON.parse(get(event, 'Records[0].body', '{}'));
 
   s3Bucket = get(sqsBody, 's3.bucket.name', '');
   s3Key = get(sqsBody, 's3.object.key', '');
 
   return { s3Bucket, s3Key };
-};
+}
 
-const validateWTResponse = (response, payloadToWt) => {
+function validateWTResponse(response, payloadToWt) {
   const errorMessage = get(
     response,
     'soap:Envelope.soap:Body.AddNewShipmentV3Response.AddNewShipmentV3Result.ErrorMessage',
@@ -160,9 +160,9 @@ const validateWTResponse = (response, payloadToWt) => {
   if (errorMessage || !housebill) {
     throw new Error(`WORLD TRAK API call failed: ${errorMessage}.\n\nPayload: ${payloadToWt}`);
   }
-};
+}
 
-const validateCWResponse = (response, xmlCWPayload) => {
+function validateCWResponse(response, xmlCWPayload) {
   const eventType = get(response, 'UniversalResponse.Data.UniversalEvent.Event.EventType', '');
   const context = get(
     response,
@@ -177,9 +177,9 @@ const validateCWResponse = (response, xmlCWPayload) => {
       `CARGOWISE API call failed: ${get(response, 'UniversalResponse.ProcessingLog', '')}. \n\nPayload: ${xmlCWPayload}`
     );
   }
-};
+}
 
-const handleError = async (error, context, event, dynamoData, eventType) => {
+async function handleError(error, context, event, dynamoData, eventType) {
   console.error('Error:', error);
   try {
     await sendSNSNotification(context, error, dynamoData);
@@ -198,7 +198,7 @@ const handleError = async (error, context, event, dynamoData, eventType) => {
   }
   await putItem({ tableName: process.env.LOGS_TABLE, item: dynamoData });
   return 'Failed';
-};
+}
 
 const sendSNSNotification = (context, error, dynamoData) =>
   publishToSNS({
@@ -206,7 +206,7 @@ const sendSNSNotification = (context, error, dynamoData) =>
     subject: `LENOVO CREATE SHIPMENT ERROR ~ ShipmentId: ${get(dynamoData, 'ShipmentId', '')}`,
   });
 
-const checkExistingRecord = async (shipmentId) => {
+async function checkExistingRecord(shipmentId) {
   const statusParams = {
     TableName: process.env.LOGS_TABLE,
     KeyConditionExpression: 'ShipmentId = :shipmentid',
@@ -217,9 +217,9 @@ const checkExistingRecord = async (shipmentId) => {
 
   const recordExisting = await dbQuery(statusParams);
   return recordExisting.length > 0 && recordExisting[0].Status === STATUSES.SUCCESS;
-};
+}
 
-const handleExistingRecord = async (data) => {
+async function handleExistingRecord(data) {
   console.info(
     `Record with ShipmentId: ${data.ShipmentId} is already sent to WT. Skipping the Process...`
   );
@@ -233,9 +233,9 @@ const handleExistingRecord = async (data) => {
   });
   await updateDynamoDBRecord(shipmentId, errorMsg, STATUSES.SUCCESS);
   return 'Skipped';
-};
+}
 
-const updateDynamoDBRecord = async (shipmentId, errorMessage, status) => {
+async function updateDynamoDBRecord(shipmentId, errorMessage, status) {
   const params = {
     TableName: process.env.LOGS_TABLE,
     Key: { ShipmentId: shipmentId },
@@ -269,9 +269,9 @@ const updateDynamoDBRecord = async (shipmentId, errorMessage, status) => {
     console.error('Error updating record:', error);
     throw new Error('UpdateItemError');
   }
-};
+}
 
-const processWTAndCW = async (payloadToWt, shipmentId, dynamoData, eventType) => {
+async function processWTAndCW(payloadToWt, shipmentId, dynamoData, eventType) {
   if (eventType === 'dynamo') {
     const checkHousebill = await checkHousebillExists(shipmentId);
     if (checkHousebill !== '') {
@@ -309,7 +309,7 @@ const processWTAndCW = async (payloadToWt, shipmentId, dynamoData, eventType) =>
     "{'WT Shipment Creation': 'SENT', 'CW Send Housebill': 'SENT', 'Add Tracking Notes to WT': 'PENDING'}";
 
   return [xmlWTResponse, xmlCWResponse];
-};
+}
 
 async function sendSESEmail({ message, subject }) {
   try {

@@ -1,7 +1,7 @@
 'use strict';
 
 const AWS = require('aws-sdk');
-const { get } = require('lodash');
+const { get, upperCase } = require('lodash');
 const axios = require('axios');
 const xml2js = require('xml2js');
 const { dbQuery, publishToSNS, getDynamoUpdateParam, dbRead } = require('../shared/dynamo');
@@ -215,7 +215,7 @@ async function updateItem({ tableName, key, attributes }) {
 const sendSNSNotification = (context, error, orderNo, orderStatusId) =>
   publishToSNS({
     message: `Error in ${context.functionName}.\n\nOrderNo: ${orderNo}.\n\nOrderStatusId: ${orderStatusId}.\nError Details: ${error.message}.`,
-    subject: `LENOVO ADD MILESTONE ERROR ~ OrderNo: ${orderNo} / OrderStatusId: ${orderStatusId}`,
+    subject: `${upperCase(process.env.STAGE)} - LENOVO ADD MILESTONE ERROR ~ OrderNo: ${orderNo} / OrderStatusId: ${orderStatusId}`,
   });
 
 const exceptionMapping = {

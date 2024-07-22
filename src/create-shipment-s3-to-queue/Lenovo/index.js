@@ -22,7 +22,7 @@ exports.handler = async (event, context) => {
       console.info(`Message for ${record.s3.object.key} sent successfully.`);
     } catch (error) {
       console.error('Error sending message to SQS FIFO queue', error);
-      publishToSNS({
+      await publishToSNS({
         message: `An error occurred in function ${context.functionName}.\n\nERROR DETAILS: ${error}.`,
         subject: `${context.functionName} failed`,
       });

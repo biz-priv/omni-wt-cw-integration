@@ -4,6 +4,8 @@ function:
   handler: src/create-shipment/Lenovo/index.handler
   memorySize: 2048
   timeout: 900
+  tags:
+    Name: omni-wt-cw-lenovo-create-shipment-${self:provider.stage}
   layers:
     - !Ref NodeModulesLambdaLayer
   package:

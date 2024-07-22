@@ -2,7 +2,9 @@
 function:
   name: omni-wt-cw-pod-upload-table-status-checker-${self:provider.stage}
   handler: src/pod-docs/table-status-checker.handler
-  description: Omni Fourkites Documents upload
+  description: Omni wt cw Documents upload
+  tags:
+    Name: omni-wt-cw-pod-upload-table-status-checker-${self:provider.stage}
   package:
     patterns:
       - '!**/*'

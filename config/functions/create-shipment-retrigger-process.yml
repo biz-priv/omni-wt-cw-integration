@@ -4,6 +4,8 @@ function:
   handler: src/create-shipment-retrigger-process/index.handler
   memorySize: 2048
   timeout: 900
+  tags:
+    Name: omni-wt-cw-create-shipment-retrigger-process-${self:provider.stage}
   layers:
     - !Ref NodeModulesLambdaLayer
   package:

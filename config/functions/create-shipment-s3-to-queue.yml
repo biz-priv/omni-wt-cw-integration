@@ -4,6 +4,8 @@ function:
   handler: src/create-shipment-s3-to-queue/Lenovo/index.handler
   memorySize: 2048
   timeout: 900
+  tags:
+    Name: omni-wt-cw-s3-to-queue-${self:provider.stage}
   layers:
     - !Ref NodeModulesLambdaLayer
   package:

@@ -4,6 +4,8 @@ function:
   handler: src/add-milestone/index.handler
   runtime: nodejs20.x
   timeout: 900
+  tags:
+    Name: omni-wt-cw-add-milestone-${self:provider.stage}
   layers:
     - { Ref: NodeModulesLambdaLayer }
   package:

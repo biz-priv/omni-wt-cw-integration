@@ -60,9 +60,9 @@ module.exports.handler = async (event, context) => {
                 customerListData
               );
               if (customerListData.length === 0) {
-                console.info('Customer is not fourkites. Deleting record.');
+                console.info('Customer is not found. Deleting record.');
                 await deleteDocStatusTableData({ docType, orderNo });
-                return 'Customer is not fourkites. Skipping.';
+                return 'Customer is not found. Skipping.';
               }
             } else {
               //* If bill no does not exists in the shipment header that means the data is faulty. Skip the record.

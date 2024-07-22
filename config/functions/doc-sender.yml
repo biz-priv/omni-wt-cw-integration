@@ -12,6 +12,8 @@ function:
   runtime: nodejs18.x
   layers:
     - { Ref: NodeModulesLambdaLayer }
+  tags:
+    Name: omni-wt-cw-doc-sender-${self:provider.stage}
   events:
     - stream:
         arn: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/pod-status-stream-arn}

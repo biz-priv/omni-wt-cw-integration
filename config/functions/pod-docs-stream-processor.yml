@@ -3,6 +3,8 @@ function:
   name: omni-wt-cw-pod-upload-shipment-file-stream-processor-${self:provider.stage}
   handler: src/pod-docs/pod-docs-stream-processor.handler
   description: WT - CW Lenovo Documents upload
+  tags:
+    Name: omni-wt-cw-pod-upload-shipment-file-stream-processor-${self:provider.stage}
   package:
     patterns:
       - '!**/*'

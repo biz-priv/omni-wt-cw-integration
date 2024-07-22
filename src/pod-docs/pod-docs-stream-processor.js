@@ -124,8 +124,8 @@ module.exports.handler = async (event, context) => {
             customerListData
           );
           if (customerListData.length === 0) {
-            console.info('Customer is not fourkites. Skipping.');
-            return 'Customer is not fourkites. Skipping.';
+            console.info('Customer is not found. Skipping.');
+            return 'Customer is not found. Skipping.';
           }
         } else {
           console.info('BillNo is not found. Skipping.');

@@ -47,10 +47,10 @@ module.exports.handler = async (event, context) => {
       return `No data found in ${process.env.SHIPMENT_HEADER_TABLE} for PK_OrderNo: ${orderNo}.`;
     }
 
-    const billNo = get(shipmentHeaderResult, 'BillNo', '');
-    const housebill = get(shipmentHeaderResult, 'Housebill', '');
+    const billNo = get(shipmentHeaderResult, '[0].BillNo', '');
+    const housebill = get(shipmentHeaderResult, '[0].Housebill', '');
 
-    const customerListResult = await getDataFromCustomerList(billNo);
+    const customerListResult = await getDataFromCustomerList({ billNo });
 
     if (customerListResult.length === 0) {
       return `Bill-to ${billNo} is not in the customer list.`;

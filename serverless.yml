@@ -56,6 +56,7 @@ functions:
   shipment-file-stream-processor: ${file(config/functions/pod-docs-stream-processor.yml):function}
   table-status-checker: ${file(config/functions/table-status-checker.yml):function}
   doc-sender: ${file(config/functions/doc-sender.yml):function}
+  cost-transmitter: ${file(config/functions/cost-transmitter.yml):function}
 
 layers:
   NodeModules:

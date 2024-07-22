@@ -1,0 +1,24 @@
+---
+function:
+  name: omni-wt-cw-cost-transmitter-${self:provider.stage}
+  handler: src/cost-transmitter/index.handler
+  memorySize: 2048
+  timeout: 900
+  layers:
+    - !Ref NodeModulesLambdaLayer
+  package:
+    patterns:
+      - '!**/*'
+      - src/cost-transmitter/*
+      - src/shared/*
+  events:
+    - sqs:
+        arn: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/cost-transmitter/sqs/queue.arn}
+        batchSize: 1
+
+  environment:
+    CW_URL: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/url}
+    CW_ENDPOINT_AUTHORIZATION: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/auth}
+    LOGS_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/cost-transmitter-table-name}
+    SHIPMENT_HEADER_TABLE: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/shipment-header/ddb.tableName}
+    CREATE_SHIPMENT_LOGS_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment-status-table-name}

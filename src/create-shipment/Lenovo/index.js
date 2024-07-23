@@ -233,7 +233,7 @@ async function checkExistingRecord(shipmentId) {
 async function handleExistingRecord(recordExisting) {
   const shipmentId = get(recordExisting, '[0]ShipmentId', '');
   const housebill = get(recordExisting, '[0]Housebill', '');
-  const orderNo = get(recordExisting, '[0]OrderNo', '')
+  const orderNo = get(recordExisting, '[0]OrderNo', '');
   console.info(
     `Record with ShipmentId: ${shipmentId} is already sent to WT. Skipping the Process...`
   );
@@ -274,9 +274,9 @@ async function handleExistingRecord(recordExisting) {
     </body>
     </html>
     `,
-    subject: `${upperCase(process.env.STAGE)} - Lenovo Create Shipment Duplicates Alert: Housebill ${housebill} | Shipment ID ${shipmentId}.`
+    subject: `${upperCase(process.env.STAGE)} - Lenovo Create Shipment Duplicates Alert: Housebill ${housebill} | Shipment ID ${shipmentId}.`,
   });
-  
+
   await updateDynamoDBRecord(shipmentId, errorMsg, STATUSES.SUCCESS);
   return 'Skipped';
 }

@@ -1,7 +1,7 @@
 'use strict';
 
 const AWS = require('aws-sdk');
-const { get, unset, upperCase } = require('lodash');
+const { get, upperCase } = require('lodash');
 
 const { Converter } = AWS.DynamoDB;
 
@@ -52,18 +52,18 @@ module.exports.handler = async (event, context) => {
     console.info('🚀 ~ file: index.js:34 ~ module.exports.handler= ~ shipmentId:', shipmentId);
     dynamoData.ShipmentId = shipmentId;
 
-    const payloadToWt = await preparePayloadForWT(data);
-    dynamoData.XmlWTPayload = payloadToWt;
-
     const recordExisting = await checkExistingRecord(shipmentId);
     console.info(
       '🚀 ~ file: index.js:36 ~ module.exports.handler= ~ recordExisting:',
       recordExisting
     );
 
-    if (recordExisting) {
-      return await handleExistingRecord(dynamoData);
+    if (recordExisting.length > 0 && recordExisting[0].Status === STATUSES.SUCCESS) {
+      return await handleExistingRecord(dynamoData, recordExisting);
     }
+
+    const payloadToWt = await preparePayloadForWT(data);
+    dynamoData.XmlWTPayload = payloadToWt;
 
     const [xmlWTResponse, xmlCWResponse] = await processWTAndCW(
       payloadToWt,
@@ -213,30 +213,70 @@ async function sendSNSNotification(context, error, dynamoData) {
 }
 
 async function checkExistingRecord(shipmentId) {
-  const statusParams = {
-    TableName: process.env.LOGS_TABLE,
-    KeyConditionExpression: 'ShipmentId = :shipmentid',
-    ExpressionAttributeValues: {
-      ':shipmentid': shipmentId,
-    },
-  };
+  try {
+    const statusParams = {
+      TableName: process.env.LOGS_TABLE,
+      KeyConditionExpression: 'ShipmentId = :shipmentid',
+      ExpressionAttributeValues: {
+        ':shipmentid': shipmentId,
+      },
+    };
 
-  const recordExisting = await dbQuery(statusParams);
-  return recordExisting.length > 0 && recordExisting[0].Status === STATUSES.SUCCESS;
+    const recordExisting = await dbQuery(statusParams);
+    return recordExisting;
+  } catch (error) {
+    console.error('🚀 ~ file: index.js:228 ~ checkExistingRecord ~ error:', error);
+    throw error;
+  }
 }
 
-async function handleExistingRecord(data) {
+async function handleExistingRecord(recordExisting) {
+  const shipmentId = get(recordExisting, '[0]ShipmentId', '');
+  const housebill = get(recordExisting, '[0]Housebill', '');
+  const orderNo = get(recordExisting, '[0]OrderNo', '')
   console.info(
-    `Record with ShipmentId: ${data.ShipmentId} is already sent to WT. Skipping the Process...`
+    `Record with ShipmentId: ${shipmentId} is already sent to WT. Skipping the Process...`
   );
-
-  const shipmentId = get(data, 'ShipmentId', '');
-  unset(data, 'ShipmentId');
   const errorMsg = `Record with ShipmentId: ${shipmentId} is already sent to WT.`;
   await sendSESEmail({
-    message: `Record with ShipmentId: ${shipmentId} is already sent to WT.\n\nS3 KEY: ${s3Key}.`,
-    subject: `${upperCase(process.env.STAGE)} - LENOVO CREATE SHIPMENT DUPLICATES ALERT ~ ShipmentId: ${shipmentId}`,
+    message: `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+        }
+        .container {
+          padding: 20px;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          background-color: #f9f9f9;
+        }
+        .highlight {
+          font-weight: bold;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <p>Dear Team,</p>
+        <p>We have detected a duplicate record with the following details:</p>
+        <p><span class="highlight">Shipment ID:</span> ${shipmentId}<br>
+           <span class="highlight">Housebill:</span> ${housebill}<br>
+           <span class="highlight">File No:</span> ${orderNo}</p>
+        <p>This record has already been sent to WT.</p>
+        <p><span class="highlight">S3 Key:</span> ${s3Key}</p>
+        <p>Thank you,<br>
+        Omni Automation System</p>
+        <p style="font-size: 0.9em; color: #888;">Note: This is a system generated email, Please do not reply to this email.</p>
+      </div>
+    </body>
+    </html>
+    `,
+    subject: `${upperCase(process.env.STAGE)} - Lenovo Create Shipment Duplicates Alert: Shipment ID ${shipmentId} | Housebill ${housebill}`
   });
+  
   await updateDynamoDBRecord(shipmentId, errorMsg, STATUSES.SUCCESS);
   return 'Skipped';
 }
@@ -295,6 +335,7 @@ async function processWTAndCW(payloadToWt, shipmentId, dynamoData, eventType) {
   }
   const xmlWTResponse = await sendToWT(payloadToWt);
   const xmlWTObjResponse = await xmlToJson(xmlWTResponse);
+  console.info('🚀 ~ file: index.js:303 ~ processWTAndCW ~ xmlWTObjResponse:', xmlWTObjResponse);
   validateWTResponse(xmlWTObjResponse, payloadToWt);
   dynamoData.Steps =
     "{'WT Shipment Creation': 'SENT', 'CW Send Housebill': 'PENDING', 'Add Tracking Notes to WT': 'PENDING'}";
@@ -305,7 +346,16 @@ async function processWTAndCW(payloadToWt, shipmentId, dynamoData, eventType) {
     ''
   );
   console.info('🚀 ~ file: index.js:54 ~ module.exports.handler= ~ housebill:', housebill);
+
+  const orderNo = get(
+    xmlWTObjResponse,
+    'soap:Envelope.soap:Body.AddNewShipmentV3Response.AddNewShipmentV3Result.ShipQuoteNo',
+    ''
+  );
+  console.info('🚀 ~ file: index.js:318 ~ processWTAndCW ~ orderNo:', orderNo);
+
   dynamoData.Housebill = housebill;
+  dynamoData.OrderNo = orderNo;
 
   const xmlCWPayload = await payloadToCW(shipmentId, housebill);
   const xmlCWResponse = await sendToCW(xmlCWPayload);
@@ -320,15 +370,17 @@ async function processWTAndCW(payloadToWt, shipmentId, dynamoData, eventType) {
 async function sendSESEmail({ message, subject }) {
   try {
     // Split the EMAIL_LIST string into an array of emails
-    const emailArray = process.env.DUPLICATES_DL.split(',');
+    // const emailArray = process.env.DUPLICATES_DL.split(',');
     const params = {
       Destination: {
-        ToAddresses: emailArray,
+        // Use the array of emails here
+        // ToAddresses: emailArray,
+        ToAddresses: ['mohammed.sazeed@bizcloudexperts.com'],
       },
       Message: {
         Body: {
-          Text: {
-            Data: `${message}`,
+          Html: {
+            Data: message,
             Charset: 'UTF-8',
           },
         },

@@ -29,4 +29,4 @@ function:
     TRACKING_NOTES_ORDERNO_INDEX: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/tracking-notes/ddb.orderNoIndex}
     CUSTOMER_LIST_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/customer-list-table-name}
     LOGS_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment-status-table-name}
-    ADD_MILESTONE_QUEUE_URL: ${ssm:/lenovo-integration/${self:provider.stage}/add-milestome/Queue.Url}
+    ADD_MILESTONE_QUEUE_URL: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/add-milestome/Queue.Url}

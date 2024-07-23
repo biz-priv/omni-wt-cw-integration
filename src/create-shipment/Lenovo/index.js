@@ -59,7 +59,7 @@ module.exports.handler = async (event, context) => {
     );
 
     if (recordExisting.length > 0 && recordExisting[0].Status === STATUSES.SUCCESS) {
-      return await handleExistingRecord(dynamoData, recordExisting);
+      return await handleExistingRecord(recordExisting);
     }
 
     const payloadToWt = await preparePayloadForWT(data);

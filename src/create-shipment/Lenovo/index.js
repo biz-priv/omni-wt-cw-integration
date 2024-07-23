@@ -370,12 +370,12 @@ async function processWTAndCW(payloadToWt, shipmentId, dynamoData, eventType) {
 async function sendSESEmail({ message, subject }) {
   try {
     // Split the EMAIL_LIST string into an array of emails
-    // const emailArray = process.env.DUPLICATES_DL.split(',');
+    const emailArray = process.env.DUPLICATES_DL.split(',');
     const params = {
       Destination: {
         // Use the array of emails here
-        // ToAddresses: emailArray,
-        ToAddresses: ['mohammed.sazeed@bizcloudexperts.com'],
+        ToAddresses: emailArray,
+        // ToAddresses: ['mohammed.sazeed@bizcloudexperts.com'],
       },
       Message: {
         Body: {

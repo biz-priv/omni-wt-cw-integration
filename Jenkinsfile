@@ -24,37 +24,39 @@ pipeline {
             }
         }
 
-        // stage('Build'){
-        //     steps {
-        //         script {
-        //             echo "GIT_BRANCH: ${GIT_BRANCH}"
-        //             sh """
-        //                 npm i
-        //                 cd lambdaLayer/lib/nodejs
-        //                 npm i
-        //             """
-        //         }
-        //     }
-        // }
+        stage('Build'){
+            steps {
+                script {
+                    echo "GIT_BRANCH: ${GIT_BRANCH}"
+                    sh """
+                        npm i
+                        cd lambdaLayer/lib/nodejs
+                        npm i
+                    """
+                }
+            }
+        }
 
-        // stage('Deploy'){
-        //     when {
-        //         anyOf {
-        //             branch 'master';
-        //             branch 'develop';
-        //         }
-        //         expression {
-        //             return true;
-        //         }
-        //     }
-        //     steps {
-        //         withAWS(credentials: 'omni-aws-creds'){
-        //             sh """
-        //             serverless --version
-        //             sls deploy -s ${env.ENVIRONMENT}
-        //             """
-        //         }
-        //     }
-        // }
+        stage('Deploy'){
+            when {
+                anyOf {
+                    branch 'master';
+                    branch 'develop';
+                    branch 'feature/*'
+                }
+                expression {
+                    return true;
+                }
+            }
+            steps {
+                withAWS(credentials: 'omni-aws-creds'){
+                    sh """
+                    serverless --version
+                    sls deploy -s ${env.ENVIRONMENT}
+                    sls s3deploy -s ${env.ENVIRONMENT}
+                    """
+                }
+            }
+        }
     }
 }

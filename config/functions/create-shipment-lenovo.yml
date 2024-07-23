@@ -1,0 +1,42 @@
+---
+function:
+  name: omni-wt-cw-lenovo-create-shipment-${self:provider.stage}
+  handler: src/create-shipment/Lenovo/index.handler
+  memorySize: 2048
+  timeout: 900
+  tags:
+    Name: omni-wt-cw-lenovo-create-shipment-${self:provider.stage}
+  layers:
+    - !Ref NodeModulesLambdaLayer
+  package:
+    patterns:
+      - '!**/*'
+      - src/create-shipment/Lenovo/*
+      - src/shared/*
+  events:
+    - sqs:
+        arn: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment/sqs/queue.arn}
+        batchSize: 1
+
+    - stream:
+        arn: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment-status-stream-arn}
+        batchSize: 1
+        maximumRetryAttempts: 1
+        bisectBatchOnFunctionError: true
+        filterPatterns:
+          - { dynamodb: { NewImage: { Status: { S: ['READY'] } } } }
+
+  environment:
+    WT_URL: ${ssm:/omni-dw/${self:provider.stage}/createShipment/wt/url}
+    CW_URL: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/url}
+    CW_ENDPOINT_AUTHORIZATION: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/auth}
+    LOGS_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment-status-table-name}
+    wt_soap_username: ${ssm:/omni-dw/${self:provider.stage}/wt/soap/username}
+    wt_soap_password: ${ssm:/omni-dw/${self:provider.stage}/wt/soap/password}
+    STAGE: ${self:provider.stage}
+    QUEUE_URL: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment/sqs/queue.url}
+    API_USER_ID: ${ssm:/omni-dw/${self:provider.stage}/wt/username}
+    API_PASS: ${ssm:/omni-dw/${self:provider.stage}/wt/password}
+    TRACKING_NOTES_API_URL: ${ssm:/omni-ivia/${self:provider.stage}/createShipment/xmlUpdate/url}
+    CW_SHIPMENT_DETAILS: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/cw-webtracker-base/url}
+    DUPLICATES_DL: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment-duplicates/dl}

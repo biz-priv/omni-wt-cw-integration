@@ -1,0 +1,26 @@
+---
+function:
+  name: omni-wt-cw-s3-to-queue-${self:provider.stage}
+  handler: src/create-shipment-s3-to-queue/Lenovo/index.handler
+  memorySize: 2048
+  timeout: 900
+  tags:
+    Name: omni-wt-cw-s3-to-queue-${self:provider.stage}
+  layers:
+    - !Ref NodeModulesLambdaLayer
+  package:
+    patterns:
+      - '!**/*'
+      - src/create-shipment-s3-to-queue/Lenovo/*
+      - src/shared/*
+  events:
+    - existingS3:
+        bucket: ${ssm:/omni-dw/${self:provider.stage}/wms/bucket/name}
+        events:
+          - s3:ObjectCreated:*
+        rules:
+          - prefix: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/s3-prefix}
+          - suffix: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/s3-suffix}
+  environment:
+    STAGE: ${self:provider.stage}
+    QUEUE_URL: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment/sqs/queue.url}

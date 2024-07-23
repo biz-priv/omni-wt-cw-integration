@@ -262,9 +262,9 @@ async function handleExistingRecord(recordExisting) {
       <div class="container">
         <p>Dear Team,</p>
         <p>We have detected a duplicate record with the following details:</p>
-        <p><span class="highlight">Shipment ID:</span> ${shipmentId}<br>
-           <span class="highlight">Housebill:</span> ${housebill}<br>
-           <span class="highlight">File No:</span> ${orderNo}</p>
+        <p><span class="highlight">Shipment ID:</span> <strong>${shipmentId}</strong><br>
+           <span class="highlight">Housebill:</span> <strong>${housebill}</strong><br>
+           <span class="highlight">File No:</span> <strong>${orderNo}</strong></p>
         <p>This record has already been sent to WT.</p>
         <p><span class="highlight">S3 Key:</span> ${s3Key}</p>
         <p>Thank you,<br>
@@ -274,7 +274,7 @@ async function handleExistingRecord(recordExisting) {
     </body>
     </html>
     `,
-    subject: `${upperCase(process.env.STAGE)} - Lenovo Create Shipment Duplicates Alert: Shipment ID ${shipmentId} | Housebill ${housebill}`
+    subject: `${upperCase(process.env.STAGE)} - Lenovo Create Shipment Duplicates Alert: Housebill ${housebill} | Shipment ID ${shipmentId}.`
   });
   
   await updateDynamoDBRecord(shipmentId, errorMsg, STATUSES.SUCCESS);

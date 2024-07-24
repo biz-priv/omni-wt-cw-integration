@@ -1,0 +1,34 @@
+---
+function:
+  name: omni-wt-cw-doc-sender-${self:provider.stage}
+  handler: src/pod-docs/doc-sender.handler
+  description: WT - CW Lenovo Documents upload
+  package:
+    patterns:
+      - '!**/*'
+      - 'src/pod-docs/dynamodb.js'
+      - 'src/pod-docs/doc-sender.js'
+      - 'src/pod-docs/helper.js'
+  runtime: nodejs18.x
+  layers:
+    - { Ref: NodeModulesLambdaLayer }
+  tags:
+    Name: omni-wt-cw-doc-sender-${self:provider.stage}
+  events:
+    - stream:
+        arn: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/pod-status-stream-arn}
+        batchSize: 1
+        maximumRetryAttempts: 1
+        bisectBatchOnFunctionError: true
+        filterPatterns:
+          - { dynamodb: { NewImage: { Status: { S: ['READY'] } } } }
+  environment:
+    SHIPMENT_HEADER: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/shipment-header/ddb.tableName}
+    DOC_STATUS_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/pod-status-table-name}
+    CW_URL: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/url}
+    CW_ENDPOINT_AUTHORIZATION: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/auth}
+    DOC_STATUS_TABLE_STATUS_INDEX: ${ssm:/omni-fourkites-updates-infra/${self:provider.stage}/fourkites-doc-upload-status-table-status-index}
+    CUSTOMER_LIST_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/customer-list-table-name}
+    REFERENCE_TABLE: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/references/ddb.tableName}
+    REFERENCE_TABLE_ORDER_NO_INDEX: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/references/ddb.orderNoIndex}
+    GET_DOCUMENT_API: ${ssm:/dell-narvar-pod-doc/${self:provider.stage}/websli-url}

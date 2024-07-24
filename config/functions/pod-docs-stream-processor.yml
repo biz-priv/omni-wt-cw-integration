@@ -1,0 +1,25 @@
+---
+function:
+  name: omni-wt-cw-pod-upload-shipment-file-stream-processor-${self:provider.stage}
+  handler: src/pod-docs/pod-docs-stream-processor.handler
+  description: WT - CW Lenovo Documents upload
+  tags:
+    Name: omni-wt-cw-pod-upload-shipment-file-stream-processor-${self:provider.stage}
+  package:
+    patterns:
+      - '!**/*'
+      - 'src/pod-docs/pod-docs-stream-processor.js'
+      - 'src/pod-docs/dynamodb.js'
+      - 'src/pod-docs/helper.js'
+  runtime: nodejs18.x
+  layers:
+    - { Ref: NodeModulesLambdaLayer }
+  events:
+    - sqs:
+        arn: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/pod-docs/sqs/queue.arn}
+  environment:
+    SHIPMENT_HEADER: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/shipment-header/ddb.tableName}
+    DOC_STATUS_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/pod-status-table-name}
+    CUSTOMER_LIST_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/customer-list-table-name}
+    REFERENCE_TABLE: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/references/ddb.tableName}
+    REFERENCE_TABLE_INDEX: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/references/ddb.orderNoIndex}

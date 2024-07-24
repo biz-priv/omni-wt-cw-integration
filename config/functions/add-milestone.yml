@@ -1,0 +1,34 @@
+---
+function:
+  name: omni-wt-cw-add-milestone-${self:provider.stage}
+  handler: src/add-milestone/index.handler
+  runtime: nodejs20.x
+  timeout: 900
+  tags:
+    Name: omni-wt-cw-add-milestone-${self:provider.stage}
+  layers:
+    - { Ref: NodeModulesLambdaLayer }
+  package:
+    patterns:
+      - '!**/*'
+      - src/add-milestone/**
+      - src/shared/**
+  events:
+    - sqs:
+        arn: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/add-milestone/sqs/queue.arn}
+        batchSize: 1
+  environment:
+    SHIPMENT_HEADER_TABLE: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/shipment-header/ddb.tableName}
+    REFERENCE_TABLE: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/references/ddb.tableName}
+    STAGE: ${self:provider.stage}
+    REFERENCE_TABLE_INDEX: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/references/ddb.orderNoIndex}
+    STATUS_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/add-milestone-status-table-name}
+    CW_URL: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/url}
+    CW_ENDPOINT_AUTHORIZATION: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/createShipment/cw/auth}
+    TRACKING_NOTES_TABLE: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/tracking-notes/ddb.tableName}
+    TRACKING_NOTES_ORDERNO_INDEX: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/tracking-notes/ddb.orderNoIndex}
+    CUSTOMER_LIST_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/customer-list-table-name}
+    LOGS_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment-status-table-name}
+    ADD_MILESTONE_QUEUE_URL: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/add-milestome/Queue.Url}
+    SHIPMENT_MILESTONE_TABLE: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/shipment-milestone/ddb.tableName}
+    APAR_FAILURE_TABLE: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/apar-failure/ddb.tableName}

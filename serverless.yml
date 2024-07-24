@@ -1,4 +1,4 @@
-service: service-name # Change this to your service name
+service: omni-wt-cw-integration
 
 provider:
   name: aws
@@ -23,11 +23,23 @@ provider:
         - ec2:DeleteNetworkInterface
         - ec2:AssignPrivateIpAddresses
         - ec2:UnassignPrivateIpAddresses
+        - s3:GetObject
+        - s3:PutObject
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:GetItem
+        - dynamodb:Query
+        - dynamodb:DeleteItem
+        - dynamodb:Scan
+        - sns:*
+        - ses:*
+        - sqs:SendMessage
       Resource: '*'
   environment:
     REGION: ${self:provider.region}
     STAGE: ${self:provider.stage}
-    ERROR_SNS_TOPIC_ARN: ${ssm:/omni-reports/${self:provider.stage}/error-notification/sns/arn}
+    ERROR_SNS_ARN: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/error-notifications/sns.arn}
+    LENOVO_CUST_ID: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/lenovo/customerid}
 
   deploymentBucket:
     name: ${ssm:/omni-dw/${self:provider.stage}/sls/deployment/bucket}
@@ -37,6 +49,13 @@ package:
   individually: true
 
 functions:
+  create-shipment: ${file(config/functions/create-shipment-lenovo.yml):function}
+  create-shipment-retrigger-process: ${file(config/functions/create-shipment-retrigger-process.yml):function}
+  create-shipment-s3-to-queue: ${file(config/functions/create-shipment-s3-to-queue.yml):function}
+  add-milestone: ${file(config/functions/add-milestone.yml):function}
+  shipment-file-stream-processor: ${file(config/functions/pod-docs-stream-processor.yml):function}
+  table-status-checker: ${file(config/functions/table-status-checker.yml):function}
+  doc-sender: ${file(config/functions/doc-sender.yml):function}
 
 layers:
   NodeModules:
@@ -46,3 +65,6 @@ layers:
     compatibleRuntimes:
       - nodejs20.x
     retain: false
+
+plugins:
+  - serverless-plugin-existing-s3

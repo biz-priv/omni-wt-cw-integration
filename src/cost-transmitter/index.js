@@ -10,11 +10,10 @@ const { xmlToJson } = require('../shared/helper');
 
 const dynamoData = {};
 let orderNo;
-const costTransmitterBillToNbrs = process.env.COST_TRANSMITTER_BILL_TO_NUMBER.split(',');
 
 module.exports.handler = async (event, context) => {
   try {
-    console.info('Event: ', event);
+    console.info('module.exports.handler= -> event:', event);
 
     //hardcoding to 0th index as we will receive only one event for this lambda.
     const record = get(event, 'Records[0]', []);
@@ -28,7 +27,7 @@ module.exports.handler = async (event, context) => {
     dynamoData.CSTDateTime = cstDate.format('YYYY-MM-DD HH:mm:ss SSS');
     dynamoData.Event = record;
     dynamoData.Id = uuid.v4().replace(/[^a-zA-Z0-9]/g, '');
-    console.info('Log Id: ', get(dynamoData, 'Id'));
+    console.info('module.exports.handler= -> Log Id:', dynamoData.Id);
 
     const newImage = AWS.DynamoDB.Converter.unmarshall(get(message, 'NewImage', {}));
     orderNo = get(newImage, 'FK_OrderNo', '');
@@ -37,7 +36,7 @@ module.exports.handler = async (event, context) => {
 
     const shipmentId = await getShipmentId(orderNo, get(newImage, 'SeqNo', ''));
     if (!shipmentId) {
-      return;
+      return false;
     }
     dynamoData.ShipmentId = shipmentId;
 
@@ -125,26 +124,6 @@ module.exports.handler = async (event, context) => {
 
 async function getShipmentId(orderNo, seqNo) {
   try {
-    const logParams = {
-      TableName: process.env.LOGS_TABLE,
-      KeyConditionExpression: 'OrderNo = :OrderNo AND SeqNo = :SeqNo',
-      FilterExpression: '#status = :status',
-      ExpressionAttributeNames: {
-        '#status': 'Status',
-      },
-      ExpressionAttributeValues: {
-        ':OrderNo': orderNo,
-        ':SeqNo': seqNo,
-        ':status': 'SUCCESS'
-      },
-    };
-    const logsResult = await dbQuery(logParams);
-    console.info('logsResult: ', logsResult);
-    if (logsResult.length > 0) {
-      console.info('Shipment is already sent to CW.')
-      return false;
-    }
-
     const headerParams = {
       TableName: process.env.SHIPMENT_HEADER_TABLE,
       KeyConditionExpression: 'PK_OrderNo = :PK_OrderNo',
@@ -155,11 +134,21 @@ async function getShipmentId(orderNo, seqNo) {
     const headerData = await dbQuery(headerParams);
     console.info('header data: ', headerData);
 
-    if (!costTransmitterBillToNbrs.includes(get(headerData, '[0].BillNo'))) {
-      console.info('This event is not related to lenovo. So, skipping the process.');
-      return false;
+    const customerListParams = {
+      TableName: process.env.CUSTOMER_LIST_TABLE,
+      KeyConditionExpression: 'BillNo = :BillNo',
+      ExpressionAttributeValues: {
+        ':BillNo': get(headerData, '[0].BillNo', ''),
+      },
+    };
+    const customerListData = await dbQuery(customerListParams);
+    console.info('customerListData: ', customerListData);
+    if(customerListData === 0 || get(customerListData, '[0].TransmitCost', false) === false || get(customerListData, '[0].TransmitCost', 'false') === 'false'){
+        console.info('The customer of this shipment is not listed to send the cost to CW.')
+        return false;
     }
-    dynamoData.BillToNbr = get(headerData, '[0].BillNo')
+
+    dynamoData.BillToNbr = get(headerData, '[0].BillNo', '');
 
     const Params = {
       TableName: process.env.CREATE_SHIPMENT_LOGS_TABLE,
@@ -179,6 +168,26 @@ async function getShipmentId(orderNo, seqNo) {
     console.info(createShipmentLogsResults);
     if (createShipmentLogsResults.length === 0) {
       console.info(`SKIPPING, This order No: ${orderNo} is not created from our integration.`);
+      return false;
+    }
+
+    const logParams = {
+      TableName: process.env.LOGS_TABLE,
+      KeyConditionExpression: 'OrderNo = :OrderNo AND SeqNo = :SeqNo',
+      FilterExpression: '#status = :status',
+      ExpressionAttributeNames: {
+        '#status': 'Status',
+      },
+      ExpressionAttributeValues: {
+        ':OrderNo': orderNo,
+        ':SeqNo': seqNo,
+        ':status': 'SUCCESS',
+      },
+    };
+    const logsResult = await dbQuery(logParams);
+    console.info('logsResult: ', logsResult);
+    if (logsResult.length > 0) {
+      console.info('Shipment is already sent to CW.');
       return false;
     }
 

@@ -22,4 +22,4 @@ function:
     LOGS_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/cost-transmitter-table-name}
     SHIPMENT_HEADER_TABLE: ${ssm:/omni-wt-rt-updates/${self:provider.stage}/shipment-header/ddb.tableName}
     CREATE_SHIPMENT_LOGS_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/create-shipment-status-table-name}
-    COST_TRANSMITTER_BILL_TO_NUMBER: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/cost-transmitter/bill_to_number}
+    CUSTOMER_LIST_TABLE: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/customer-list-table-name}

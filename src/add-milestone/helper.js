@@ -20,7 +20,9 @@ async function checkExistingRecord(orderNo, orderStatusId) {
   };
 
   const recordExisting = await dbQuery(statusParams);
-  return recordExisting.length > 0 && recordExisting[0].Status === STATUSES.SENT;
+  return (
+    get(recordExisting, 'length', []) > 0 && get(recordExisting, '[0].Status') === STATUSES.SENT
+  );
 }
 
 async function payloadToCW(referenceNo, eventDateTime, orderStatusId, milestoneMapping) {
@@ -290,7 +292,7 @@ function getLenovoException(wtCode) {
   if (exception) {
     return exception;
   }
-  return { lenovoCode: 'Unknown', description: 'No matching Lenovo exception code found' };
+  return { lenovoCode: 'A13', description: 'OTHER' };
 }
 
 async function getDataFromCustomerList({ billNo }) {

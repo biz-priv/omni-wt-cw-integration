@@ -1,6 +1,6 @@
 'use strict';
 
-const { get } = require('lodash');
+const { get, isEmpty } = require('lodash');
 const AWS = require('aws-sdk');
 const { publishToSNS } = require('../shared/dynamo');
 
@@ -59,9 +59,14 @@ async function queryTableStatusPending() {
 
 async function updateRecord(record) {
   try {
+    if (isEmpty(get(record, 'ShipmentId'))) {
+      console.info('ShipmentId is empty, Skipping');
+      throw new Error('ShipmentId is empty');
+    }
+
     const params = {
       TableName: LOGS_TABLE,
-      Key: { ShipmentId: record.ShipmentId },
+      Key: { ShipmentId: get(record, 'ShipmentId') },
       UpdateExpression: 'SET #statusAttr = :newStatus',
       ExpressionAttributeNames: {
         '#statusAttr': 'Status',

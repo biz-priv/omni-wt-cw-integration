@@ -17,8 +17,8 @@ function:
   events:
     - stream:
         arn: ${ssm:/omni-wt-cw-integration/${self:provider.stage}/pod-status-stream-arn}
-        batchSize: 5
-        maximumRetryAttempts: 3
+        batchSize: 1
+        maximumRetryAttempts: 1
         bisectBatchOnFunctionError: true
         filterPatterns:
           - { dynamodb: { NewImage: { Status: { S: ['READY'] } } } }

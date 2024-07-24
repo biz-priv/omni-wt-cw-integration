@@ -67,7 +67,7 @@ module.exports.handler = async (event, context) => {
       return `This shipment ${orderNo} is not created from this integration`;
     }
 
-    if (dynamoTableName === `omni-wt-rt-shipment-milestone-${process.env.STAGE}`) {
+    if (dynamoTableName === process.env.SHIPMENT_MILESTONE_TABLE) {
       await handleShipmentMilestone(
         data,
         oldImage,
@@ -76,7 +76,7 @@ module.exports.handler = async (event, context) => {
         housebill,
         event
       );
-    } else if (dynamoTableName === `omni-wt-rt-apar-failure-${process.env.STAGE}`) {
+    } else if (dynamoTableName === process.env.APAR_FAILURE_TABLE) {
       await handleAparFailure(data, housebill, event);
     }
     return STATUSES.SUCCESS;
@@ -223,13 +223,6 @@ async function handleAparFailure(data, housebill, event) {
     console.info('🚀 ~ file: test.js:3074 ~ lenovoCode:', lenovoCode);
     const description = get(lenovoException, 'description');
     console.info('🚀 ~ file: test.js:3074 ~ lenovoCode:', description);
-
-    if (lenovoCode === 'Unknown' || isEmpty(lenovoCode)) {
-      console.info(
-        `For fdCode: ${fdCode} the lenovo exception code is missing. Skipping the process`
-      );
-      return;
-    }
 
     const referenceParams = {
       TableName: process.env.REFERENCE_TABLE,

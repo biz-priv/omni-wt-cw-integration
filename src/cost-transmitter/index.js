@@ -2,13 +2,15 @@
 
 const { get } = require('lodash');
 const AWS = require('aws-sdk');
-const { dbQuery, publishToSNS } = require('../shared/dynamo');
+const axios = require('axios');
+const { dbQuery, publishToSNS, putItem } = require('../shared/dynamo');
 const uuid = require('uuid');
 const moment = require('moment-timezone');
 const { xmlToJson } = require('../shared/helper');
 
 const dynamoData = {};
 let orderNo;
+const costTransmitterBillToNbrs = process.env.COST_TRANSMITTER_BILL_TO_NUMBER.split(',');
 
 module.exports.handler = async (event, context) => {
   try {
@@ -30,83 +32,50 @@ module.exports.handler = async (event, context) => {
 
     const newImage = AWS.DynamoDB.Converter.unmarshall(get(message, 'NewImage', {}));
     orderNo = get(newImage, 'FK_OrderNo', '');
+    dynamoData.OrderNo = orderNo;
+    dynamoData.SeqNo = get(newImage, 'SeqNo', '');
 
-    const headerParams = {
-      TableName: process.env.SHIPMENT_HEADER_TABLE,
-      KeyConditionExpression: 'PK_OrderNo = :PK_OrderNo',
-      ExpressionAttributeValues: {
-        ':PK_OrderNo': orderNo,
-      },
-    };
-    const headerData = await dbQuery(headerParams);
-    console.info('header data: ', headerData);
-
-    if (!['55185'].includes(get(headerData, '[0].BillNo'))) {
-      console.info('This event is not related to lenovo. So, skipping the process.');
-      return false;
+    const shipmentId = await getShipmentId(orderNo, get(newImage, 'SeqNo', ''));
+    if (!shipmentId) {
+      return;
     }
+    dynamoData.ShipmentId = shipmentId;
 
-    const Params = {
-      TableName: process.env.CREATE_SHIPMENT_LOGS_TABLE,
-      IndexName: 'Housebill-index',
-      KeyConditionExpression: 'Housebill = :Housebill',
-      FilterExpression: '#status = :status',
-      ExpressionAttributeNames: {
-        '#status': 'Status',
-      },
-      ExpressionAttributeValues: {
-        ':Housebill': get(headerData, '[0].Housebill'),
-        ':status': 'SUCCESS',
-      },
-    };
+    const xmlCWPayload = await prepareCwPayload(shipmentId, get(newImage, 'Total', ''));
+    console.info(xmlCWPayload);
 
-    const createShipmentLogsResults = await dbQuery(Params);
-    console.info(createShipmentLogsResults);
-    if (createShipmentLogsResults.length === 0) {
-      console.info(`SKIPPING, This order No: ${orderNo} is not created from our integration.`);
-      return false
-    }
-
-    dynamoData.ShipmentId = get(createShipmentLogsResults, '[0].ShipmentId', '');
-
-    const xmlCWPayload = await prepareCwPayload(
-      get(dynamoData, 'ShipmentId', ''),
-      get(newImage, 'Total', '')
-    );
     dynamoData.XmlCWPayload = xmlCWPayload;
     const xmlCWResponse = await sendToCW(xmlCWPayload);
+    console.info(xmlCWResponse);
     dynamoData.XmlCWResponse = xmlCWResponse;
 
-    // const xmlCWObjResponse = await xmlToJson(xmlCWResponse);
+    const xmlCWObjResponse = await xmlToJson(xmlCWResponse);
 
-    // console.info(xmlCWObjResponse);
-    // console.info(xmlCWObjResponse.UniversalResponse.Data.UniversalEvent.Event.EventType);
+    const EventType = get(
+      xmlCWObjResponse,
+      'UniversalResponse.Data.UniversalEvent.Event.EventType',
+      ''
+    );
+    const contentType = get(
+      get(
+        xmlCWObjResponse,
+        'UniversalResponse.Data.UniversalEvent.Event.ContextCollection.Context',
+        []
+      ).filter((obj) => obj.Type === 'ProcessingStatusCode'),
+      '[0].Value',
+      ''
+    );
 
-    // const EventType = get(
-    //   xmlCWObjResponse,
-    //   'UniversalResponse.Data.UniversalEvent.Event.EventType',
-    //   ''
-    // );
-    // const contentType = get(
-    //   get(
-    //     xmlCWObjResponse,
-    //     'UniversalResponse.Data.UniversalEvent.Event.ContextCollection.Context',
-    //     []
-    //   ).filter((obj) => obj.Type === 'ProcessingStatusCode'),
-    //   '[0].Value',
-    //   ''
-    // );
+    console.info('EventType: ', EventType, 'contentType', contentType);
 
-    // console.info('EventType: ', EventType, 'contentType', contentType);
-
-    // if (EventType !== 'DIM' && contentType !== 'PRS') {
-    //   throw new Error(
-    //     `CARGOWISE API call failed: ${get(xmlCWObjResponse, 'UniversalResponse.ProcessingLog', '')}`
-    //   );
-    // }
+    if (EventType !== 'DIM' && (contentType === 'DCD' || contentType === 'REJ')) {
+      throw new Error(
+        `CARGOWISE API call failed: ${get(xmlCWObjResponse, 'UniversalResponse.ProcessingLog', '')}`
+      );
+    }
 
     dynamoData.Status = 'SUCCESS';
-    await putLogItem({ tableName: process.env.LOGS_TABLE, item: dynamoData });
+    await putItem({ tableName: process.env.LOGS_TABLE, item: dynamoData });
     return {
       statusCode: 200,
       body: JSON.stringify(
@@ -132,11 +101,14 @@ module.exports.handler = async (event, context) => {
     Id: ${get(dynamoData, 'Id', '')}.\n\n
     FileNumber: ${orderNo}. \n\n
     This is a process to send the cost line for each CW shipment to CW system.\n\n
-    Note: Use the id: ${get(dynamoData, 'Id', '')} for better search in the logs and also check in dynamodb: ${process.env.LOGS_TABLE} for understanding the complete data.`
-    await publishToSNS({ message, subject: `Omni WT CW Cost Transmitter Integration Error for OrderNo: ${orderNo} ` })
+    Note: Use the id: ${get(dynamoData, 'Id', '')} for better search in the logs and also check in dynamodb: ${process.env.LOGS_TABLE} for understanding the complete data.`;
+    await publishToSNS({
+      message,
+      subject: `Omni WT CW Cost Transmitter Integration Error for OrderNo: ${orderNo} `,
+    });
     dynamoData.ErrorMsg = errorMsgVal;
     dynamoData.Status = 'FAILED';
-    await putLogItem({ tableName: process.env.LOGS_TABLE, item: dynamoData });
+    await putItem({ tableName: process.env.LOGS_TABLE, item: dynamoData });
     return {
       statusCode: 400,
       body: JSON.stringify(
@@ -150,6 +122,72 @@ module.exports.handler = async (event, context) => {
     };
   }
 };
+
+async function getShipmentId(orderNo, seqNo) {
+  try {
+    const logParams = {
+      TableName: process.env.LOGS_TABLE,
+      KeyConditionExpression: 'OrderNo = :OrderNo AND SeqNo = :SeqNo',
+      FilterExpression: '#status = :status',
+      ExpressionAttributeNames: {
+        '#status': 'Status',
+      },
+      ExpressionAttributeValues: {
+        ':OrderNo': orderNo,
+        ':SeqNo': seqNo,
+        ':status': 'SUCCESS'
+      },
+    };
+    const logsResult = await dbQuery(logParams);
+    console.info('logsResult: ', logsResult);
+    if (logsResult.length > 0) {
+      console.info('Shipment is already sent to CW.')
+      return false;
+    }
+
+    const headerParams = {
+      TableName: process.env.SHIPMENT_HEADER_TABLE,
+      KeyConditionExpression: 'PK_OrderNo = :PK_OrderNo',
+      ExpressionAttributeValues: {
+        ':PK_OrderNo': orderNo,
+      },
+    };
+    const headerData = await dbQuery(headerParams);
+    console.info('header data: ', headerData);
+
+    if (!costTransmitterBillToNbrs.includes(get(headerData, '[0].BillNo'))) {
+      console.info('This event is not related to lenovo. So, skipping the process.');
+      return false;
+    }
+    dynamoData.BillToNbr = get(headerData, '[0].BillNo')
+
+    const Params = {
+      TableName: process.env.CREATE_SHIPMENT_LOGS_TABLE,
+      IndexName: 'Housebill-index',
+      KeyConditionExpression: 'Housebill = :Housebill',
+      FilterExpression: '#status = :status',
+      ExpressionAttributeNames: {
+        '#status': 'Status',
+      },
+      ExpressionAttributeValues: {
+        ':Housebill': get(headerData, '[0].Housebill'),
+        ':status': 'SUCCESS',
+      },
+    };
+
+    const createShipmentLogsResults = await dbQuery(Params);
+    console.info(createShipmentLogsResults);
+    if (createShipmentLogsResults.length === 0) {
+      console.info(`SKIPPING, This order No: ${orderNo} is not created from our integration.`);
+      return false;
+    }
+
+    return get(createShipmentLogsResults, '[0].ShipmentId', '');
+  } catch (error) {
+    console.error('Error while fetching shipment Id: ', error);
+    throw error;
+  }
+}
 
 async function prepareCwPayload(shipmentId, amount) {
   try {
@@ -238,4 +276,3 @@ async function sendToCW(postData) {
     throw new Error(`${errorMsg}\n Payload: ${postData}`);
   }
 }
-

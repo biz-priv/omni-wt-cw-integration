@@ -34,7 +34,7 @@ module.exports.handler = async (event, context) => {
     dynamoData.OrderNo = orderNo;
     dynamoData.SeqNo = get(newImage, 'SeqNo', '');
 
-    const shipmentId = await getShipmentId(orderNo, get(newImage, 'SeqNo', ''));
+    const shipmentId = await getShipmentId(orderNo);
     if (!shipmentId) {
       return false;
     }
@@ -95,15 +95,43 @@ module.exports.handler = async (event, context) => {
     } else {
       errorMsgVal = error;
     }
-    let message = `An error occurred in function ${context.functionName}.\n\n
-    ERROR DETAILS: ${errorMsgVal}.\n\n
-    Id: ${get(dynamoData, 'Id', '')}.\n\n
-    FileNumber: ${orderNo}. \n\n
-    This is a process to send the cost line for each CW shipment to CW system.\n\n
-    Note: Use the id: ${get(dynamoData, 'Id', '')} for better search in the logs and also check in dynamodb: ${process.env.LOGS_TABLE} for understanding the complete data.`;
-    await publishToSNS({
-      message,
-      subject: `Omni WT CW Cost Transmitter Integration Error for OrderNo: ${orderNo} `,
+    await sendSESEmail({
+      message: `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+          }
+          .container {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+          }
+          .highlight {
+            font-weight: bold;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <p>Dear Team,</p>
+          <p>Error while trasmitting the cost:</p>
+          <p><span class="highlight">Error:</span> <strong>${errorMsgVal}</strong><br>
+             <span class="highlight">ID:</span> <strong>${get(dynamoData, 'Id', '')}</strong><br>
+             <span class="highlight">Shipment ID:</span> <strong>${get(dynamoData, 'ShipmentId', '')}</strong><br>
+             <span class="highlight">File No:</span> <strong>${get(dynamoData, 'OrderNo', '')}</strong></p>
+             <span class="highlight">SeqNo:</span> <strong>${get(dynamoData, 'SeqNo', '')}</strong></p>
+          <p>Thank you,<br>
+          Omni Automation System</p>
+          <p style="font-size: 0.9em; color: #888;">Note: This is a system generated email, Please do not reply to this email.</p>
+        </div>
+      </body>
+      </html>
+      `,
+      subject: `${upperCase(process.env.STAGE)} - Lenovo Cost Transmitter: File No: ${get(dynamoData, 'OrderNo', '')} | Shipment ID ${get(dynamoData, 'ShipmentId', '')}.`,
     });
     dynamoData.ErrorMsg = errorMsgVal;
     dynamoData.Status = 'FAILED';
@@ -210,7 +238,7 @@ async function prepareCwPayload(shipmentId, amount) {
                 </DataTarget>
             </DataTargetCollection>
             <Company>
-                <Code>TRL</Code> 
+                <Code>ELP</Code> 
             </Company>
             <EnterpriseID>TRX</EnterpriseID>
             <ServerID>TS3</ServerID>

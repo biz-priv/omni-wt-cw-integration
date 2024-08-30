@@ -289,7 +289,7 @@ async function payloadToCW(shipmentId, housebill) {
           },
           AdditionalReferenceCollection: {
             $: {
-              Content: 'Complete',
+              Content: 'Partial',
             },
             AdditionalReference: {
               Type: {
